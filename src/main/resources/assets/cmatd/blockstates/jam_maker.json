@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cmatd:block/jam_maker"
+    }
+  }
+}

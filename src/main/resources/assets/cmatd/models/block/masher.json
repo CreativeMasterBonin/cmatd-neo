@@ -1,0 +1,77 @@
+{
+	"credit": "Made By CreativeMasterBonin",
+	"render_type": "translucent",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "cmatd:block/base_generator_side",
+		"1": "minecraft:block/black_stained_glass",
+		"particle": "cmatd:block/base_generator_side"
+	},
+	"elements": [
+		{
+			"name": "bottom",
+			"from": [0, 0, 0],
+			"to": [16, 4, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [0, 12, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 0, 16, 4], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "up"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"name": "mashercenter",
+			"from": [4, 4, 4],
+			"to": [12, 7, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5.5, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 8, 3], "texture": "#0"},
+				"east": {"uv": [0, 0, 8, 3], "texture": "#0"},
+				"south": {"uv": [0, 0, 8, 3], "texture": "#0"},
+				"west": {"uv": [0, 0, 8, 3], "texture": "#0"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#0"}
+			}
+		},
+		{
+			"name": "masherpiston",
+			"from": [6, 7, 6],
+			"to": [10, 12, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9.5, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 5], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 5], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 5], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "glass",
+			"from": [0, 4, 0],
+			"to": [16, 12, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"east": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 8], "texture": "#1"},
+				"west": {"uv": [0, 0, 16, 8], "texture": "#1"}
+			}
+		}
+	]
+}

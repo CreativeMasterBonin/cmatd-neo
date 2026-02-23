@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "cmatd:block/heat_generator_off"
+    },
+    "powered=true": {
+      "model": "cmatd:block/heat_generator_on"
+    }
+  }
+}

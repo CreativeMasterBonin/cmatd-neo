@@ -1,0 +1,21 @@
+This mod is licensed under a custom license. Ver 3.
+
+The license terms are as follows, and ARE NOT LEGAL ADVICE, just guidelines:
+
+You can make videos showcasing the content in this mod, including series that may have some monetization, granted that they follow the MC EULA and MUG.
+You can make resource packs and datapacks for this mod, but you cannot use the sounds or textures in this mod for any monetized purpose as just files by themselves, and must be from the mod and MC game itself (if they play in a video from the game audio with other things going on at the same time, you'll be fine copyright-wise).
+You can make addon mods (not MC Marketplace addons) of this mod (add new blocks and items based on internal classes, etc., etc).
+The sounds and textures and model files in this mod are copyright CreativeMasterBonin. DO NOT DISTRIBUTE! Only CreativeMasterBonin (and other members of a team or company affiliated with CreativeMasterBonin) are allowed to use the files outside the mod granted permission is given to them.
+You can download this mod as many times as you want, without charge. If anyone charges money for this download other than CreativeMasterBonin (and team, if applicable) DEMAND YOUR MONEY BACK, as YOU HAVE BEEN SCAMMED! The MC EULA and MUG mention not charging for mods, so don't get scammed.
+If you contribute to the mod, you will gain credit in some form, either text or a thank you in the mod (depending on contribution amount).
+
+The code is public, and you can rename methods and their layout (their logic)[please try and redo the logic, so it is original to you] when using them in your own mods IF YOU GIVE CREDIT BACK TO THIS MOD AND CREATIVEMASTERBONIN.
+Failure to credit the proper persons (when using programming from this repository) will result in a C&D or other applicable punishment by law.
+
+You may study the code and assets freely, without payment to access the content. You cannot copy and paste any images or text files (including JSON files). Addon mod files can reference model files, but cannot copy them verbatim (meaning they cannot use a single line of code from them, only model reference names).
+Mixins used in this mod cannot be copied verbatim into your own mods. If you can meaningfully change the mixins to be more useful and robust, you may add to the mixins by contributing some code in the repository, but changes must be approved before they are added, otherwise the changes will be reverted.
+
+
+Some content in this mod is under a different license. Their licenses are included in the 'codelicenses' directory.
+
+Follow these simple guidelines, and enjoy the mod.

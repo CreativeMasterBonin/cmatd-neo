@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "cmatd:block/food_reactor_front",
+    "side": "cmatd:block/food_reactor_side",
+    "top": "cmatd:block/base_machine_on"
+  }
+}

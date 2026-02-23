@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cmatd:block/base_solar_machine"
+    }
+  }
+}

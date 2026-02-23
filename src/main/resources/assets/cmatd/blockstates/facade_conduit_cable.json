@@ -1,0 +1,125 @@
+{
+  "multipart": [
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_all"
+        }
+      },
+
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face",
+          "uvlock": true
+        },
+        "when": {
+          "north": "block"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face",
+          "uvlock": true,
+          "y": 180
+        },
+        "when": {
+          "south": "block"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face",
+          "uvlock": true,
+          "y": 90
+        },
+        "when": {
+          "east": "block"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face",
+          "uvlock": true,
+          "y": 270
+        },
+        "when": {
+          "west": "block"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_top",
+          "uvlock": true
+        },
+        "when": {
+          "up": "block"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_bottom",
+          "uvlock": true
+        },
+        "when": {
+          "down": "block"
+        }
+      },
+
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face_connected",
+          "uvlock": true
+        },
+        "when": {
+          "north": "conduit"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face_connected",
+          "uvlock": true,
+          "y": 180
+        },
+        "when": {
+          "south": "conduit"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face_connected",
+          "uvlock": true,
+          "y": 90
+        },
+        "when": {
+          "east": "conduit"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_face_connected",
+          "uvlock": true,
+          "y": 270
+        },
+        "when": {
+          "west": "conduit"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_top_connected",
+          "uvlock": true
+        },
+        "when": {
+          "up": "conduit"
+        }
+      },
+      {
+        "apply": {
+          "model": "cmatd:block/conduit_bottom_connected",
+          "uvlock": true
+        },
+        "when": {
+          "down": "conduit"
+        }
+      }
+  ]
+}

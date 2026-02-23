@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cmatd:block/lunar_generator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cmatd:block/lunar_generator"
+    },
+    "facing=south": {
+      "model": "cmatd:block/lunar_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cmatd:block/lunar_generator",
+      "y": 270
+    }
+  }
+}

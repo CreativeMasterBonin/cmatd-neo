@@ -1,0 +1,9 @@
+{
+  "homepage":"https://github.com/roberttkahelin8/cmatd",
+  "1.21.1":{
+    "1.0.0": "Initial Release of mod"
+  },
+  "promos":{
+    "1.21.1-latest":"1.0.0"
+  }
+}

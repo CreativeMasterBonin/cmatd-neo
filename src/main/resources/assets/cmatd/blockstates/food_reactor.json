@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cmatd:block/food_reactor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cmatd:block/food_reactor"
+    },
+    "facing=south": {
+      "model": "cmatd:block/food_reactor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cmatd:block/food_reactor",
+      "y": 270
+    }
+  }
+}

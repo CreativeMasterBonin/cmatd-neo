@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,powered=false": {
+      "model": "cmatd:block/base_energy_maker",
+      "y": 90
+    },
+    "facing=north,powered=false": {
+      "model": "cmatd:block/base_energy_maker"
+    },
+    "facing=south,powered=false": {
+      "model": "cmatd:block/base_energy_maker",
+      "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "cmatd:block/base_energy_maker",
+      "y": 270
+    },
+    "facing=east,powered=true": {
+      "model": "cmatd:block/base_energy_maker_on",
+      "y": 90
+    },
+    "facing=north,powered=true": {
+      "model": "cmatd:block/base_energy_maker_on"
+    },
+    "facing=south,powered=true": {
+      "model": "cmatd:block/base_energy_maker_on",
+      "y": 180
+    },
+    "facing=west,powered=true": {
+      "model": "cmatd:block/base_energy_maker_on",
+      "y": 270
+    }
+  }
+}

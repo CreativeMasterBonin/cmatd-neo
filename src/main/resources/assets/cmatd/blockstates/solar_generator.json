@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "cmatd:block/solar_generator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "cmatd:block/solar_generator"
+    },
+    "facing=south": {
+      "model": "cmatd:block/solar_generator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cmatd:block/solar_generator",
+      "y": 270
+    }
+  }
+}

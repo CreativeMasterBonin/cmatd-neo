@@ -1,0 +1,119 @@
+{
+	"credit": "Made By CreativeMasterBonin",
+	"textures": {
+		"0": "cmatd:block/base_generator_side",
+		"1": "block/lightning_rod",
+		"2": "cmatd:block/rs_dynamo_engine",
+		"3": "cmatd:block/base_generator_front_on",
+		"particle": "cmatd:block/base_generator_side"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 4, 8]},
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#0", "cullface": "north"},
+				"east": {"uv": [0, 8, 16, 16], "texture": "#0", "cullface": "east"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#0", "cullface": "south"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#0", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0", "cullface": "down"}
+			}
+		},
+		{
+			"name": "rod",
+			"from": [7, 8, 7],
+			"to": [9, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
+			"faces": {
+				"north": {"uv": [0, 8, 2, 16], "texture": "#1"},
+				"east": {"uv": [0, 8, 2, 16], "texture": "#1"},
+				"south": {"uv": [0, 8, 2, 16], "texture": "#1"},
+				"west": {"uv": [0, 8, 2, 16], "texture": "#1"},
+				"up": {"uv": [0, 6, 2, 8], "texture": "#1", "cullface": "up"}
+			}
+		},
+		{
+			"name": "coilA",
+			"from": [5, 8, 5],
+			"to": [11, 10, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9, 8]},
+			"faces": {
+				"north": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"east": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"south": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"west": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"up": {"uv": [3, 0, 4.5, 1.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "coilB",
+			"from": [4, 11, 4],
+			"to": [12, 13, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
+			"faces": {
+				"north": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"east": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"south": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"west": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"up": {"uv": [3, 0, 4.5, 1.5], "texture": "#2"},
+				"down": {"uv": [3, 0, 4.5, 1.5], "texture": "#2"}
+			}
+		},
+		{
+			"name": "coilC",
+			"from": [3, 13.99, 3],
+			"to": [13, 15.99, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 15, 8]},
+			"faces": {
+				"north": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"east": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"south": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"west": {"uv": [0, 1.5, 4, 2], "texture": "#2"},
+				"up": {"uv": [3, 0, 4.5, 1.5], "texture": "#2", "cullface": "up"},
+				"down": {"uv": [3, 0, 4.5, 1.5], "texture": "#2"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 42, 0],
+			"translation": [0, 1.75, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 42, 0],
+			"translation": [0, 2, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 35, 0],
+			"translation": [2, 0, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 35, 0],
+			"translation": [2, 0, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"translation": [0, 0.75, 0],
+			"scale": [0.35, 0.35, 0.35]
+		},
+		"gui": {
+			"rotation": [35, 45, 0],
+			"scale": [0.6, 0.6, 0.6]
+		},
+		"head": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 0, -8],
+			"scale": [1.2, 1.2, 1.2]
+		},
+		"fixed": {
+			"rotation": [-35, 45, 0],
+			"scale": [0.5, 0.5, 0.5]
+		}
+	}
+}

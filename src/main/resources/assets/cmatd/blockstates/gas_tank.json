@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cmatd:block/gas_tank"
+    }
+  }
+}
