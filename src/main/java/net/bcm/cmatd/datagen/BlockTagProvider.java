@@ -86,6 +86,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.HEAT_GENERATOR.get())
                 .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.DIESEL_ENGINE.get())
+                .add(CmatdBlock.COMPOUNDITE_BLOCK.get())
+                .add(CmatdBlock.LODEALITE_BLOCK.get())
+                .add(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get())
+                .add(CmatdBlock.RAW_LODEALITE_BLOCK.get())
         ;
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(Tag.ORES_COMPOUNDITE)

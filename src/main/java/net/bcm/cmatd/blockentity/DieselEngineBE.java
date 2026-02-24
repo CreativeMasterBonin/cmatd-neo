@@ -1,5 +1,6 @@
 package net.bcm.cmatd.blockentity;
 
+import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.api.GasTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -7,12 +8,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-public class DieselEngineBE extends BlockEntity {
+public class DieselEngineBE extends AbstractGasContainingBE {
     public int ticks = 0;
 
     private GasTank gasTank = new GasTank(64000){
@@ -73,25 +73,26 @@ public class DieselEngineBE extends BlockEntity {
     public void serverTick(){
         ticks++;
 
-        if(getGasTank().getGasAmount() > 0){
-            getGasTank().drain(1);
+        if(ticks % 4 == 0){
+            this.gasAmount = gasTank.gas.getAmount();
         }
 
-        if(getGasAmount() > 0){
-            if(!getBlockState().getValue(BlockStateProperties.POWERED)){
-                getBlockState().setValue(BlockStateProperties.POWERED,true);
+        if(getGasTank().getGasStack() != GasStack.EMPTY){
+            if(getGasTank().getGasAmount() > 0){
+                getGasTank().getGasStack().remove(1);
+                if(!getBlockState().getValue(BlockStateProperties.POWERED)){
+                    getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true),3);
+                }
+                setChanged();
             }
         }
         else{
             if(getBlockState().getValue(BlockStateProperties.POWERED)){
-                getBlockState().setValue(BlockStateProperties.POWERED,false);
+                getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,false),3);
             }
-        }
-
-        if(ticks % 3 == 0){
-            this.gasAmount = gasTank.gas.getAmount();
             setChanged();
         }
+
 
         if(ticks >= 32767){
             ticks = 0;

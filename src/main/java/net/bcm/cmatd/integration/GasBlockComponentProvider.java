@@ -3,10 +3,13 @@ package net.bcm.cmatd.integration;
 import net.bcm.cmatd.api.GasType;
 import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.api.Registries;
+import net.bcm.cmatd.blockentity.AbstractGasContainingBE;
+import net.bcm.cmatd.blockentity.DieselEngineBE;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -63,8 +66,8 @@ public enum GasBlockComponentProvider implements IBlockComponentProvider, IServe
 
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
-        GasTankBE gasTankBE = (GasTankBE) blockAccessor.getBlockEntity();
-        if(gasTankBE instanceof GasTankBE){
+        AbstractGasContainingBE gasTankBE = (AbstractGasContainingBE) blockAccessor.getBlockEntity();
+        if(gasTankBE instanceof AbstractGasContainingBE){
             compoundTag.putString("gas", gasTankBE.getGasTank().getGasStack().getGas().getDescriptionId());
             compoundTag.putString("gas_id",gasTankBE.getGasTank().getGasStack().getGas().toString());
             compoundTag.putInt("gas_amount",gasTankBE.getGasTank().getGasStack().getAmount());

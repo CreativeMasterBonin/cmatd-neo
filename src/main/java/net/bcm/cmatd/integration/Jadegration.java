@@ -1,6 +1,8 @@
 package net.bcm.cmatd.integration;
 
+import net.bcm.cmatd.block.custom.DieselEngine;
 import net.bcm.cmatd.block.custom.GasTank;
+import net.bcm.cmatd.blockentity.DieselEngineBE;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.minecraft.resources.ResourceLocation;
 import snownee.jade.api.IWailaClientRegistration;
@@ -15,10 +17,12 @@ public class Jadegration implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
         registration.registerBlockDataProvider(GasBlockComponentProvider.INSTANCE,GasTankBE.class);
+        registration.registerBlockDataProvider(GasBlockComponentProvider.INSTANCE,DieselEngineBE.class);
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(GasBlockComponentProvider.INSTANCE, GasTank.class);
+        registration.registerBlockComponent(GasBlockComponentProvider.INSTANCE, DieselEngine.class);
     }
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class GasTankBE extends BlockEntity{
+public class GasTankBE extends AbstractGasContainingBE{
     private GasTank gasTank = new GasTank(100000){
         @Override
         public void update() {

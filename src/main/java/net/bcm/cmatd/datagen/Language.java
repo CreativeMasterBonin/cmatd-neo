@@ -124,6 +124,7 @@ public class Language extends LanguageProvider{
         // gas blocks
         this.add(CmatdBlock.GAS_TANK.get(),"Gas Tank");
         this.add(CmatdBlock.TEST_GAS_GENERATOR.get(),"Test Gas Generator");
+        this.add(CmatdBlock.DIESEL_ENGINE.get(),"Diesel Engine");
 
         // conduits
         this.add(CmatdBlock.CONDUIT.get(),"Conduit Energy Cable");

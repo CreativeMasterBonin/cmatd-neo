@@ -2,28 +2,18 @@ package net.bcm.cmatd.datagen;
 
 import com.buuz135.industrial.recipe.LaserDrillOreRecipe;
 import com.buuz135.industrial.recipe.LaserDrillRarity;
-import mekanism.api.datagen.recipe.builder.PressurizedReactionRecipeBuilder;
-import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
-import mekanism.common.registries.MekanismChemicals;
-import mekanism.common.tags.MekanismTags;
-import moze_intel.projecte.api.data.CustomConversionProvider;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.data.worldgen.DimensionTypes;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -639,6 +629,18 @@ public class Recipe extends RecipeProvider{
                 .pattern("mfm")
                 .pattern("igi")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.GAS_TANK))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.LIGHTNING_GENERATOR)
+                .define('l',Items.LIGHTNING_ROD)
+                .define('f',CmatdItem.MACHINE_FRAME)
+                .define('p',CmatdItem.POWER_BOARD)
+                .define('i',CmatdItem.INFUSED_INGOT)
+                .define('r',CmatdItem.REDSTONE_ENERGY_COLUMN)
+                .pattern("rlr")
+                .pattern("pfp")
+                .pattern("ifi")
+                .unlockedBy(Utility.HAS_ITEM,has(Items.LIGHTNING_ROD))
                 .save(rc);
     }
 

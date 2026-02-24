@@ -1,0 +1,6 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "cmatd:block/base_generator_side"
+  }
+}
