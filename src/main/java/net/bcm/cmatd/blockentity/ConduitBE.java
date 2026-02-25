@@ -2,6 +2,7 @@ package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.BaseEnergyStorage;
 import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.block.CmatdBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -22,12 +23,13 @@ import java.util.function.Consumer;
 public class ConduitBE extends BlockEntity {
     //public static final String ENERGY_TAG = "energy";
     private Set<BlockPos> positions = null;
+    public int ticks = 0;
 
     private final BaseEnergyStorage energyStorage = new BaseEnergyStorage(Utility.MAX_CONDUIT_ENERGY_CAPACITY,
             Utility.MAX_CONDUIT_ENERGY_TRANSFER_RATE,Utility.MAX_CONDUIT_ENERGY_TRANSFER_RATE,0){
         @Override
         public boolean canExtract() {
-            return false;
+            return true;
         }
 
         @Override
@@ -75,11 +77,13 @@ public class ConduitBE extends BlockEntity {
                     BlockPos p = cable.getBlockPos().relative(direction);
                     BlockEntity te = level.getBlockEntity(p);
                     if (te != null) {
-                        IEnergyStorage handler = level.getCapability(Capabilities.EnergyStorage.BLOCK, p, null);
-                        if (handler != null) {
-                            if (handler.canReceive()) {
-                                positions.add(p);
-                                setChanged();
+                        if(te.getBlockState().getBlock() != CmatdBlock.CONDUIT.get() && te.getBlockState().getBlock() != CmatdBlock.FACADE_CONDUIT.get()){
+                            IEnergyStorage handler = level.getCapability(Capabilities.EnergyStorage.BLOCK, p, null);
+                            if (handler != null) {
+                                if (handler.canReceive()) {
+                                    positions.add(p);
+                                    setChanged();
+                                }
                             }
                         }
                     }
@@ -91,13 +95,13 @@ public class ConduitBE extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
-        saveAdditional(tag,registries);
+        this.saveAdditional(tag,registries);
         return tag;
     }
 
     @Override
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-        loadAdditional(tag,lookupProvider);
+        this.loadAdditional(tag,lookupProvider);
     }
 
     public void notUpdatedRefresh(){
@@ -128,10 +132,15 @@ public class ConduitBE extends BlockEntity {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         if(tag.contains("energy")){
             energyStorage.setEnergy(tag.getInt("energy"));
+            setChanged();
         }
     }
 
     public void serverTick(){
+        ticks++;
+        if(ticks >= 32767){
+            ticks = 0;
+        }
         if (energyStorage.getEnergyStored() > 0) {
             // energy needed to traverse with it!
             refreshOutputs();
@@ -220,7 +229,7 @@ public class ConduitBE extends BlockEntity {
                 }
             }*/
 
-            if (!positions.isEmpty()) {
+            /*if (!positions.isEmpty()) {
                 // distribute energy to all connections in our positions set
                 int amount = energyStorage.getEnergyStored() / positions.size();
                 for (BlockPos p : positions) {
@@ -233,6 +242,40 @@ public class ConduitBE extends BlockEntity {
                         }
                     }
                 }
+            }*/
+            if(ticks % 2 == 0){
+                distributeEnergy();
+            }
+        }
+    }
+
+    public void distributeEnergy(){
+        IEnergyStorage targetStorage = null;
+        for (Direction direction : Direction.values()) {
+            if (energyStorage.getEnergyStored() <= 0) {
+                return;
+            }
+
+            IEnergyStorage potentialEnergyTarget = level.getCapability(
+                    Capabilities.EnergyStorage.BLOCK,getBlockPos().relative(direction),null);
+
+            if(potentialEnergyTarget != null){
+                if(potentialEnergyTarget.canReceive()){
+                    if(potentialEnergyTarget.getEnergyStored() < getEnergyStorage().getEnergyStored() || getLevel().getBlockEntity(getBlockPos().relative(direction)) instanceof ConduitBE){
+                        targetStorage = potentialEnergyTarget;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (targetStorage != null){
+            if (targetStorage.canReceive()){
+                int received = targetStorage.receiveEnergy(Math.min(
+                        this.energyStorage.getEnergyStored(),
+                        energyStorage.getMaxExtract()), false);
+                this.energyStorage.extractEnergy(received, false);
+                setChanged();
             }
         }
     }

@@ -43,8 +43,8 @@ public class RedstoneDynamoEngine extends BaseEntityBlock implements EntityBlock
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("desc.item.generator.gen_rate",10)
                 .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("desc.item.redstone_dynamo_engine.additional_info",10)
-                .withStyle(ChatFormatting.GREEN));
+        tooltipComponents.add(Component.translatable("desc.item.redstone_dynamo_engine.additional_info",10,Component.translatable(Blocks.REDSTONE_BLOCK.getDescriptionId()))
+                .withStyle(ChatFormatting.GOLD));
     }
 
     @Override

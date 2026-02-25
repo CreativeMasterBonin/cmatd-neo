@@ -1,13 +1,19 @@
 package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.bcm.cmatd.CmatdClientActionHandler;
+import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.blockentity.HeatGeneratorBE;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -19,6 +25,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class HeatGenerator extends Block implements EntityBlock {
     public static final MapCodec<HeatGenerator> CODEC =
@@ -33,6 +41,24 @@ public class HeatGenerator extends Block implements EntityBlock {
                 .noOcclusion());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(BlockStateProperties.POWERED,false));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("desc.item.generator.gen_rate",10)
+                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("desc.item.generator.heat_generator.additional_info")
+                .withStyle(ChatFormatting.GOLD));
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            tooltipComponents.add(Component.translatable("desc.item.generator.heat_generator.heat_sources_low").withColor(16770304));
+            tooltipComponents.add(Component.translatable("desc.item.generator.heat_generator.heat_sources_medium").withColor(15697920));
+            tooltipComponents.add(Component.translatable("desc.item.generator.heat_generator.heat_sources_high").withColor(15678208));
+        }
+        else{
+            tooltipComponents.add(Component.translatable("desc.item.generator.hidden_details",
+                    Component.translatable(CmatdClient.itemDescriptionKeyMapping.getKey().getName()))
+                    .withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
     }
 
     @Override

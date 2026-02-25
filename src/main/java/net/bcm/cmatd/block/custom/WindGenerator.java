@@ -43,6 +43,8 @@ public class WindGenerator extends Block implements EntityBlock{
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("desc.item.generator.gen_rate",10)
                 .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("desc.item.generator.wind_generator.additional_info")
+                .withStyle(ChatFormatting.GOLD));
     }
 
     @Override

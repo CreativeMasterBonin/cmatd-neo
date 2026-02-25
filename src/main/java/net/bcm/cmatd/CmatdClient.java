@@ -1,10 +1,12 @@
 package net.bcm.cmatd;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.CmatdBE;
 import net.bcm.cmatd.gui.*;
 import net.bcm.cmatd.item.CmatdItem;
 import net.bcm.cmatd.render.*;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -13,7 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ColorResolver;
-import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -22,9 +23,12 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 @Mod(value = Cmatd.MODID,dist = Dist.CLIENT)
@@ -37,6 +41,14 @@ public class CmatdClient {
         modEventBus.addListener(this::registerModelLayers);
         modEventBus.addListener(this::registerMenus);
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::registerKeyBindings);
+    }
+
+    public static KeyMapping itemDescriptionKeyMapping = new KeyMapping("key_mapping.cmatd.show_item_description", KeyConflictContext.GUI,
+            KeyModifier.NONE,InputConstants.Type.KEYSYM,InputConstants.KEY_RBRACKET,"key_category.cmatd");
+
+    public void registerKeyBindings(RegisterKeyMappingsEvent event){
+        event.register(itemDescriptionKeyMapping);
     }
 
     public void registerMenus(RegisterMenuScreensEvent event){
@@ -63,6 +75,7 @@ public class CmatdClient {
         BlockEntityRenderers.register(CmatdBE.PRESSER.get(), PresserBERenderer::new);
         BlockEntityRenderers.register(CmatdBE.GAS_TANK.get(),GasTankRenderer::new);
         BlockEntityRenderers.register(CmatdBE.DIESEL_ENGINE.get(),DieselEngineRenderer::new);
+        BlockEntityRenderers.register(CmatdBE.FACADE_CONDUIT.get(),FacadeConduitRenderer::new);
     }
 
     public static int customGetColor(BlockAndTintGetter btgetter, BlockPos bp, ColorResolver cr) {

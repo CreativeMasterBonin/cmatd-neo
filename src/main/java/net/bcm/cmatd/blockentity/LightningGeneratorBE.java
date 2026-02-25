@@ -5,6 +5,7 @@ import net.bcm.cmatd.Utility;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LightningRodBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +52,10 @@ public class LightningGeneratorBE extends BlockEntity{
 
     private final ContainerData machineData;
     private int cooldownTicksLeft = 0;
+
+    public int getCooldownTicksLeft(){
+        return this.cooldownTicksLeft;
+    }
 
     @Nullable
     @Override
@@ -89,6 +95,13 @@ public class LightningGeneratorBE extends BlockEntity{
         return energyStorage;
     }
 
+    public void clientTick(){
+        ticks++;
+        if(ticks > 32767){
+            ticks = 0;
+        }
+    }
+
     public void serverTick(){
         ticks++;
         if(ticks > 32767){
@@ -96,8 +109,15 @@ public class LightningGeneratorBE extends BlockEntity{
         }
 
         if(ticks % 150 == 0){
-            if(cooldownTicksLeft > 1){
+            if(cooldownTicksLeft >= 1){
                 cooldownTicksLeft--;
+            }
+        }
+
+        if(ticks % 10 == 0){
+            if(cooldownTicksLeft == 0 && this.getBlockState().getValue(BlockStateProperties.POWERED)){
+                this.getLevel().setBlockAndUpdate(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,false));
+                setChanged();
             }
         }
 
@@ -109,6 +129,8 @@ public class LightningGeneratorBE extends BlockEntity{
                             SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS,
                             1.0f,0.75f);
                     cooldownTicksLeft = 50;
+                    this.getLevel().setBlockAndUpdate(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true));
+                    setChanged();
                 }
             }
             distributeEnergy();

@@ -1,9 +1,11 @@
 {
   "homepage":"https://github.com/roberttkahelin8/cmatd",
   "1.21.1":{
-    "1.0.0": "Initial Release of mod"
+    "1.0.0": "Initial Release of mod",
+    "1.0.0dev5": "the update that added food reactors, the lightning generator, and other content",
+    "1.0.1": "Full release with all mentioned features"
   },
   "promos":{
-    "1.21.1-latest":"1.0.0"
+    "1.21.1-latest":"1.0.1"
   }
 }

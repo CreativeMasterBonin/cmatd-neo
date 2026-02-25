@@ -11,12 +11,13 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 public class FacadeConduitBE extends ConduitBE {
-    private BlockState facadeState;
+    public BlockState facadeState = Blocks.AIR.defaultBlockState();
 
     public FacadeConduitBE(BlockPos pos, BlockState blockState) {
         super(CmatdBE.FACADE_CONDUIT.get(), pos, blockState);
@@ -44,8 +45,13 @@ public class FacadeConduitBE extends ConduitBE {
             CompoundTag tag2 = NbtUtils.writeBlockState(facadeState);
             tag.put("facade", tag2);
         }
-        this.saveWithoutMetadata(registries);
+        saveAdditional(tag,registries);
         return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(tag,lookupProvider);
     }
 
     public BlockState getFacadeBlock() {
@@ -70,7 +76,7 @@ public class FacadeConduitBE extends ConduitBE {
             facadeState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(),tag.getCompound("facade"));
         }
         else {
-            facadeState = null;
+            facadeState = Blocks.AIR.defaultBlockState();
         }
     }
 

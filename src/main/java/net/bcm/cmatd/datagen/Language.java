@@ -76,17 +76,28 @@ public class Language extends LanguageProvider{
         this.add("desc.item.jam", "Used as a coolant in the Food Reactor");
         this.add("desc.item.mashed_potato_like", "Used as fuel in the Food Reactor");
         this.add("desc.item.generator.gen_rate","Base Gen Rate: %s FE");
-        this.add("desc.item.redstone_dynamo_engine.additional_info","+%s FE For Sides with a Redstone Block");
+        this.add("desc.item.redstone_dynamo_engine.additional_info","+%s FE For Sides with a %s");
         this.add("desc.item.solar_generator.additional_info","Sky darkness affects output");
         this.add("desc.item.jam_maker.additional_info","Keeps crafting progress without items; works only at daytime");
         this.add("desc.item.lunar_generator.additional_info","Only generates at night, moon phases affect output");
         this.add("desc.item.hydro_generator.additional_info","Needs flowing water around it");
         this.add("desc.item.presser.additional_info","Uses patterns to make items; works only at daytime");
         this.add("desc.item.lightning_generator.additional_info","Harness the power of lightning! Has a long cooldown after a bolt strikes it, and requires a lightning rod on top to function at all");
+        this.add("desc.item.generator.wind_generator.additional_info","Height of generator affects output greatly");
+        this.add("desc.item.generator.heat_generator.additional_info","Hot dimensions and low tier heat sources slowly produce output, while high tier heat sources have the best output");
+        this.add("desc.item.generator.heat_generator.heat_sources_low","Low Tier Heat: Torches, Nether");
+        this.add("desc.item.generator.heat_generator.heat_sources_medium","Medium Tier Heat: Campfires, Furnaces");
+        this.add("desc.item.generator.heat_generator.heat_sources_high","High Tier Heat: Lava, Soul Fire");
+        this.add("desc.item.generator.hidden_details","Details hidden press %s to expand");
+        this.add("desc.item.generator.lightning_generator.cooldown","Lightning cooldown is 5-6 minutes");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
         this.add("message.multiblock.formed_successfully","Successfully formed multiblock at %s");
+
+        // key mappings
+        this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");
+        this.add("key_category.cmatd","CMATD");
 
         // ores
         this.add(CmatdBlock.COMPOUNDITE_ORE.get(),"Compoundite Ore");
