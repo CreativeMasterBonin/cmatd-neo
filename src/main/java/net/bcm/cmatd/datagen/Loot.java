@@ -38,8 +38,8 @@ public class Loot extends VanillaBlockLoot {
 
         this.dropSelf(CmatdBlock.GAS_TANK.get());
         this.dropSelf(CmatdBlock.DIESEL_ENGINE.get());
+        this.add(CmatdBlock.FACADE_CONDUIT.get(),noDrop());
         this.dropSelf(CmatdBlock.CONDUIT.get());
-        this.dropSelf(CmatdBlock.FACADE_CONDUIT.get());
 
 
         this.dropSelf(CmatdBlock.MACHINE_FRAME.get());

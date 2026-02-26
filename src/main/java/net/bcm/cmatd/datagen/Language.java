@@ -94,6 +94,7 @@ public class Language extends LanguageProvider{
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
         this.add("message.multiblock.formed_successfully","Successfully formed multiblock at %s");
+        this.add("block.cmatd.facade_conduit.set_facade","Set facade to: %s");
 
         // key mappings
         this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");

@@ -46,7 +46,6 @@ public class ConduitBE extends BlockEntity {
     };
 
     // position checks for outputs (adds refreshed positions to set for an entire network)
-    // TODO: NOT EFFICIENT, so try upgrading it please
     // mcjty
     private void traverse(BlockPos pos, Consumer<ConduitBE> consumer) {
         Set<BlockPos> traversed = new HashSet<>();
@@ -136,6 +135,7 @@ public class ConduitBE extends BlockEntity {
         }
     }
 
+    // TODO: fix the entire thing, as energy doesn't distribute right no matter what
     public void serverTick(){
         ticks++;
         if(ticks >= 32767){
@@ -243,9 +243,7 @@ public class ConduitBE extends BlockEntity {
                     }
                 }
             }*/
-            if(ticks % 2 == 0){
-                distributeEnergy();
-            }
+            distributeEnergy();
         }
     }
 
@@ -259,9 +257,10 @@ public class ConduitBE extends BlockEntity {
             IEnergyStorage potentialEnergyTarget = level.getCapability(
                     Capabilities.EnergyStorage.BLOCK,getBlockPos().relative(direction),null);
 
+            // cannot seem to get machines nor conduits to share power correctly or at all
             if(potentialEnergyTarget != null){
                 if(potentialEnergyTarget.canReceive()){
-                    if(potentialEnergyTarget.getEnergyStored() < getEnergyStorage().getEnergyStored() || getLevel().getBlockEntity(getBlockPos().relative(direction)) instanceof ConduitBE){
+                    if(getLevel().getBlockEntity(getBlockPos().relative(direction)) instanceof ConduitBE){
                         targetStorage = potentialEnergyTarget;
                         break;
                     }

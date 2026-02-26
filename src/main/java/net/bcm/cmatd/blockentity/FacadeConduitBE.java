@@ -65,8 +65,8 @@ public class FacadeConduitBE extends ConduitBE {
 
     public void setFacadeState(BlockState newFacadeState){
         this.facadeState = newFacadeState;
-        setChanged();
         level.sendBlockUpdated(getBlockPos(),getBlockState(),getBlockState(),Block.UPDATE_CLIENTS + Block.UPDATE_NEIGHBORS);
+        setChanged();
     }
 
     @Override
