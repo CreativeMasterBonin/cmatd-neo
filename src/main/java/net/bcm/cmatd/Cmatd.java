@@ -65,11 +65,12 @@ public class Cmatd {
                         output.accept(CmatdItem.HEAT_GENERATOR.asItem());
                         output.accept(CmatdItem.LIGHTNING_GENERATOR.asItem());
                         output.accept(CmatdItem.FOOD_REACTOR_MULTIBLOCK.asItem());
+                        output.accept(CmatdItem.ROTATIONAL_INDUCTION_GENERATOR.asItem());
                         // conduits
                         /*output.accept(CmatdItem.CONDUIT.asItem());
                         output.accept(CmatdItem.FACADE_CONDUIT.asItem());*/
 
-                        // storages
+                        // gas related
                         output.accept(CmatdItem.GAS_TANK.asItem());
                         output.accept(CmatdItem.TEST_GAS_GENERATOR.asItem());
                         // engines
@@ -270,6 +271,10 @@ public class Cmatd {
         // diesel engine
         event.registerBlockEntity(net.bcm.cmatd.api.Capabilities.GasHandler.BLOCK,CmatdBE.DIESEL_ENGINE.get(),
                 (o,direction) -> o.getGasTank());
+
+        // rotational induction generator
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,CmatdBE.ROTATIONAL_INDUCTION_GENERATOR.get(),
+                (o,direction) -> o.getEnergyStorage());
     }
 
     private void registerRegistries(NewRegistryEvent event){

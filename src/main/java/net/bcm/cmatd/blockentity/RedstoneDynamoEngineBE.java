@@ -61,6 +61,16 @@ public class RedstoneDynamoEngineBE extends BlockEntity{
         };
     }
 
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries){
+        return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(tag,lookupProvider);
+    }
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {

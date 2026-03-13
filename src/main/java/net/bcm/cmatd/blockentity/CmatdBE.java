@@ -106,6 +106,12 @@ public class CmatdBE {
             "diesel_engine",() ->
                     BlockEntityType.Builder.of(DieselEngineBE::new, CmatdBlock.DIESEL_ENGINE.get())
                             .build(null));
+
+    public static final Supplier<BlockEntityType<RotationalInductionGenerator>> ROTATIONAL_INDUCTION_GENERATOR = BLOCK_ENTITIES.register(
+            "", () ->
+                    BlockEntityType.Builder.of(RotationalInductionGenerator::new, CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
+                            .build(null)
+    );
     /*
     public static final Supplier<BlockEntityType<MasherBE>> MASHER = BLOCK_ENTITIES.register(
             "masher_be",() ->

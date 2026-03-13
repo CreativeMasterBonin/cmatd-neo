@@ -84,7 +84,7 @@ public class CmatdBlock{
     public static final DeferredBlock<Block> FACADE_CONDUIT = BLOCKS.register("facade_conduit_cable",
             () -> new FacadeConduitCableBlock(BlockBehaviour.Properties.of().strength(1f,17f)));
 
-    // storage blocks
+    // gas related or other
     public static final DeferredBlock<Block> GAS_TANK = BLOCKS.register("gas_tank",
             () -> new GasTank(BlockBehaviour.Properties.of().strength(1f,32f))); // has recipe
 
@@ -93,6 +93,9 @@ public class CmatdBlock{
 
     public static final DeferredBlock<Block> DIESEL_ENGINE = BLOCKS.register("diesel_engine",
             () -> new DieselEngine(BlockBehaviour.Properties.of().strength(1f,24f))); // has recipe
+
+    public static final DeferredBlock<Block> ROTATIONAL_INDUCTION_GENERATOR = BLOCKS.register("rotational_induction_generator",
+            () -> new RotationalInductionGeneratorBlock(BlockBehaviour.Properties.of().strength(1.25f,50f))); // has recipe
 
     // ores
     public static final DeferredBlock<Block> COMPOUNDITE_ORE = BLOCKS.register("compoundite_ore",

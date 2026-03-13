@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-public class DieselEngineBE extends AbstractGasContainingBE {
+public class DieselEngineBE extends AbstractGasContainingBE implements RotationalEnergyProducer {
     public int ticks = 0;
 
     private GasTank gasTank = new GasTank(64000){
@@ -83,6 +83,11 @@ public class DieselEngineBE extends AbstractGasContainingBE {
                 if(!getBlockState().getValue(BlockStateProperties.POWERED)){
                     getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true),3);
                 }
+                if(ticks % 7 == 0){
+                    if(getRotationalOutputSpeed() >= getMaxRotationalOutputSpeed()){
+                        setRotationalOutputSpeed(getRotationalOutputSpeed() + 1);
+                    }
+                }
                 setChanged();
             }
         }
@@ -90,7 +95,21 @@ public class DieselEngineBE extends AbstractGasContainingBE {
             if(getBlockState().getValue(BlockStateProperties.POWERED)){
                 getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,false),3);
             }
+            if(ticks % 7 == 0){
+                if(getRotationalOutputSpeed() > 0){
+                    setRotationalOutputSpeed(getRotationalOutputSpeed() - 1);
+                }
+            }
             setChanged();
+        }
+
+        if(ticks % 2 == 0){
+            if(getBlockState().getValue(BlockStateProperties.POWERED)){
+                if(getRotationalOutputSpeed() < getMaxRotationalOutputSpeed()){
+                    setRotationalOutputSpeed(getRotationalOutputSpeed() + 1);
+                    setChanged();
+                }
+            }
         }
 
 
@@ -103,11 +122,31 @@ public class DieselEngineBE extends AbstractGasContainingBE {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         gasTank.save(registries,tag);
         tag.putInt("gas_amount",gasAmount);
+        tag.putInt("rotational_energy",rotationalEnergy);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         gasTank.load(registries,tag);
         gasAmount = tag.getInt("gas_amount");
+        rotationalEnergy = tag.getInt("rotational_energy");
+    }
+
+    public int rotationalEnergy = 0;
+
+    @Override
+    public int getRotationalOutputSpeed() {
+        return rotationalEnergy;
+    }
+
+    @Override
+    public void setRotationalOutputSpeed(int rotation) {
+        this.rotationalEnergy = rotation;
+        setChanged();
+    }
+
+    @Override
+    public int getMaxRotationalOutputSpeed() {
+        return 2570;
     }
 }

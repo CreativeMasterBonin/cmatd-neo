@@ -642,6 +642,18 @@ public class Recipe extends RecipeProvider{
                 .pattern("ifi")
                 .unlockedBy(Utility.HAS_ITEM,has(Items.LIGHTNING_ROD))
                 .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.ROTATIONAL_INDUCTION_GENERATOR)
+                .define('m',Items.MINECART)
+                .define('f',CmatdItem.MACHINE_FRAME)
+                .define('p',CmatdItem.POWER_BOARD)
+                .define('i',CmatdItem.INFUSED_INGOT)
+                .define('r',CmatdItem.REDSTONE_ENERGY_COLUMN)
+                .pattern("iri")
+                .pattern("pfp")
+                .pattern("imi")
+                .unlockedBy(Utility.HAS_ITEM,has(Items.LIGHTNING_ROD))
+                .save(rc);
     }
 
     public static RecipeBuilder stonecutterAny(Item requiredItem, Ingredient inputItem, Item result, int amt){

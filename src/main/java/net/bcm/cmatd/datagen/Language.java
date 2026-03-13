@@ -48,6 +48,7 @@ public class Language extends LanguageProvider{
         this.add("integration.data.gas_amount","%s GU");
         this.add("integration.data.gas_amount_with_max","%s GU / %s GU");
         this.add("config.jade.plugin_cmatd.gas_type_provider","Gas Type Provider");
+        this.add("config.jade.plugin_cmatd.rotational_object_type_provider","Rotational Type Provider");
         this.add("integration.data.gas.is_empty","Tank Empty");
 
         // subtitles
@@ -76,6 +77,8 @@ public class Language extends LanguageProvider{
         this.add("desc.item.jam", "Used as a coolant in the Food Reactor");
         this.add("desc.item.mashed_potato_like", "Used as fuel in the Food Reactor");
         this.add("desc.item.generator.gen_rate","Base Gen Rate: %s FE");
+        this.add("desc.item.generator.gen_rate_variable_conditional","Base Gen Rate: Varies on condition %s");
+        this.add("desc.item.generator.gen_rate_variable","Base Gen Rate: Varies on %s");
         this.add("desc.item.redstone_dynamo_engine.additional_info","+%s FE For Sides with a %s");
         this.add("desc.item.solar_generator.additional_info","Sky darkness affects output");
         this.add("desc.item.jam_maker.additional_info","Keeps crafting progress without items; works only at daytime");
@@ -90,11 +93,15 @@ public class Language extends LanguageProvider{
         this.add("desc.item.generator.heat_generator.heat_sources_high","High Tier Heat: Lava, Soul Fire");
         this.add("desc.item.generator.hidden_details","Details hidden press %s to expand");
         this.add("desc.item.generator.lightning_generator.cooldown","Lightning cooldown is 5-6 minutes");
+        this.add("desc.item.generator.rotational_induction_generator.additional_info","Generator converts rotational force into output");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
         this.add("message.multiblock.formed_successfully","Successfully formed multiblock at %s");
         this.add("block.cmatd.facade_conduit.set_facade","Set facade to: %s");
+        this.add("integration.data.no_rotational_power","No Rotational Ability");
+        this.add("integration.data.rotational_power_amount","Rotation Ability: %s Being Rotated: %s");
+        this.add("desc.item.generator.variable_type.rotational_ability","Rotational Ability");
 
         // key mappings
         this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");
@@ -132,6 +139,7 @@ public class Language extends LanguageProvider{
         this.add(CmatdBlock.PRESSER.get(),"Presser");
         this.add(CmatdBlock.LIGHTNING_GENERATOR.get(),"Lightning Generator");
         this.add(CmatdBlock.HEAT_GENERATOR.get(),"Heat Generator");
+        this.add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),"Rotational Induction Generator");
 
         // gas blocks
         this.add(CmatdBlock.GAS_TANK.get(),"Gas Tank");

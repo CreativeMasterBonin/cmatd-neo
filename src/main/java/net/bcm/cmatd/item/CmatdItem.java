@@ -78,6 +78,10 @@ public class CmatdItem{
             ITEMS.register("heat_generator",
                     () -> new BlockItem(CmatdBlock.HEAT_GENERATOR.get(),new Item.Properties()));
 
+    public static final DeferredItem<BlockItem> ROTATIONAL_INDUCTION_GENERATOR =
+            ITEMS.register("rotational_induction_generator",
+                    () -> new BlockItem(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),new Item.Properties()));
+
     // mutliblocks
     public static final DeferredItem<BlockItem> FOOD_REACTOR_MULTIBLOCK =
             ITEMS.register("food_reactor",

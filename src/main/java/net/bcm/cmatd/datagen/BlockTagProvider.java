@@ -64,6 +64,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.HEAT_GENERATOR.get())
                 .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.DIESEL_ENGINE.get())
+                .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
         ;
         tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
@@ -92,6 +93,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.RAW_LODEALITE_BLOCK.get())
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
+                .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
         ;
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -124,6 +126,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.DIESEL_ENGINE.get())
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
+                .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
         ;
         tag(JustDireBlockTags.PARADOX_ABSORB_DENY)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
@@ -144,6 +147,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.HEAT_GENERATOR.get())
                 .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.DIESEL_ENGINE.get())
+                .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
