@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "cmatd:block/machine_frame"
+      "model": "cmatd:block/rotational_energy_converter"
     }
   }
 }

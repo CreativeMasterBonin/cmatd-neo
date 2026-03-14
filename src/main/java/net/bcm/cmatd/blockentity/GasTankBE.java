@@ -1,6 +1,7 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.api.*;
+import net.bcm.cmatd.block.custom.GasVent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -8,6 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
@@ -72,9 +76,6 @@ public class GasTankBE extends AbstractGasContainingBE{
 
     public void serverTick() {
         ticks++;
-        if (ticks > 32767) {
-            ticks = 0;
-        }
 
         if(ticks % 7 == 0){
             this.gasAmount = gasTank.gas.getAmount();
@@ -85,6 +86,35 @@ public class GasTankBE extends AbstractGasContainingBE{
             if(gasTank.canGasBeDrainedFromTank(gasTank.getGasStack())){
                 distributeGas();
             }
+        }
+
+        if(ticks % 27 == 0){
+            if(level.getBlockState(getBlockPos().below()).getBlock() instanceof GasVent gasVent){
+                if(gasTank.getGasAmount() <= 0 && gasTank.getGasStack().getGas() == Gases.EMPTY){
+                    gasTank.setGas(gasVent.getDefaultGasStack(),false);
+                    level.playSound(null,getBlockPos(),
+                            SoundEvents.BUCKET_FILL_LAVA,SoundSource.BLOCKS,
+                            0.75f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
+                    setChanged();
+                }
+                else{
+                    if(gasTank.getGasStack().getGas() == gasVent.gasTypeToProduce.value()){
+                        if(gasTank.getGasAmount() < gasTank.capacity){
+                            gasTank.fill(gasVent.gasAmountToProduce.sample(level.getRandom()));
+                            if(level.getRandom().nextIntBetweenInclusive(1,12) <= 2){
+                                level.playSound(null,getBlockPos(),
+                                        SoundEvents.POINTED_DRIPSTONE_DRIP_LAVA_INTO_CAULDRON,SoundSource.BLOCKS,
+                                        0.75f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
+                            }
+                            setChanged();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (ticks > 32767) {
+            ticks = 0;
         }
     }
 

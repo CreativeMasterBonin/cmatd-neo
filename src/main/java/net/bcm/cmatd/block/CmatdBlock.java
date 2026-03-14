@@ -1,10 +1,13 @@
 package net.bcm.cmatd.block;
 
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.block.custom.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -96,6 +99,19 @@ public class CmatdBlock{
 
     public static final DeferredBlock<Block> ROTATIONAL_INDUCTION_GENERATOR = BLOCKS.register("rotational_induction_generator",
             () -> new RotationalInductionGeneratorBlock(BlockBehaviour.Properties.of().strength(1.25f,50f))); // has recipe
+
+
+    // gas vents
+    public static final DeferredBlock<Block> METHANE_GAS_VENT = BLOCKS.register("methane_gas_vent",
+            () -> new GasVent(Gases.METHANE, UniformInt.of(100,320), BlockBehaviour.Properties.of().strength(1f,75f).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> DEEPSLATE_METHANE_GAS_VENT = BLOCKS.register("deepslate_methane_gas_vent",
+            () -> new GasVent(Gases.METHANE, UniformInt.of(120,480), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(1f,75f).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> STEAM_GAS_VENT = BLOCKS.register("steam_gas_vent",
+            () -> new GasVent(Gases.STEAM, UniformInt.of(200,720), BlockBehaviour.Properties.of().strength(1f,75f).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> DEEPSLATE_STEAM_GAS_VENT = BLOCKS.register("deepslate_steam_gas_vent",
+            () -> new GasVent(Gases.STEAM, UniformInt.of(240,920), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(1f,75f).requiresCorrectToolForDrops()));
+
+
 
     // ores
     public static final DeferredBlock<Block> COMPOUNDITE_ORE = BLOCKS.register("compoundite_ore",

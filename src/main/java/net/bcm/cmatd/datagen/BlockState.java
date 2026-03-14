@@ -3,6 +3,7 @@ package net.bcm.cmatd.datagen;
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 

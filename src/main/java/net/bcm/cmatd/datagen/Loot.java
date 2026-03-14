@@ -42,7 +42,6 @@ public class Loot extends VanillaBlockLoot {
         this.dropSelf(CmatdBlock.CONDUIT.get());
         this.dropSelf(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get());
 
-
         this.dropSelf(CmatdBlock.MACHINE_FRAME.get());
         this.dropSelf(CmatdBlock.PRESSER.get());
         this.dropSelf(CmatdBlock.LESSER_MACHINE_FRAME.get());
@@ -68,6 +67,13 @@ public class Loot extends VanillaBlockLoot {
 
         // multiblocks
         this.dropSelf(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get());
+
+
+        // gas vents
+        this.dropWhenSilkTouch(CmatdBlock.METHANE_GAS_VENT.get());
+        this.dropWhenSilkTouch(CmatdBlock.STEAM_GAS_VENT.get());
+        this.dropWhenSilkTouch(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get());
+        this.dropWhenSilkTouch(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get());
     }
 
     @Override

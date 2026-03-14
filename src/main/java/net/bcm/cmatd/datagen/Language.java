@@ -56,6 +56,9 @@ public class Language extends LanguageProvider{
         this.add("subtitle.cmatd.processor_loop","Machine processes");
         this.add("subtitle.cmatd.masher","Machine mashes");
         this.add("subtitle.cmatd.masher_metallic","Machine clunks");
+        this.add("subtitle.cmatd.reactor_loop","Reactor hums");
+        this.add("subtitle.cmatd.engine_loop","Engine rumbles");
+        this.add("subtitle.cmatd.rotating_loop","Parts whir");
 
         // tooltips
         this.add("tooltip.module.useless","A useless module");
@@ -141,6 +144,11 @@ public class Language extends LanguageProvider{
         this.add(CmatdBlock.HEAT_GENERATOR.get(),"Heat Generator");
         this.add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),"Rotational Induction Generator");
 
+        // gas vents
+        this.add(CmatdBlock.METHANE_GAS_VENT.get(),"Methane Gas Vent");
+        this.add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get(),"Deepslate Methane Gas Vent");
+        this.add(CmatdBlock.STEAM_GAS_VENT.get(),"Steam Gas Vent");
+        this.add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get(),"Deepslate Steam Gas Vent");
         // gas blocks
         this.add(CmatdBlock.GAS_TANK.get(),"Gas Tank");
         this.add(CmatdBlock.TEST_GAS_GENERATOR.get(),"Test Gas Generator");

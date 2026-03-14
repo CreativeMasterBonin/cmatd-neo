@@ -6,6 +6,7 @@ import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.CmatdBE;
 import net.bcm.cmatd.blockentity.CmatdFluidTank;
 import net.bcm.cmatd.blockentity.FoodReactorMultiblock;
+import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Jammables;
 import net.bcm.cmatd.datagen.Mashables;
 import net.bcm.cmatd.gui.*;
@@ -71,8 +72,12 @@ public class Cmatd {
                         output.accept(CmatdItem.FACADE_CONDUIT.asItem());*/
 
                         // gas related
+                        output.accept(CmatdItem.METHANE_GAS_VENT.asItem());
+                        output.accept(CmatdItem.DEEPSLATE_METHANE_GAS_VENT.asItem());
+                        output.accept(CmatdItem.STEAM_GAS_VENT.asItem());
+                        output.accept(CmatdItem.DEEPSLATE_STEAM_GAS_VENT.asItem());
                         output.accept(CmatdItem.GAS_TANK.asItem());
-                        output.accept(CmatdItem.TEST_GAS_GENERATOR.asItem());
+                        //output.accept(CmatdItem.TEST_GAS_GENERATOR.asItem());
                         // engines
                         output.accept(CmatdItem.DIESEL_ENGINE.asItem());
 
@@ -164,6 +169,13 @@ public class Cmatd {
             ResourceLocation.fromNamespaceAndPath(MODID,"jammables"),
             Registries.ITEM,Jammables.CODEC).synced(Jammables.JAMMABLES_CODEC,
             false).build();
+
+    public static final DataMapType<Item,FoodReactorFuels> FOOD_REACTOR_FUELS = DataMapType.builder(
+            ResourceLocation.fromNamespaceAndPath(MODID,"food_reactor_fuels"),
+            Registries.ITEM,
+            FoodReactorFuels.CODEC)
+            .synced(FoodReactorFuels.CODEC,false)
+            .build();
 
 
     public Cmatd(IEventBus modEventBus, ModContainer modContainer) {
@@ -296,5 +308,6 @@ public class Cmatd {
     private void registerDatamaps(final RegisterDataMapTypesEvent event){
         event.register(MASHABLES);
         event.register(JAMMABLES);
+        event.register(FOOD_REACTOR_FUELS);
     }
 }

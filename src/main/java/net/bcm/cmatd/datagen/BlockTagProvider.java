@@ -94,6 +94,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
+                .add(CmatdBlock.METHANE_GAS_VENT.get())
+                .add(CmatdBlock.STEAM_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
         ;
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -148,6 +152,19 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.DIESEL_ENGINE.get())
                 .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
+                .add(CmatdBlock.METHANE_GAS_VENT.get())
+                .add(CmatdBlock.STEAM_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
+        ;
+        tag(JustDireBlockTags.TICK_SPEED_DENY)
+                .add(CmatdBlock.WIND_GENERATOR.get())
+                .add(CmatdBlock.SOLAR_GENERATOR.get())
+                .add(CmatdBlock.LUNAR_GENERATOR.get())
+                .add(CmatdBlock.HYDRO_GENERATOR.get())
+                .add(CmatdBlock.HEAT_GENERATOR.get())
+                .add(CmatdBlock.LIGHTNING_GENERATOR.get())
+                .add(CmatdBlock.GAS_TANK.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -224,11 +241,25 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(Blocks.SOUL_FIRE)
                 .add(Blocks.SOUL_CAMPFIRE)
                 .add(Blocks.LAVA)
+                .add(CmatdBlock.STEAM_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
         ;
         tag(Tag.HEAT_PRODUCERS)
                 .addTag(Tag.LOW_HEAT_PRODUCERS)
                 .addTag(Tag.MEDIUM_HEAT_PRODUCERS)
                 .addTag(Tag.HIGH_HEAT_PRODUCERS)
+        ;
+        tag(Tag.PRODUCES_METHANE_GAS)
+                .add(CmatdBlock.METHANE_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get())
+        ;
+        tag(Tag.PRODUCES_STEAM_GAS)
+                .add(CmatdBlock.STEAM_GAS_VENT.get())
+                .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
+        ;
+        tag(JustDireBlockTags.PHASEDENY)
+                .addTag(Tag.PRODUCES_METHANE_GAS)
+                .addTag(Tag.PRODUCES_STEAM_GAS)
         ;
     }
 

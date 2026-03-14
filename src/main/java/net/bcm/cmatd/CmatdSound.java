@@ -34,4 +34,14 @@ public class CmatdSound{
             "reactor_loop",
             () -> SoundEvent.createVariableRangeEvent(
                     ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"reactor_loop")));
+
+    public static final DeferredHolder<SoundEvent, SoundEvent> ENGINE_LOOP = SOUND_EVENTS.register(
+            "engine_loop",
+            () -> SoundEvent.createVariableRangeEvent(
+                    ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"engine_loop")));
+
+    public static final DeferredHolder<SoundEvent, SoundEvent> ROTATING_LOOP = SOUND_EVENTS.register(
+            "rotating_loop",
+            () -> SoundEvent.createVariableRangeEvent(
+                    ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"rotating_loop")));
 }

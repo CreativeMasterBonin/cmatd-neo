@@ -60,7 +60,28 @@ public class SoundDefinitions extends SoundDefinitionsProvider{
                         .pitch(1.0f)
                         .attenuationDistance(Utility.MACHINE_SOUND_DISTANCE)
                         .stream(false)
-                        .preload(true))
+                        .preload(true)
+                ).subtitle("subtitle.cmatd.reactor_loop").replace(false)
+        );
+
+        add(CmatdSound.ENGINE_LOOP, SoundDefinition.definition()
+                .with(sound("cmatd:engine_loop")
+                        .volume(0.9f)
+                        .pitch(1.0f)
+                        .attenuationDistance(Utility.MACHINE_SOUND_DISTANCE)
+                        .stream(false)
+                        .preload(true)
+                ).subtitle("subtitle.cmatd.engine_loop").replace(false)
+        );
+
+        add(CmatdSound.ROTATING_LOOP, SoundDefinition.definition()
+                .with(sound("cmatd:rotating_loop")
+                        .volume(0.9f)
+                        .pitch(1.0f)
+                        .attenuationDistance(Utility.MACHINE_SOUND_DISTANCE)
+                        .stream(false)
+                        .preload(true)
+                ).subtitle("subtitle.cmatd.rotating_loop").replace(false)
         );
     }
 }

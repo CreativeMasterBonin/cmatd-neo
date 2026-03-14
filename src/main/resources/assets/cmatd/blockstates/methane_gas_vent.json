@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cmatd:block/methane_gas_vent"
+    }
+  }
+}

@@ -5,10 +5,12 @@ import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.Components;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,7 +23,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +39,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import static net.bcm.cmatd.Cmatd.FOOD_REACTOR_FLUID_HANDLER;
+import static net.bcm.cmatd.Cmatd.FOOD_REACTOR_FUELS;
 
 public class FoodReactorMultiblock extends BlockEntity {
     /*
@@ -205,7 +210,31 @@ public class FoodReactorMultiblock extends BlockEntity {
                 progress = 32;
             }
 
-            if(coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && fuel.is(Tag.VALID_FOOD_REACTOR_FUELS) && progress >= 32){
+            Holder<Item> itemHolder = fuel.getItemHolder();
+            FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
+
+            boolean oldValidateCheck = coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && fuel.is(Tag.VALID_FOOD_REACTOR_FUELS);
+            boolean validateCheck = coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && foodReactorFuels != null;
+
+            // support datamap-driven fuels
+            if(validateCheck && progress >= 32){
+                int waterAmount = foodReactorFuels.waterAmountOutput();
+                float randomPowerMultiplier = foodReactorFuels.powerOutputMultiplier().sample(level.getRandom());
+
+                float normalEnergyMultipliedCheckNoOverflow = 1000.0f * (float)randomPowerMultiplier; // the multiplied output
+                int outputEnergy = 1000; // the checked output energy that is clamped
+
+                if(normalEnergyMultipliedCheckNoOverflow < 0.000f){
+                    normalEnergyMultipliedCheckNoOverflow = 1.000f;
+                }
+
+                outputEnergy = Mth.clamp(Math.round(normalEnergyMultipliedCheckNoOverflow),1000,energyStorage.getCapacity());
+
+                // old values
+                int waterNormal = 100;
+                int waterDoubled = 200;
+                int waterTripled = 300;
+
                 if(outputFluid.isEmpty()){
                     canProcessLiquidEmpty = true;
                 }
@@ -220,25 +249,25 @@ public class FoodReactorMultiblock extends BlockEntity {
                 // if water or empty
                 if(outputFluid.isEmpty()){
                     if(doubleOutput){
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,200),IFluidHandler.FluidAction.EXECUTE);
+                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
                     }
                     else if(tripleOutput){
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,300),IFluidHandler.FluidAction.EXECUTE);
+                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
                     }
                     else{
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,100),IFluidHandler.FluidAction.EXECUTE);
+                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount),IFluidHandler.FluidAction.EXECUTE);
                     }
                 }
                 else{
                     if(outputFluid.is(Tags.Fluids.WATER)){
                         if(doubleOutput){
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),200),IFluidHandler.FluidAction.EXECUTE);
+                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
                         }
                         else if(tripleOutput){
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),300),IFluidHandler.FluidAction.EXECUTE);
+                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
                         }
                         else{
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),100),IFluidHandler.FluidAction.EXECUTE);
+                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount),IFluidHandler.FluidAction.EXECUTE);
                         }
                     }
                 }
@@ -252,7 +281,7 @@ public class FoodReactorMultiblock extends BlockEntity {
                     itemStackHandler.setStackInSlot(2,new ItemStack(CmatdItem.JAM_JAR.asItem()));
                     level.playSound(null,getBlockPos(),
                             SoundEvents.BOAT_PADDLE_WATER, SoundSource.BLOCKS,0.75f,1.0f);
-                    energyStorage.receiveEnergy(1000 * (multiplier2 + multiplier3),false);
+                    energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
                 }
                 else{
                     if(waste.getCount() < waste.getMaxStackSize()){
@@ -261,7 +290,7 @@ public class FoodReactorMultiblock extends BlockEntity {
                         waste.grow(1);
                         level.playSound(null,getBlockPos(),
                                 SoundEvents.BOAT_PADDLE_WATER, SoundSource.BLOCKS,0.75f,1.0f);
-                        energyStorage.receiveEnergy(1000 * (multiplier2 + multiplier3),false);
+                        energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
                     }
                 }
                 progress = 0;
@@ -388,7 +417,6 @@ public class FoodReactorMultiblock extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        //itemStackHandler.deserializeNBT(registries,tag);
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(6,ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag,itemStacks,registries);
 
@@ -402,7 +430,6 @@ public class FoodReactorMultiblock extends BlockEntity {
         }
 
         energyStorage.setEnergy(tag.getInt("energy"));
-        //this.getData(FOOD_REACTOR_FLUID_HANDLER).deserializeNBT(registries,tag);
         ticks = tag.getInt("ticks");
         multiblockFormed = tag.getBoolean("multiblock_formed");
         progress = tag.getInt("progress");

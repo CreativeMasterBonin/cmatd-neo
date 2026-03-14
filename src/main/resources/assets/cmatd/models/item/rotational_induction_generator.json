@@ -1,5 +1,5 @@
 {
-  "parent": "cmatd:block/machine_frame",
+  "parent": "cmatd:block/rotational_energy_converter",
   "gui_light": "side",
   "display": {
     "firstperson_righthand": {

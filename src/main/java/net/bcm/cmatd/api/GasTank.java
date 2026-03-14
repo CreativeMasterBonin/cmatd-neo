@@ -344,6 +344,17 @@ public class GasTank implements IGasHandler, IGasTank{
     }
 
     /**
+     * This filler method goes through another fill method as a check, simply put, it adds to an existing copy of a GasStack
+     * @param amount The amount to add to the current GasStack
+     */
+    public void fill(int amount){
+        GasStack gasStackNew = this.getGasStack().copy();
+        gasStackNew.setAmount(gasStackNew.getAmount() + amount);
+        this.fill(gasStackNew,false);
+        update();
+    }
+
+    /**
      * A secondary method to drain gas out of the GasTank; this one will completely remove all gas
      * @param gasStack The GasStack to manipulate
      * @param simulate Whether to actually manipulate the gas or do a fake run

@@ -82,6 +82,23 @@ public class CmatdItem{
             ITEMS.register("rotational_induction_generator",
                     () -> new BlockItem(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),new Item.Properties()));
 
+    public static final DeferredItem<BlockItem> METHANE_GAS_VENT =
+            ITEMS.register("methane_gas_vent",
+                    () -> new BlockItem(CmatdBlock.METHANE_GAS_VENT.get(),new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> DEEPSLATE_METHANE_GAS_VENT =
+            ITEMS.register("deepslate_methane_gas_vent",
+                    () -> new BlockItem(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get(),new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> STEAM_GAS_VENT =
+            ITEMS.register("steam_gas_vent",
+                    () -> new BlockItem(CmatdBlock.STEAM_GAS_VENT.get(),new Item.Properties()));
+
+    public static final DeferredItem<BlockItem> DEEPSLATE_STEAM_GAS_VENT =
+            ITEMS.register("deepslate_steam_gas_vent",
+                    () -> new BlockItem(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get(),new Item.Properties()));
+
+
     // mutliblocks
     public static final DeferredItem<BlockItem> FOOD_REACTOR_MULTIBLOCK =
             ITEMS.register("food_reactor",

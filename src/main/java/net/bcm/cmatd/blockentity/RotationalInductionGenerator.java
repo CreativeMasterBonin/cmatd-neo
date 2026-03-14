@@ -1,6 +1,7 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.BaseEnergyStorage;
+import net.bcm.cmatd.CmatdSound;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -167,6 +169,9 @@ public class RotationalInductionGenerator extends BlockEntity{
             if(rotationalPower > 1000000){
                 rotationalPower = 1000000;
                 setChanged();
+            }
+            if(rotationalPower > 0 && ticks % 47 == 0){
+                level.playSound(null,getBlockPos(), CmatdSound.ROTATING_LOOP.get(), SoundSource.BLOCKS,0.85f,1.0f);
             }
         }
         distributeEnergy();

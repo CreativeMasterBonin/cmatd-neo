@@ -1,5 +1,6 @@
 package net.bcm.cmatd.blockentity;
 
+import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.api.GasTank;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +65,6 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
 
     public void clientTick(){
         ticks++;
-
         if(ticks >= 32767){
             this.gasAmount = gasTank.gas.getAmount();
             ticks = 0;
@@ -109,6 +110,12 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
                     setRotationalOutputSpeed(getRotationalOutputSpeed() + 1);
                     setChanged();
                 }
+            }
+        }
+
+        if(getBlockState().getValue(BlockStateProperties.POWERED)){
+            if(ticks % 47 == 0){
+                level.playSound(null,getBlockPos(), CmatdSound.ENGINE_LOOP.get(), SoundSource.BLOCKS,0.75f,1.0f);
             }
         }
 

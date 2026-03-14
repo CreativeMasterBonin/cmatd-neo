@@ -16,7 +16,7 @@ public final class Registries {
             .defaultKey(ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, "empty"))
             .maxId(32767)
             .sync(true)
-            .withIntrusiveHolders()
+            .withIntrusiveHolders() // is there someway to remove this so that the mod can be updated past this version? since: 1.21.1
             .create();
 
     // the 'AIR' of CMATD gas types
