@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "top": "cmatd:block/deepslate_steam_vent_top",
+    "side": "block/deepslate",
+    "bottom": "block/deepslate_top"
+  }
+}
