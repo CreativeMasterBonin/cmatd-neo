@@ -24,6 +24,11 @@ public class CanDisableMachineSlotHandler extends SlotItemHandler{
     }
 
     @Override
+    public void setChanged(){
+        this.container.setChanged();
+    }
+
+    @Override
     public void initialize(ItemStack stack) {
         super.initialize(stack);
         if(be instanceof BaseCobbleMakerBE){
@@ -54,6 +59,7 @@ public class CanDisableMachineSlotHandler extends SlotItemHandler{
             else{
                 isDisabledSlot = false;
             }
+            setChanged();
         }
     }
 

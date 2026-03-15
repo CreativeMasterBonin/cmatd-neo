@@ -60,11 +60,11 @@ public class FoodReactorMenu extends AbstractContainerMenu {
             this.fluidContainer = be.getFluidContainer();
             this.tempPlayer = player;
             // input coolant slot
-            addSlot(new SlotItemHandler(be.getItemStackHandler(),0,48,52));
+            addSlot(new FoodReactorSlotItemHandler("coolant",be.getItemStackHandler(),0,48,52));
             // input fuel slot
-            addSlot(new SlotItemHandler(be.getItemStackHandler(),1,80,52));
+            addSlot(new FoodReactorSlotItemHandler("fuel",be.getItemStackHandler(),1,80,52));
             // output waste item
-            addSlot(new SlotItemHandler(be.getItemStackHandler(),2,112,52));
+            addSlot(new FoodReactorSlotItemHandler("waste",be.getItemStackHandler(),2,112,52));
 
             // module slot 1
             addSlot(new CanDisableMachineSlotHandler(be,0,true,

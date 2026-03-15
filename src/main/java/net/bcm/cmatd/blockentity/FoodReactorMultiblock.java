@@ -25,6 +25,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -43,8 +44,10 @@ import static net.bcm.cmatd.Cmatd.FOOD_REACTOR_FUELS;
 
 public class FoodReactorMultiblock extends BlockEntity {
     /*
-    0 -> fuel input (mashed potatoes)
-    1 -> coolant input (jams)
+    Note that fuel and coolant are reversed for some reason
+
+    0 -> fuel input (was just mashed potatoes but is now any datamap-driven food reactor fuels)
+    1 -> coolant input (tagged items under valid food reactor coolants)
 
     2 -> waste output (some yucky item)
 
@@ -54,7 +57,36 @@ public class FoodReactorMultiblock extends BlockEntity {
 
     0-fluid -> leftover coolant output (water)
     */
-    public final ItemStackHandler itemStackHandler = new ItemStackHandler(6);
+    public final ItemStackHandler itemStackHandler = new ItemStackHandler(6){
+        // return the rejected stack if it isn't allowed in a slot or is invalid
+        // tested with auto item input systems, seems to work well
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack){
+            Holder<Item> itemHolder = stack.getItemHolder();
+            FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
+            boolean isSafeFuelItem = foodReactorFuels != null;
+            boolean isSafeCoolantItem = itemHolder.is(Tag.VALID_FOOD_REACTOR_COOLANTS);
+            boolean isModuleItem = itemHolder.is(Tag.MODULE);
+            //System.out.println("SLOT: " + slot + " FOODFUEL: " + foodReactorFuels + " EXTRA: COOL: " + isSafeCoolantItem + " FUEL: " + isSafeFuelItem + " MOD: " + isModuleItem);
+            switch(slot){
+                case 0 -> {
+                    return isSafeCoolantItem; // only coolants
+                }
+                case 1 -> {
+                    return isSafeFuelItem; // only fuels
+                }
+                case 2 -> {
+                    return false; // OUTPUT ITEM NO INPUT ALLOWED
+                }
+                case 3,4,5 -> {
+                    return isModuleItem; // MODULES ONLY
+                }
+                default -> {
+                    return super.isItemValid(slot,stack); // anything else that doesn't fit is accepted
+                }
+            }
+        }
+    };
     public final BaseEnergyStorage energyStorage = new BaseEnergyStorage(1000000,50000,50000);
 
     public int ticks;
@@ -109,19 +141,26 @@ public class FoodReactorMultiblock extends BlockEntity {
     // 0 = input coolant, 1 = input fuel, 2 = output waste, 3 = module 1, 4 = module 2, 5 = module 3
     private void doStuff(ItemStack module1, ItemStack module2, ItemStack module3){
         int speed_modules = 0;
+        // some mods don't respect slots without filters, so lets fix that (FIX: crash regarding invalid components check)
         if(!module1.isEmpty()){
-            if(module1.get(Components.MODULE_TYPE) == 0){
-                speed_modules += (1 + module1.getCount());
+            if(module1.has(Components.MODULE_TYPE)){
+                if(module1.get(Components.MODULE_TYPE) == 0){
+                    speed_modules += (1 + module1.getCount());
+                }
             }
         }
         if(!module2.isEmpty()){
-            if(module2.get(Components.MODULE_TYPE) == 0){
-                speed_modules += (1 + module2.getCount());
+            if(module2.has(Components.MODULE_TYPE)){
+                if(module2.get(Components.MODULE_TYPE) == 0){
+                    speed_modules += (1 + module2.getCount());
+                }
             }
         }
         if(!module3.isEmpty()){
-            if(module3.get(Components.MODULE_TYPE) == 0){
-                speed_modules += (1 + module3.getCount());
+            if(module3.has(Components.MODULE_TYPE)){
+                if(module3.get(Components.MODULE_TYPE) == 0){
+                    speed_modules += (1 + module3.getCount());
+                }
             }
         }
 
@@ -151,6 +190,24 @@ public class FoodReactorMultiblock extends BlockEntity {
 
             int efficiency_modules = 0;
 
+            Holder<Item> itemHolder = fuel.getItemHolder();
+            FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
+
+            // the food reactor will eject any illegal items
+            if(!coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS)){
+                ItemStack copiedCoolantStack = itemStackHandler.getStackInSlot(0).copy();
+                level.addFreshEntity(new ItemEntity(level,getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ(),copiedCoolantStack));
+                itemStackHandler.setStackInSlot(0,ItemStack.EMPTY);
+                setChanged();
+            }
+            if(foodReactorFuels == null){
+                ItemStack copiedFuelStack = itemStackHandler.getStackInSlot(1).copy();
+                level.addFreshEntity(new ItemEntity(level,getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ(),copiedFuelStack));
+                itemStackHandler.setStackInSlot(1,ItemStack.EMPTY);
+                setChanged();
+            }
+
+            // confirm module item exists and the component type is applied to it, then check the amount of said item
             if(!module1.isEmpty()){
                 if(module1.has(Components.MODULE_TYPE)){
                     if(module1.get(Components.MODULE_TYPE) == 1){
@@ -198,9 +255,11 @@ public class FoodReactorMultiblock extends BlockEntity {
                 efficiency_modules = 16;
             }
 
+            // waste is full, do not continue
             if(waste.getCount() == waste.getMaxStackSize()){
                 return;
             }
+            // output fluid is full, do not continue
             if(outputFluid.is(Fluids.WATER) && outputFluid.getAmount() == Utility.FOOD_REACTOR_FLUID_CAPACITY){
                 return;
             }
@@ -210,9 +269,7 @@ public class FoodReactorMultiblock extends BlockEntity {
                 progress = 32;
             }
 
-            Holder<Item> itemHolder = fuel.getItemHolder();
-            FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
-
+            // old validate check for reference
             boolean oldValidateCheck = coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && fuel.is(Tag.VALID_FOOD_REACTOR_FUELS);
             boolean validateCheck = coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && foodReactorFuels != null;
 
@@ -230,7 +287,7 @@ public class FoodReactorMultiblock extends BlockEntity {
 
                 outputEnergy = Mth.clamp(Math.round(normalEnergyMultipliedCheckNoOverflow),1000,energyStorage.getCapacity());
 
-                // old values
+                // old values for reference
                 int waterNormal = 100;
                 int waterDoubled = 200;
                 int waterTripled = 300;
