@@ -20,6 +20,10 @@ public class Utility{
     public static final int BAD_STATE_RED = 14230793;
     public static final int GOOD_STATE_GREEN = 645443;
 
+    public static final int BAD_WARNING_RED = 16714808;
+    public static final int BAD_WARNING_YELLOW = 16773176;
+    public static final int GOOD_OK_GREEN = 651320;
+
     // integer color format for use in some MC systems, like text and color boxes that can't have/don't need alpha transparency
     public static final int INT_RED = 16711680;
     public static final int INT_YELLOW = 16776960;

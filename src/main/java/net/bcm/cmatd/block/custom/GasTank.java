@@ -1,6 +1,8 @@
 package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.bcm.cmatd.CmatdClient;
+import net.bcm.cmatd.CmatdClientActionHandler;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.bcm.cmatd.blockentity.WindGeneratorBE;
@@ -13,6 +15,9 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -25,6 +30,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class GasTank extends BaseEntityBlock {
     public static final MapCodec<GasTank> CODEC =
@@ -40,6 +47,21 @@ public class GasTank extends BaseEntityBlock {
             return;
         }
         super.onRemove(state,level,pos,newState,movedByPiston);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("desc.item.gas_tank.additional_info")
+                .withStyle(ChatFormatting.GOLD));
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            tooltipComponents.add(Component.translatable("desc.item.gas_tank.radioactive_gas_warning")
+                    .withColor(Utility.BAD_WARNING_YELLOW));
+        }
+        else{
+            tooltipComponents.add(Component.translatable("desc.item.generator.hidden_details",
+                            Component.translatable(CmatdClient.itemDescriptionKeyMapping.getKey().getName()))
+                    .withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
     }
 
     @Override

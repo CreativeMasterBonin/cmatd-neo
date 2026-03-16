@@ -3,6 +3,8 @@ package net.bcm.cmatd.blockentity;
 import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.api.GasTank;
+import net.bcm.cmatd.api.Gases;
+import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -10,12 +12,15 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
 public class DieselEngineBE extends AbstractGasContainingBE implements RotationalEnergyProducer {
     public int ticks = 0;
+
+    public static final int rotationalOutputAdditive = 10;
 
     private GasTank gasTank = new GasTank(64000){
         @Override
@@ -80,45 +85,68 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
 
         if(getGasTank().getGasStack() != GasStack.EMPTY){
             if(getGasTank().getGasAmount() > 0){
-                getGasTank().getGasStack().remove(1);
+                // dynamic speedup heating system
+                int ticksPerActionNeeded = 10;
+                int fuelNeededPerGo = 20;
+                int tierOfHeat = 1;
+                if(level.getBlockState(worldPosition.above()).is(Tag.HIGH_HEAT_PRODUCERS)){
+                    ticksPerActionNeeded = 2;
+                    fuelNeededPerGo = 5;
+                    tierOfHeat = 10;
+                }
+                else if(level.getBlockState(worldPosition.above()).is(Tag.MEDIUM_HEAT_PRODUCERS)){
+                    ticksPerActionNeeded = 4;
+                    fuelNeededPerGo = 7;
+                    tierOfHeat = 4;
+                }
+                else if(level.getBlockState(worldPosition.above()).is(Tag.LOW_HEAT_PRODUCERS)){
+                    ticksPerActionNeeded = 8;
+                    fuelNeededPerGo = 14;
+                    tierOfHeat = 2;
+                }
+                else{
+                    ticksPerActionNeeded = 10;
+                    fuelNeededPerGo = 20;
+                    tierOfHeat = 1;
+                }
+
+                // when the heat level additive is selected and the fuel amount per cycle is set, do some math, then set the rotational speed and use some gas up
+                if(ticks % ticksPerActionNeeded == 0){
+                    setRotationalOutputSpeed(getRotationalOutputSpeed() + (rotationalOutputAdditive * tierOfHeat));
+                    getGasTank().getGasStack().remove(fuelNeededPerGo + Mth.clamp(getRotationalOutputSpeed() / 32,1,95));
+                }
+
                 if(!getBlockState().getValue(BlockStateProperties.POWERED)){
                     getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true),3);
                 }
                 if(ticks % 7 == 0){
                     if(getRotationalOutputSpeed() >= getMaxRotationalOutputSpeed()){
-                        setRotationalOutputSpeed(getRotationalOutputSpeed() + 1);
+                        setRotationalOutputSpeed(getMaxRotationalOutputSpeed());
                     }
                 }
+                if(ticks % 47 == 0){
+                    level.playSound(null,getBlockPos(), CmatdSound.ENGINE_LOOP.get(), SoundSource.BLOCKS,0.75f,1.0f);
+                }
+            }
+            else if(getGasTank().getGasAmount() <= 0){
+                getGasTank().setGas(GasStack.EMPTY,true);
                 setChanged();
             }
         }
         else{
             if(getBlockState().getValue(BlockStateProperties.POWERED)){
                 getLevel().setBlock(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,false),3);
+                setChanged();
             }
-            if(ticks % 7 == 0){
+            else{
                 if(getRotationalOutputSpeed() > 0){
-                    setRotationalOutputSpeed(getRotationalOutputSpeed() - 1);
+                    setRotationalOutputSpeed(getRotationalOutputSpeed() - 200); // slow down fast as the engine is not visually moving
                 }
-            }
-            setChanged();
-        }
-
-        if(ticks % 2 == 0){
-            if(getBlockState().getValue(BlockStateProperties.POWERED)){
-                if(getRotationalOutputSpeed() < getMaxRotationalOutputSpeed()){
-                    setRotationalOutputSpeed(getRotationalOutputSpeed() + 1);
-                    setChanged();
+                else if(getRotationalOutputSpeed() <= 202 && getRotationalOutputSpeed() != 0){
+                    setRotationalOutputSpeed(0);
                 }
             }
         }
-
-        if(getBlockState().getValue(BlockStateProperties.POWERED)){
-            if(ticks % 47 == 0){
-                level.playSound(null,getBlockPos(), CmatdSound.ENGINE_LOOP.get(), SoundSource.BLOCKS,0.75f,1.0f);
-            }
-        }
-
 
         if(ticks >= 32767){
             ticks = 0;
@@ -149,7 +177,7 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
     @Override
     public void setRotationalOutputSpeed(int rotation) {
         this.rotationalEnergy = rotation;
-        setChanged();
+        this.setChanged();
     }
 
     @Override

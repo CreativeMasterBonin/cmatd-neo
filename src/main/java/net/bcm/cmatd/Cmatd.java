@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -50,7 +51,7 @@ public class Cmatd {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = CREATIVE_MODE_TABS.register("main_tab", () ->
             CreativeModeTab.builder().title(Component.translatable("itemGroup.cmatd"))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
-            .icon(Items.CRAFTER::getDefaultInstance)
+            .icon(CmatdItem.LIGHTNING_GENERATOR.get()::getDefaultInstance)
                     .displayItems((parameters, output) -> {
                         output.accept(CmatdItem.BASE_ENERGY_MAKER.asItem());
                         output.accept(CmatdItem.REDSTONE_DYNAMO_ENGINE.asItem());
@@ -199,9 +200,8 @@ public class Cmatd {
         CREATIVE_MODE_TABS.register(modEventBus);
         CmatdBE.register(modEventBus);
 
-        //NeoForge.EVENT_BUS.register(this);
         // do config things
-        //modContainer.registerConfig(ModConfig.Type.COMMON,Config.SPEC);
+        //modContainer.registerConfig(ModConfig.Type.SERVER,Config.SPEC);
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event){

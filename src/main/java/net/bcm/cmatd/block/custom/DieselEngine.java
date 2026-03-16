@@ -1,13 +1,20 @@
 package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.bcm.cmatd.CmatdClient;
+import net.bcm.cmatd.CmatdClientActionHandler;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.DieselEngineBE;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -19,7 +26,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.MapColor;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class DieselEngine extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -32,7 +42,22 @@ public class DieselEngine extends BaseEntityBlock {
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("desc.item.engine.diesel_engine.additional_info")
+                .withStyle(ChatFormatting.GOLD));
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            tooltipComponents.add(Component.translatable("desc.item.engine.diesel_engine.gas_requirement")
+                    .withColor(Utility.BAD_WARNING_RED));
+        }
+        else{
+            tooltipComponents.add(Component.translatable("desc.item.generator.hidden_details",
+                            Component.translatable(CmatdClient.itemDescriptionKeyMapping.getKey().getName()))
+                    .withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if(newState.is(state.getBlock())){
             return;
         }
@@ -60,17 +85,27 @@ public class DieselEngine extends BaseEntityBlock {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if(level.getBlockState(pos).getBlock() instanceof HeatGenerator){
+        if(level.getBlockEntity(pos) instanceof DieselEngineBE dieselEngineBE){
             if(state.getValue(BlockStateProperties.POWERED)) {
                 boolean isAirTypeBlockAbove = level.getBlockState(pos.above()).is(Blocks.AIR) || level.getBlockState(pos.above()).is(Blocks.CAVE_AIR) || level.getBlockState(pos.above()).is(Blocks.VOID_AIR);
-                if(random.nextDouble() < 0.1){
-                    level.playLocalSound(pos.getX(),pos.getY(),pos.getZ(),
-                            SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 0.75F, false);
-                }
                 if(isAirTypeBlockAbove){
                     if(random.nextDouble() <= 0.05){
                         level.addParticle(ParticleTypes.LARGE_SMOKE,
                                 pos.getX() + 0.5,pos.getY() + 0.85,pos.getZ() + 0.5, 0.0, 0.0, 0.0);
+                    }
+                    if(dieselEngineBE.getRotationalOutputSpeed() >= 1){
+                        if(level.getGameTime() % 5L == 0){
+                            level.addAlwaysVisibleParticle(
+                                    ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                                    true,
+                                    (double)pos.getX() + 0.5 + random.nextDouble() / 2.0 * (random.nextBoolean() ? -1 : 1),
+                                    (double)pos.getY() + 1.01D,
+                                    (double)pos.getZ() + 0.5 + random.nextDouble() / 2.0 * (random.nextBoolean() ? -1 : 1),
+                                    0.0,
+                                    Mth.randomBetween(level.getRandom(),0.031f,0.047f),
+                                    0.0
+                            );
+                        }
                     }
                 }
             }

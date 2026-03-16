@@ -33,12 +33,42 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
     public int process_bits = 0;
     public int solar = 0;
 
+    /*
+    sugar slot 0
+    jam jar slot 1
+    jammable input slot 2
+    jammable output slot 3
+    */
+
     public JamMakerBE(BlockPos pos, BlockState blockState) {
         super(CmatdBE.JAM_MAKER.get(), pos, blockState);
         this.itemHandler = new ItemStackHandler(4){
             @Override
-            protected void onContentsChanged(int slot) {
+            public void onContentsChanged(int slot) {
                 setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                Holder<Item> itemHolder = stack.getItemHolder();
+                Jammables jammablesData = itemHolder.getData(Cmatd.JAMMABLES);
+                switch (slot){
+                    case 0 -> {
+                        return stack.is(Items.SUGAR);
+                    }
+                    case 1 -> {
+                        return stack.is(CmatdItem.JAM_JAR.asItem());
+                    }
+                    case 2 -> {
+                        return jammablesData != null;
+                    }
+                    case 3 -> {
+                        return false;
+                    }
+                    default -> {
+                        return super.isItemValid(slot,stack);
+                    }
+                }
             }
         };
     }

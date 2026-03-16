@@ -4,24 +4,32 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.api.GasType;
 import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.api.Registries;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
 
 public class GasVent extends Block{
     // this GasType is final, as it must never change at any time (anonymous classes should be ok)
@@ -49,13 +57,16 @@ public class GasVent extends Block{
     }
 
     @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("desc.item.gas_vent.additional_info")
+                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable(this.gasTypeToProduce.value().getDescriptionId())
+                .withColor(this.gasTypeToProduce.value().getColor()));
+    }
+
+    @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if(!(level.getBlockState(pos.above()).getBlock() instanceof GasTank) && level.getBlockState(pos.above()).getBlock() instanceof AirBlock){
-            /*if(level.getGameTime() % 7L == 0){
-                level.playSound(null,pos, SoundEvents.BREEZE_IDLE_AIR, SoundSource.BLOCKS,0.9f,
-                        Mth.randomBetween(level.getRandom(),0.01f,0.02f));
-            }*/ // not working
-
             if(level.getGameTime() % 12L == 0){
                 level.addAlwaysVisibleParticle(
                         ParticleTypes.CAMPFIRE_COSY_SMOKE,

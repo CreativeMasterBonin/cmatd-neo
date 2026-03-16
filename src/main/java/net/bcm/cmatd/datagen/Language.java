@@ -97,6 +97,11 @@ public class Language extends LanguageProvider{
         this.add("desc.item.generator.hidden_details","Details hidden press %s to expand");
         this.add("desc.item.generator.lightning_generator.cooldown","Lightning cooldown is 5-6 minutes");
         this.add("desc.item.generator.rotational_induction_generator.additional_info","Generator converts rotational force into output");
+        this.add("desc.item.engine.diesel_engine.additional_info","Creates rotational force from gas input");
+        this.add("desc.item.engine.diesel_engine.gas_requirement","Needs Methane or Diesel from a Gas Tank to operate at all");
+        this.add("desc.item.gas_vent.additional_info","Gas Produced:");
+        this.add("desc.item.gas_tank.additional_info","Holds any kind of Gas including radioactive types, and can be dumped.");
+        this.add("desc.item.gas_tank.radioactive_gas_warning","Radioactive gases cannot be dumped");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
@@ -152,7 +157,7 @@ public class Language extends LanguageProvider{
         // gas blocks
         this.add(CmatdBlock.GAS_TANK.get(),"Gas Tank");
         this.add(CmatdBlock.TEST_GAS_GENERATOR.get(),"Test Gas Generator");
-        this.add(CmatdBlock.DIESEL_ENGINE.get(),"Diesel Engine");
+        this.add(CmatdBlock.DIESEL_ENGINE.get(),"Gas Engine");
 
         // conduits
         this.add(CmatdBlock.CONDUIT.get(),"Conduit Energy Cable");
