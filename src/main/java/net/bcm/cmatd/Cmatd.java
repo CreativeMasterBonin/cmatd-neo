@@ -201,7 +201,7 @@ public class Cmatd {
         CmatdBE.register(modEventBus);
 
         // do config things
-        //modContainer.registerConfig(ModConfig.Type.SERVER,Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER,ServerConfig.SPEC);
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event){

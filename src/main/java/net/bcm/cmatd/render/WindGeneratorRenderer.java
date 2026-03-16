@@ -1,11 +1,13 @@
 package net.bcm.cmatd.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.bcm.cmatd.blockentity.WindGeneratorBE;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
@@ -22,11 +24,13 @@ public class WindGeneratorRenderer implements BlockEntityRenderer<WindGeneratorB
         poseStack.pushPose();
         poseStack.translate(0.5, -0.25, 0.5);
 
-        this.model.setupAnim(be);
         float piDividend = (float)(Math.PI / 32.0);
-        //float additive = Mth.clamp(be.getBlockPos().getY() + piDividend,1.0f,32f);
+        float oldRotY = be.ticks * piDividend;
 
-        poseStack.mulPose(new Quaternionf().rotationY(be.ticks * piDividend));
+        this.model.setupAnim(be);
+        if(be.getLevel().canSeeSky(be.getBlockPos())){
+            poseStack.mulPose(Axis.YP.rotation((float)be.getLevel().getGameTime() / 2 + partialTick));
+        }
         this.model.renderToBuffer(poseStack,
                 bufferSource.getBuffer(RenderType.entityCutout(WindGeneratorModel.LAYER_LOCATION.getModel()))
                 ,packedLight,packedOverlay);

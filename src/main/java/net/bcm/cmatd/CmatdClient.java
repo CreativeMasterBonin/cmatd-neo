@@ -20,6 +20,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -27,13 +28,15 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 
 @Mod(value = Cmatd.MODID,dist = Dist.CLIENT)
 public class CmatdClient {
-    public CmatdClient(IEventBus modEventBus, ModContainer modContainer){
+    public CmatdClient(IEventBus modEventBus,ModContainer modContainer){
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::clientExtensions);
         modEventBus.addListener(this::setupBlockColors);
@@ -42,6 +45,8 @@ public class CmatdClient {
         modEventBus.addListener(this::registerMenus);
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerKeyBindings);
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class,ConfigurationScreen::new);
+        modContainer.registerConfig(ModConfig.Type.CLIENT,ClientConfig.SPEC);
     }
 
     public static KeyMapping itemDescriptionKeyMapping = new KeyMapping("key_mapping.cmatd.show_item_description", KeyConflictContext.GUI,

@@ -42,16 +42,21 @@ public class RedstoneDynamoEngineModel extends Model{
     float preRingY = 0;
     float postRingY = 0;
 
-    public void setupAnim(RedstoneDynamoEngineBE be){
+    public void setupAnim(RedstoneDynamoEngineBE be, float partialTick){
         // was 2.35f and 8.14150f
-        preRingY = (float)Math.clamp(Math.sin(be.ticks / 4.50001f) * 3.50001f,-3.1001D,2.50001D);
+        //double oldMath = Math.sin(be.ticks / 4.50001f) * 3.50001f;
+        //float clampedOldValue = (float)Math.clamp(oldMath,-3.1001D,2.50001D);
+        // TODO implement osc movement math
+        double n1 = 0;
+
+        preRingY = (float)n1 - 5.6f;
         postRingY = preRingY - 2.50001f;
         this.ring.y = postRingY;
         this.bellows.yScale = 2f;
         this.bellows.y = ring.y + 12f;
     }
 
-    public void setupAnimSlowDown(RedstoneDynamoEngineBE be){
+    public void setupAnimSlowDown(RedstoneDynamoEngineBE be, float partialTick){
         preRingY = 0;
         postRingY = 0;
         this.bellows.yScale = 0;

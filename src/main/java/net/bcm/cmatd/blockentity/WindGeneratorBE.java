@@ -17,7 +17,7 @@ import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
-public class WindGeneratorBE extends BlockEntity{
+public class WindGeneratorBE extends BlockEntity implements IAnimatableMachine{
     public int ticks;
     private final BaseEnergyStorage energyStorage;
     private final ContainerData machineData;
@@ -104,6 +104,7 @@ public class WindGeneratorBE extends BlockEntity{
             if(this.level.canSeeSky(this.getBlockPos())){
                 if(!canGenerate){
                     canGenerate = true;
+                    rotationY = 1.0f;
                     setChanged();
                 }
                 generateEnergy();
@@ -111,6 +112,7 @@ public class WindGeneratorBE extends BlockEntity{
             else{
                 if(canGenerate){
                     canGenerate = false;
+                    rotationY = 0.0f;
                     setChanged();
                 }
             }
@@ -159,6 +161,7 @@ public class WindGeneratorBE extends BlockEntity{
         tag.putInt("energy",energyStorage.getEnergyStored());
         tag.putBoolean("below_sea_level",isBelowSeaLevel);
         tag.putBoolean("can_generate",canGenerate);
+        savePosesAndAnimationState(tag,registries);
     }
 
     @Override
@@ -167,5 +170,30 @@ public class WindGeneratorBE extends BlockEntity{
         energyStorage.setEnergy(tag.getInt("energy"));
         isBelowSeaLevel = tag.getBoolean("below_sea_level");
         canGenerate = tag.getBoolean("can_generate");
+        loadPosesAndAnimationState(tag,registries);
+    }
+
+    public float rotationY = 0;
+
+    @Override
+    public void savePosesAndAnimationState(CompoundTag tag, HolderLookup.Provider registries) {
+        tag.putFloat(tagNames.get(1),rotationY);
+    }
+
+    @Override
+    public void loadPosesAndAnimationState(CompoundTag tag, HolderLookup.Provider registries) {
+        rotationY = tag.getFloat(tagNames.get(1));
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(tag,lookupProvider);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag,registries);
+        return tag;
     }
 }

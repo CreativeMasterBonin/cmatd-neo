@@ -61,13 +61,13 @@ public class RedstoneDynamoEngineBERenderer implements BlockEntityRenderer<Redst
         }
 
         if(be.getBlockState().getValue(BlockStateProperties.LIT)){
-            this.model.setupAnim(be);
+            this.model.setupAnim(be,partialTick);
             this.model.renderToBuffer(poseStack,
                     bufferSource.getBuffer(RenderType.entityCutout(RedstoneDynamoEngineModel.LAYER_LOCATION.getModel()))
                     ,packedLight,packedOverlay);
         }
         else{
-            this.model.setupAnimSlowDown(be);
+            this.model.setupAnimSlowDown(be,partialTick);
             this.model.renderToBuffer(poseStack,
                     bufferSource.getBuffer(RenderType.entityCutout(RedstoneDynamoEngineModel.LAYER_LOCATION.getModel()))
                     ,packedLight,packedOverlay);

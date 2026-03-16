@@ -6,6 +6,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static net.minecraft.util.Mth.floor;
@@ -132,7 +134,6 @@ public class Utility{
     public static final int MACHINE_SOUND_DISTANCE = 6; // not used outside datagen
     public static final VoxelShape DOUBLE_TALL_BLOCK_SHAPE_ALL = Block.box(0.0D,0.0D,0.0D,16.0D,32.0D,16.0D);
     public static final int FOOD_REACTOR_FLUID_CAPACITY = 100000; // in Mb
-    public static int LIGHTNING_GENERATOR_ENERGY_RATE = 1_000_000; // in FE
 
     public static int MAX_CONDUIT_ENERGY_TRANSFER_RATE = 500; // in FE
     public static int MAX_CONDUIT_ENERGY_CAPACITY = 1_000; // in FE
@@ -197,5 +198,38 @@ public class Utility{
     public static float lerpDiscrete(float delta, float start, float end){
         float i = end - start;
         return start + floor(delta * (i - 1)) + (delta > 0.0F ? 1 : 0);
+    }
+
+    /**
+     * Custom class that can hold a special type of 'range'
+     */
+    public enum RangeType{
+        INT("integer"),
+        FLOAT("float"),
+        DOUBLE("double"),
+        LONG("long");
+
+        public final String type;
+
+        RangeType(String type){
+            this.type = type;
+        }
+    }
+
+    public static final class Range{
+        public final RangeType rangeType;
+        public ArrayList<?> rangeValues;
+
+        public Range(RangeType type,ArrayList<?> rangeValues){
+           this.rangeType = type;
+        }
+
+        public RangeType getType(){
+            return rangeType;
+        }
+    }
+
+    public static float oscillateFloatBetween(float value, Range range){
+        return 0.0f;
     }
 }

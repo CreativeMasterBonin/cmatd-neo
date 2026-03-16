@@ -3,7 +3,6 @@ package net.bcm.cmatd.blockentity;
 import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.api.GasTank;
-import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;

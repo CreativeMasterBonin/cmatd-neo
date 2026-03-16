@@ -251,5 +251,15 @@ public class Language extends LanguageProvider{
         this.add("title.gas_amt_with_max","%s GU / %s GU");
         this.add("button.dump_gas","Dump");
         this.add("button.gas_tank.dump.desc","Dumps all gas (not radioactive) into the air");
+
+        // CMATD config
+        this.add("cmatd.configuration.show_gas_type_beam","Show Gas Type");
+        this.add("cmatd.configuration.show_gas_type_beam.tooltip","Whether to show the gas type beam on the Gas Tank");
+        this.add("cmatd.configuration.show_gas_amount_cube","Show Gas Amount");
+        this.add("cmatd.configuration.show_gas_amount_cube.tooltip","Whether to show the gas amount cube on the Gas Tank");
+        this.add("cmatd.configuration.title","CMATD Config");
+        this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");
+        this.add("cmatd.configuration.section.cmatd.client.toml","Client Config");
+        this.add("cmatd.configuration.section.cmatd.client.toml.title","Client");
     }
 }

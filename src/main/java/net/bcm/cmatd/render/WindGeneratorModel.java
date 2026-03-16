@@ -59,9 +59,17 @@ public class WindGeneratorModel extends Model {
     }
 
     public void setupAnim(WindGeneratorBE be){
+        this.base.xRot = (float)Math.PI;
+        this.base.zRot = 0;
+        this.base.yRot = 0;
+        this.spinner.yRot = 0;
+    }
+
+    public void setupAnimSpin(WindGeneratorBE be){
         this.base.yRot = 0;
         this.base.xRot = (float)Math.PI;
         this.base.zRot = 0;
+        this.spinner.yRot = be.rotationY + be.ticks;
     }
 
     @Override

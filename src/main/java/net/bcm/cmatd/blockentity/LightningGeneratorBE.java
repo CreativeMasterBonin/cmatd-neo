@@ -1,6 +1,7 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.BaseEnergyStorage;
+import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.Utility;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class LightningGeneratorBE extends BlockEntity{
     public int ticks;
-    private final BaseEnergyStorage energyStorage = new BaseEnergyStorage(16_000_000,
-            2_000_000,2_000_000,0){
+    private final BaseEnergyStorage energyStorage = new BaseEnergyStorage(ServerConfig.LIGHTNING_GEN_MAX_CAPACITY.getAsInt(),
+            ServerConfig.LIGHTNING_GEN_MAX_RECEIVE_SEND.getAsInt(),ServerConfig.LIGHTNING_GEN_MAX_RECEIVE_SEND.getAsInt(),0){
         @Override
         public boolean canReceive() {
             return false;
@@ -108,7 +109,7 @@ public class LightningGeneratorBE extends BlockEntity{
             ticks = 0;
         }
 
-        if(ticks % 150 == 0){
+        if(ticks % ServerConfig.LIGHTNING_GEN_TIMER_SCALE.getAsInt() == 0){
             if(cooldownTicksLeft >= 1){
                 cooldownTicksLeft--;
             }
@@ -128,7 +129,7 @@ public class LightningGeneratorBE extends BlockEntity{
                     level.playSound(null,getBlockPos(),
                             SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS,
                             1.0f,0.75f);
-                    cooldownTicksLeft = 50;
+                    cooldownTicksLeft = ServerConfig.LIGHTNING_GEN_COOLDOWN_TIME.getAsInt();
                     this.getLevel().setBlockAndUpdate(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true));
                     setChanged();
                 }
@@ -139,7 +140,7 @@ public class LightningGeneratorBE extends BlockEntity{
 
     private void generateEnergy(){
         if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()){
-            energyStorage.receiveEnergy(Utility.LIGHTNING_GENERATOR_ENERGY_RATE, false);
+            energyStorage.receiveEnergy(ServerConfig.LIGHTNING_GEN_RATE.getAsInt(), false);
             setChanged();
         }
     }

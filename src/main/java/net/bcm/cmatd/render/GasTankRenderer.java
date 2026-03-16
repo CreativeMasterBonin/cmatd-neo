@@ -3,6 +3,8 @@ package net.bcm.cmatd.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.bcm.cmatd.ClientConfig;
+import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,33 +29,35 @@ public class GasTankRenderer implements BlockEntityRenderer<GasTankBE> {
 
     @Override
     public void render(GasTankBE be, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        poseStack.pushPose();
-        float scale = Utility.normalizeIntToFloatValue(be.getGasAmount(),0,100000,0.0f,1.0f);
+        if(ClientConfig.SHOW_GAS_AMOUNT_CUBE.getAsBoolean()){
+            poseStack.pushPose();
+            float scale = Utility.normalizeIntToFloatValue(be.getGasAmount(),0,100000,0.0f,1.0f);
 
-        int color = be.getGasTank().gas.getGas().getColor();
+            poseStack.translate(0.5,0.5,0.5);
+            float scaleCut = scale / 1.75f;
+            poseStack.scale(scaleCut,scaleCut,scaleCut);
 
-        poseStack.translate(0.5,0.5,0.5);
-        float scaleCut = scale / 1.75f;
-        poseStack.scale(scaleCut,scaleCut,scaleCut);
+            VertexConsumer vc = bufferSource.getBuffer(RenderType.entityTranslucent(GasInWorldModel.LAYER_LOCATION.getModel()));
 
-        VertexConsumer vc = bufferSource.getBuffer(RenderType.entityTranslucent(GasInWorldModel.LAYER_LOCATION.getModel()));
-
-        this.model.setupAnim(be);
-        this.model.renderToBuffer(poseStack,vc,packedLight,packedOverlay);
-        poseStack.popPose();
-
-        poseStack.pushPose();
-        poseStack.scale(0.5f,0.5f,0.5f);
-        poseStack.translate(0.5f,0.0f,0.5f);
-        BeaconRenderer.renderBeaconBeam(poseStack,
-                bufferSource,
-                ResourceLocation.parse("minecraft:textures/block/white_concrete.png"),
-                partialTick,1.0f,
-                be.getLevel().getGameTime(),
-                0,2,
-                color,
-                0.75f,0.78f);
-        poseStack.popPose();
+            this.model.setupAnim(be);
+            this.model.renderToBuffer(poseStack,vc,packedLight,packedOverlay);
+            poseStack.popPose();
+        }
+        if(ClientConfig.SHOW_GAS_TYPE_BEAM.getAsBoolean()){
+            int color = be.getGasTank().gas.getGas().getColor();
+            poseStack.pushPose();
+            poseStack.scale(0.5f,0.5f,0.5f);
+            poseStack.translate(0.5f,0.0f,0.5f);
+            BeaconRenderer.renderBeaconBeam(poseStack,
+                    bufferSource,
+                    ResourceLocation.parse("minecraft:textures/block/white_concrete.png"),
+                    partialTick,1.0f,
+                    be.getLevel().getGameTime(),
+                    0,2,
+                    color,
+                    0.75f,0.78f);
+            poseStack.popPose();
+        }
     }
 
     private void setColors(GasTankBE be){
