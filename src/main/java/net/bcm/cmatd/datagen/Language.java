@@ -6,7 +6,6 @@ import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 import java.util.function.Supplier;
@@ -230,6 +229,13 @@ public class Language extends LanguageProvider{
         this.add(Tag.ORES_COMPOUNDITE_ITEM,"Compoundite Ore Items");
         this.add(Tag.ORES_LODEALITE,"Lodealite Ores");
         this.add(Tag.ORES_LODEALITE_ITEM,"Lodealite Ore Items");
+        this.add(Tag.VALID_FOOD_REACTOR_CASINGS,"Valid Food Reactor Casings");
+        this.add(Tag.VALID_FOOD_REACTOR_COOLANTS,"Valid Food Reactor Coolants");
+        this.add(Tag.VALID_FOOD_REACTOR_FUELS,"Valid Food Reactor Fuels");
+
+        // gas tags
+        this.add(Tag.BURNABLE_GASES,"Burnable");
+        this.add(Tag.FREEZABLE_GASES,"Freezable");
 
         // recipe translations
         this.add("emi.category.cmatd..presser_category","Pressing");
@@ -239,6 +245,10 @@ public class Language extends LanguageProvider{
         this.add("emi.category.cmatd.jam_making_category","Jam Making");
         this.add("emi.category.cmatd..masher_category","Mashing");
         this.add("emi.category.cmatd.masher_category","Mashing");
+        this.add("emi.category.cmatd..block_to_gas","Block To Gas");
+        this.add("emi.category.cmatd.block_to_gas","Block To Gas");
+        this.add("emi.block_to_gas.cmatd.produces","Produces: %s - %s GU");
+        this.add("emi.desc.cmatd.every_this_ticks","Every %s ticks");
 
         // Gases (CMATD API)
         this.addGas(Gases.METHANE,"Methane");

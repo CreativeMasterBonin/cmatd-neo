@@ -3,11 +3,9 @@ package net.bcm.cmatd.blockentity;
 import net.bcm.cmatd.BaseEnergyStorage;
 import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.Components;
+import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.gui.BaseCobbleMakerMenu;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -17,6 +15,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,6 +25,12 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
+    /*
+        // cobble outputs
+            0,1,2,3,4,5,6
+        // modules
+            7,8,9
+     */
     public BaseCobbleMakerBE(BlockPos pos, BlockState blockState) {
         super(pos, blockState);
         this.itemList = NonNullList.withSize(SLOT_COUNT, ItemStack.EMPTY);
@@ -33,6 +38,24 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack){
+                Holder<Item> itemHolder = stack.getItemHolder();
+                boolean cobbleStone = stack.is(Items.COBBLESTONE);
+                boolean isModule = itemHolder.is(Tag.MODULE);
+                switch (slot){
+                    case 0,1,2,3,4,5,6:{
+                        return cobbleStone;
+                    }
+                    case 7,8,9:{
+                        return isModule;
+                    }
+                    default:{
+                        return super.isItemValid(slot, stack);
+                    }
+                }
             }
         };
         this.lazyItemHandler = Lazy.of(() -> this.items);
@@ -425,6 +448,18 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
 
     private boolean cobbleCountAddedNotHigherThanMax(int slot){
         return !(getSlotCobbleCount(slot) + (1 + this.machine_tier) + calculateAdditionalItemsModules() > this.itemMaxStackSize(slot));
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag,registries);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(tag,lookupProvider);
     }
 
     @Override

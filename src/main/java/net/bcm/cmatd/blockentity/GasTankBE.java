@@ -20,6 +20,7 @@ public class GasTankBE extends AbstractGasContainingBE{
     private GasTank gasTank = new GasTank(100000){
         @Override
         public void update() {
+            gasAmount = this.getGasAmount();
             setChanged();
             if(!level.isClientSide){
                 level.sendBlockUpdated(getBlockPos(),getBlockState(),getBlockState(),3);
@@ -50,7 +51,9 @@ public class GasTankBE extends AbstractGasContainingBE{
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return this.saveWithoutMetadata(registries);
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag,registries);
+        return tag;
     }
 
     @Override
@@ -64,22 +67,27 @@ public class GasTankBE extends AbstractGasContainingBE{
 
     public void clientTick(){
         ticks++;
-        if(ticks > 32767){
-            ticks = 0;
-        }
 
-        if(ticks % 5 == 0){
+        if(this.gasAmount != gasTank.gas.getAmount()){
             this.gasAmount = gasTank.gas.getAmount();
             setChanged();
+        }
+
+        if(ticks > 32767){
+            ticks = 0;
         }
     }
 
     public void serverTick() {
         ticks++;
 
-        if(ticks % 7 == 0){
+        if(this.gasAmount != gasTank.gas.getAmount()){
             this.gasAmount = gasTank.gas.getAmount();
             setChanged();
+        }
+
+        if (ticks > 32767) {
+            ticks = 0;
         }
 
         if(ticks % 17 == 0){
@@ -111,10 +119,6 @@ public class GasTankBE extends AbstractGasContainingBE{
                     }
                 }
             }
-        }
-
-        if (ticks > 32767) {
-            ticks = 0;
         }
     }
 

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.bcm.cmatd.ClientConfig;
 import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.api.GasStack;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -31,19 +33,25 @@ public class GasTankRenderer implements BlockEntityRenderer<GasTankBE> {
     public void render(GasTankBE be, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         if(ClientConfig.SHOW_GAS_AMOUNT_CUBE.getAsBoolean()){
             poseStack.pushPose();
-            float scale = Utility.normalizeIntToFloatValue(be.getGasAmount(),0,100000,0.0f,1.0f);
+            float scale = Utility.normalizeIntToFloatValue(be.getGasAmount(),0,be.getGasTank().getCapacity(),0.0f,1.0f);
 
             poseStack.translate(0.5,0.5,0.5);
             float scaleCut = scale / 1.75f;
             poseStack.scale(scaleCut,scaleCut,scaleCut);
 
-            VertexConsumer vc = bufferSource.getBuffer(RenderType.entityTranslucent(GasInWorldModel.LAYER_LOCATION.getModel()));
+            VertexConsumer vc = bufferSource.getBuffer(
+                    RenderType.breezeWind(ResourceLocation.withDefaultNamespace("textures/misc/forcefield.png"),
+                            Utility.oscillateFloatBetween((be.ticks + partialTick) / 75f,0.0f,1.0f),
+                            Utility.oscillateFloatBetween((be.ticks + partialTick) / 73f,0.0f,1.0f)))
+                    .setLight(packedLight)
+                    .setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setColor(be.getGasTank().gas.getGas().getColor());
 
-            this.model.setupAnim(be);
+            this.model.setupAnim(be,partialTick);
             this.model.renderToBuffer(poseStack,vc,packedLight,packedOverlay);
             poseStack.popPose();
         }
-        if(ClientConfig.SHOW_GAS_TYPE_BEAM.getAsBoolean()){
+        if(ClientConfig.SHOW_GAS_TYPE_BEAM.getAsBoolean() && be.getGasTank().gas != GasStack.EMPTY){
             int color = be.getGasTank().gas.getGas().getColor();
             poseStack.pushPose();
             poseStack.scale(0.5f,0.5f,0.5f);

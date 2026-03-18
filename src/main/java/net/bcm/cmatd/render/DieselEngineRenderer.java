@@ -33,7 +33,7 @@ public class DieselEngineRenderer implements BlockEntityRenderer<DieselEngineBE>
 
         if(blockEntity.getBlockState().getValue(BlockStateProperties.POWERED)){
             this.model.setupAnimRunning(blockEntity);
-            this.model.shaftholder.zRot = Mth.rotLerp(blockEntity.ticks / 2f,0f,1f);
+            this.model.shaftholder.zRot = Mth.rotLerp(blockEntity.ticks + partialTick / 2f,0f,1f);
             this.model.piston.x = p2 - 8f;
             this.model.piston3.x = p2 - 8f;
             this.model.piston5.x = p2 - 8f;

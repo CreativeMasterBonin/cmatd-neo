@@ -8,6 +8,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static net.minecraft.util.Mth.floor;
@@ -37,6 +38,8 @@ public class Utility{
     public static final int INT_BLACK = 0;
     private static final Throwable BAD_HEX_COLOR_CODE = new Throwable("bad HEX color String provided as argument");
 
+    public static final Utility.Range dynamoRangeCalibrated = new Utility.Range(Utility.RangeType.FLOAT,List.of(-6.2f,0.0f));
+
     /**
      * An integer to RGB color converter, useful to convert MC integer values to rendering red, green and blue values;
      * alpha is not supported here
@@ -65,8 +68,10 @@ public class Utility{
 
     /**
      * Normalize a range to another range
-     * (stackoverflow Yun, edited to convert integers to floats unchecked) <a href="https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio">...</a>
-     * This
+     * (stackoverflow Yun, Oct 13, 2024: edited to convert integers to floats unchecked) <a href="https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio">...</a>
+     * CC BY-SA 4.0 (this method can be used according to the license, commercial, or otherwise and does not fall under the mod license)
+     * https://creativecommons.org/licenses/by-sa/4.0/legalcode.en
+     * https://creativecommons.org/licenses/by-sa/4.0/deed.en
      * @param x Takes in a value
      * @param inMin the minimum old range value (integer)
      * @param inMax the maximum old range value (integer)
@@ -82,7 +87,11 @@ public class Utility{
 
     /**
      * Normalize a range to another range
-     * (stackoverflow Yun, edited to convert doubles to floats unchecked)
+     * https://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio
+     * (stackoverflow Yun, Oct 13, 2024: edited to convert doubles to floats unchecked)
+     * CC BY-SA 4.0 (this method can be used according to the license, commercial, or otherwise and does not fall under the mod license)
+     * https://creativecommons.org/licenses/by-sa/4.0/legalcode.en
+     * https://creativecommons.org/licenses/by-sa/4.0/deed.en
      * Doubles cannot convert to floats perfectly, so use with caution
      * @param x
      * @param inMin
@@ -175,6 +184,7 @@ public class Utility{
 
 
     // MATH
+    // some functions here don't function at all, so they are useless
 
     // check for divide by zero possibility and make sure we don't divide a bigger number by a smaller one
     public static int divisionIntSplit(int top, int divider){
@@ -218,18 +228,38 @@ public class Utility{
 
     public static final class Range{
         public final RangeType rangeType;
-        public ArrayList<?> rangeValues;
+        public List<?> rangeValues;
 
-        public Range(RangeType type,ArrayList<?> rangeValues){
+        public Range(RangeType type,List<?> rangeValues){
            this.rangeType = type;
+           this.rangeValues = rangeValues;
         }
 
         public RangeType getType(){
             return rangeType;
         }
+
+        public List<?> getRangeValues(){
+            return this.rangeValues;
+        }
     }
 
-    public static float oscillateFloatBetween(float value, Range range){
-        return 0.0f;
+    /**
+     * Oscillate between floats (which is NOT accurate!) does not use SIN or COS
+     * https://stackoverflow.com/a/11544567 posted by Servy, Jul 18, 2012: This is an easier to read version of the oscillate function, split apart into smaller parts
+     * CC-BY-SA 3.0, https://creativecommons.org/licenses/by-sa/3.0/deed.en
+     * https://creativecommons.org/licenses/by-sa/3.0/legalcode.en
+     * This method can be used according to the license, commercially or otherwise and does not fall under the mod license
+     */
+    public static float oscillateFloatBetween(float deltaValue, float minimum, float maximum){
+        float numberRange = maximum - minimum; // amount of numbers
+        float offset = 2.0f;
+
+        float top = deltaValue + numberRange; // the dividend
+        float bottom = numberRange * offset; // the divisor
+
+        float remainder = top % bottom;
+
+        return offset + Math.abs((remainder) - numberRange); // this part finds the absolute value of the float, which requires a special built-in function, (it is not perfect in this context)
     }
 }

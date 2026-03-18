@@ -16,6 +16,6 @@ You may study the code and assets freely, without payment to access the content.
 Mixins used in this mod cannot be copied verbatim into your own mods. If you can meaningfully change the mixins to be more useful and robust, you may add to the mixins by contributing some code in the repository, but changes must be approved before they are added, otherwise the changes will be reverted.
 
 
-Some content in this mod is under a different license. Their licenses are included in the 'codelicenses' directory.
+Some content in this mod is under a different license. Their licenses are included in the 'codelicenses' directory. Other licenses in-code are marked as such for the snippets of code that are required to be marked.
 
 Follow these simple guidelines, and enjoy the mod.

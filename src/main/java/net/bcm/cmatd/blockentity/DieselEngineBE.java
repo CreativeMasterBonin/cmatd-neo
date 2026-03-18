@@ -29,6 +29,11 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
                 level.sendBlockUpdated(getBlockPos(),getBlockState(),getBlockState(),3);
             }
         }
+
+        @Override
+        public boolean canGasBeInsertedIntoTank(GasStack gasStack) {
+            return gasStack.is(Tag.BURNABLE_GASES);
+        }
     };
     private DieselEngineGasContainerData gasContainerData;
     public int gasAmount = 0;
@@ -82,7 +87,7 @@ public class DieselEngineBE extends AbstractGasContainingBE implements Rotationa
             this.gasAmount = gasTank.gas.getAmount();
         }
 
-        if(getGasTank().getGasStack() != GasStack.EMPTY){
+        if(getGasTank().getGasStack() != GasStack.EMPTY && getGasTank().getGasStack().getGas().getRegistryHolder().is(Tag.BURNABLE_GASES)){
             if(getGasTank().getGasAmount() > 0){
                 // dynamic speedup heating system
                 int ticksPerActionNeeded = 10;

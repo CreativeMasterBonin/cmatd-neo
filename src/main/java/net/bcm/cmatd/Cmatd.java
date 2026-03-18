@@ -298,12 +298,8 @@ public class Cmatd {
                 () -> Gases.EMPTY);
     }
 
-    private void onDataMapUpdate(DataMapsUpdatedEvent event){
-    }
-
-    private void commonSetup(final FMLCommonSetupEvent event) {
-
-    }
+    private void onDataMapUpdate(DataMapsUpdatedEvent event){}
+    private void commonSetup(final FMLCommonSetupEvent event){}
 
     private void registerDatamaps(final RegisterDataMapTypesEvent event){
         event.register(MASHABLES);

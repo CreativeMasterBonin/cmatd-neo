@@ -2,6 +2,7 @@ package net.bcm.cmatd.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.RedstoneDynamoEngineBE;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -10,6 +11,9 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+
+import java.util.List;
 
 public class RedstoneDynamoEngineModel extends Model{
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(ResourceLocation.parse("cmatd:textures/entity/rs_engine.png"), "main");
@@ -44,12 +48,11 @@ public class RedstoneDynamoEngineModel extends Model{
 
     public void setupAnim(RedstoneDynamoEngineBE be, float partialTick){
         // was 2.35f and 8.14150f
-        //double oldMath = Math.sin(be.ticks / 4.50001f) * 3.50001f;
-        //float clampedOldValue = (float)Math.clamp(oldMath,-3.1001D,2.50001D);
-        // TODO implement osc movement math
-        double n1 = 0;
-
-        preRingY = (float)n1 - 5.6f;
+        //double oldMath = Math.sin(be.ticks) * 3.50001f;
+        //float clampedOldValue = (float)Math.clamp(oldMath,-3.1001D,2.50001D); // laggy looking
+        //Utility.lerpDiscrete(partialTick,-5.6f,0.0f); broken
+        // although the utility function works, it isn't exactly a perfect nor fast solution
+        preRingY = Utility.oscillateFloatBetween(be.ticks + partialTick,(float)Utility.dynamoRangeCalibrated.getRangeValues().getFirst(),(float)Utility.dynamoRangeCalibrated.getRangeValues().getLast()) - 5.6f;
         postRingY = preRingY - 2.50001f;
         this.ring.y = postRingY;
         this.bellows.yScale = 2f;

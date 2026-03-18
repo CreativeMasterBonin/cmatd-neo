@@ -1,8 +1,10 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.BaseEnergyStorage;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.block.custom.RedstoneDynamoEngine;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class RedstoneDynamoEngineBE extends BlockEntity{
     public int ticks = 0;
+
     private final BaseEnergyStorage energyStorage =
             new BaseEnergyStorage(10000,1000,1000){
                 @Override
@@ -77,17 +80,21 @@ public class RedstoneDynamoEngineBE extends BlockEntity{
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    public boolean swapAnimation = false;
+
     public void serverTick(){
         ticks++;
         if(ticks >= 32767){
             ticks = 0;
         }
+
         if(this.getBlockState().is(CmatdBlock.REDSTONE_DYNAMO_ENGINE)){
             if(this.getBlockState().getValue(RedstoneDynamoEngine.LIT)){
                 generateEnergy();
                 distributeEnergy();
             }
         }
+
     }
 
     public void clientTick(){

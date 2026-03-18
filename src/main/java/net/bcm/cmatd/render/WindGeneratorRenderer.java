@@ -29,7 +29,15 @@ public class WindGeneratorRenderer implements BlockEntityRenderer<WindGeneratorB
 
         this.model.setupAnim(be);
         if(be.getLevel().canSeeSky(be.getBlockPos())){
-            poseStack.mulPose(Axis.YP.rotation((float)be.getLevel().getGameTime() / 2 + partialTick));
+            if(be.getBlockPos().getY() <= 0){
+                this.model.spinner.yRot = (be.ticks + partialTick) * (float) (Math.PI / 270.0);
+            }
+            else{
+                float fiVal = (be.ticks * Math.clamp((float)be.getBlockPos().getY(),(float)be.getLevel().getMinBuildHeight(),48f) + partialTick) * (float) (Math.PI / 270.0);
+                this.model.spinner.yRot = fiVal;
+            }
+            //this.model.spinner.yRot = Mth.rotLerp(be.getLevel().getGameTime() + partialTick * 0.01f,0.0f,1.0f);
+            //poseStack.mulPose(Axis.YP.rotation((float)be.getLevel().getGameTime() + partialTick));
         }
         this.model.renderToBuffer(poseStack,
                 bufferSource.getBuffer(RenderType.entityCutout(WindGeneratorModel.LAYER_LOCATION.getModel()))

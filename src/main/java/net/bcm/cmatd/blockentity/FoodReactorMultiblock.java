@@ -1,9 +1,6 @@
 package net.bcm.cmatd.blockentity;
 
-import net.bcm.cmatd.BaseEnergyStorage;
-import net.bcm.cmatd.Cmatd;
-import net.bcm.cmatd.Components;
-import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.*;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Tag;
@@ -121,6 +118,18 @@ public class FoodReactorMultiblock extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = new CompoundTag();
+        this.saveAdditional(tag,registries);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        this.loadAdditional(tag,lookupProvider);
+    }
+
     public void serverTick(){
         ticks++;
         if(ticks > 32767){
@@ -133,6 +142,15 @@ public class FoodReactorMultiblock extends BlockEntity {
             ItemStack module3 = itemStackHandler.getStackInSlot(5);
             if(ticks % 80 == 0){
                 checkMultiblockForm();
+            }
+            ItemStack coolant = itemStackHandler.getStackInSlot(0);
+            ItemStack fuel = itemStackHandler.getStackInSlot(1);
+
+            Holder<Item> itemHolder = fuel.getItemHolder();
+            FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
+
+            if(ticks % 108 == 0 && foodReactorFuels != null && coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && !(itemStackHandler.getStackInSlot(2).getCount() >= itemStackHandler.getStackInSlot(2).getMaxStackSize()) && !(this.getFluidTank().getFluidAmount() >= this.getFluidTank().getCapacity())){
+                getLevel().playSound(null,getBlockPos(), CmatdSound.REACTOR_LOOP.value(),SoundSource.BLOCKS,0.2f,1.0f);
             }
             doStuff(module1,module2,module3);
         }
@@ -393,6 +411,18 @@ public class FoodReactorMultiblock extends BlockEntity {
         if(validBlockCount == 47 && blocksToBeReplaced == 0) {
             if(!multiblockFormed){
                 multiblockFormed = true;
+                getLevel().playSound(null,getBlockPos(),SoundEvents.IRON_GOLEM_DEATH,SoundSource.BLOCKS,1.0f,0.95f);
+                for(int x = getBlockPos().getX() - 3; x < getBlockPos().getX() + 1; x++){
+                    for(int y = getBlockPos().getY() - 1; y < getBlockPos().getY() + 2; y++){
+                        for(int z = getBlockPos().getZ() - 3; z < getBlockPos().getZ() + 1; z++){
+                            if(level instanceof ServerLevel){
+                                ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION,
+                                        x + 0.5,y + 0.5,z + 0.5,
+                                        1,0,0,0,0);
+                            }
+                        }
+                    }
+                }
             }
             setChanged();
         }

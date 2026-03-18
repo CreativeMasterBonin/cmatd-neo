@@ -1,6 +1,8 @@
 package net.bcm.cmatd.datagen;
 
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.api.GasType;
+import net.bcm.cmatd.api.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -27,6 +29,7 @@ public class Tag{
     public static final TagKey<Block> STORAGE_BLOCKS_RAW_COMPOUNDITE = commonBlockTag("storage_blocks/raw_compoundite");
     public static final TagKey<Block> STORAGE_BLOCKS_RAW_LODEALITE = commonBlockTag("storage_blocks/raw_lodealite");
 
+    public static final TagKey<Item> GAS_PRODUCER = itemTag("gas_vent");
     public static final TagKey<Block> PRODUCES_METHANE_GAS = blockTag("gas_producers/methane");
     public static final TagKey<Block> PRODUCES_STEAM_GAS = blockTag("gas_producers/steam");
 
@@ -48,6 +51,10 @@ public class Tag{
     public static final TagKey<Block> MEDIUM_HEAT_PRODUCERS = blockTag("medium_heat_producers");
     public static final TagKey<Block> LOW_HEAT_PRODUCERS = blockTag("low_heat_producers");
 
+    // gas tags
+    public static final TagKey<GasType> BURNABLE_GASES = gasTag("burnable");
+    public static final TagKey<GasType> FREEZABLE_GASES = gasTag("freezable");
+
     private static TagKey<Fluid> fluidTag(String name){
         return FluidTags.create(ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
     }
@@ -60,6 +67,10 @@ public class Tag{
         return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
     }
 
+    public static TagKey<GasType> gasTag(String name){
+        return TagKey.create(Registries.GAS_TYPES_KEY,ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,name));
+    }
+
     private static TagKey<Fluid> commonFluidTag(String name){
         return FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
     }
@@ -70,5 +81,9 @@ public class Tag{
 
     private static TagKey<Item> commonItemTag(String name){
         return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
+    }
+
+    public static TagKey<GasType> commonGasTag(String name){
+        return TagKey.create(Registries.GAS_TYPES_KEY,ResourceLocation.fromNamespaceAndPath("c",name));
     }
 }

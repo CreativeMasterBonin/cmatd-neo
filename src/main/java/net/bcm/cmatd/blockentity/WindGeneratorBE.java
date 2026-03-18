@@ -125,10 +125,10 @@ public class WindGeneratorBE extends BlockEntity implements IAnimatableMachine{
             int generation_rate;
 
             if(isBelowSeaLevel){
-                generation_rate = 5;
+                generation_rate = 1;
             }
             else{
-                generation_rate = 10;
+                generation_rate = 10 + (getBlockPos().getY() / 7);
             }
             energyStorage.receiveEnergy(generation_rate, false);
             setChanged();

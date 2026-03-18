@@ -10,6 +10,7 @@ import dev.emi.emi.api.stack.EmiRegistryAdapter;
 import dev.emi.emi.api.stack.EmiStack;
 import net.bcm.cmatd.api.GasType;
 import net.bcm.cmatd.api.Registries;
+import net.bcm.cmatd.integration.emirecipe.EBlockToGasRecipe;
 import net.bcm.cmatd.integration.emirecipe.EJamMakingRecipe;
 import net.bcm.cmatd.integration.emirecipe.EMasherRecipe;
 import net.bcm.cmatd.integration.emirecipe.EPresserRecipe;
@@ -23,10 +24,12 @@ public class EMIntegration implements EmiPlugin {
     public static final ResourceLocation PRESS_ICON = ResourceLocation.parse("cmatd:textures/misc/pressing_icon.png");
     public static final ResourceLocation JAM_ICON = ResourceLocation.parse("cmatd:textures/misc/jammaking_icon.png");
     public static final ResourceLocation MASHER_ICON = ResourceLocation.parse("cmatd:textures/misc/mashing_icon.png");
+    public static final ResourceLocation BLOCK_CONVERSION_ICON = ResourceLocation.parse("cmatd:textures/misc/block_conversion.png");
 
     public static final EmiStack PRESSER_STACK = EmiStack.of(CmatdItem.PRESSER);
     public static final EmiStack JAM_MAKER_STACK = EmiStack.of(CmatdItem.JAM_MAKER);
     public static final EmiStack MASHER_STACK = EmiStack.of(CmatdItem.MASHER);
+    public static final EmiStack GAS_STACK = EmiStack.of(CmatdItem.GAS_TANK);
 
     private static final EmiRegistryAdapter<GasType> GAS_TYPE_EMI_REGISTRY_ADAPTER =
             EmiRegistryAdapter.simple(GasType.class, Registries.GAS_TYPES,GasEmiStack::new);
@@ -48,6 +51,13 @@ public class EMIntegration implements EmiPlugin {
     public static final EmiRecipeCategory MASHER_CATEGORY
             = new EmiRecipeCategory(ResourceLocation.parse("cmatd:/masher_category"),
             MASHER_STACK, new EmiTexture(MASHER_ICON,0,0,
+            16,16,
+            16,16,
+            16,16));
+
+    public static final EmiRecipeCategory BLOCK_TO_GAS_CATEGORY
+            = new EmiRecipeCategory(ResourceLocation.parse("cmatd:/block_to_gas"),
+            GAS_STACK, new EmiTexture(BLOCK_CONVERSION_ICON,0,0,
             16,16,
             16,16,
             16,16));
@@ -95,5 +105,17 @@ public class EMIntegration implements EmiPlugin {
         registry.addRecipe(new EMasherRecipe("poisonous_mashed_potatoes",
                 Ingredient.of(Items.POISONOUS_POTATO),
                 CmatdItem.POISONOUS_MASHED_POTATOES.asItem()));
+
+        registry.addCategory(BLOCK_TO_GAS_CATEGORY);
+        registry.addWorkstation(BLOCK_TO_GAS_CATEGORY,GAS_STACK);
+
+        registry.addRecipe(new EBlockToGasRecipe("methane_gas_vent_to_gas",
+                Ingredient.of(CmatdItem.METHANE_GAS_VENT.asItem())));
+        registry.addRecipe(new EBlockToGasRecipe("deepslate_methane_gas_vent_to_gas",
+                Ingredient.of(CmatdItem.DEEPSLATE_METHANE_GAS_VENT.asItem())));
+        registry.addRecipe(new EBlockToGasRecipe("steam_gas_vent_to_gas",
+                Ingredient.of(CmatdItem.STEAM_GAS_VENT.asItem())));
+        registry.addRecipe(new EBlockToGasRecipe("deepslate_steam_gas_vent_to_gas",
+                Ingredient.of(CmatdItem.DEEPSLATE_STEAM_GAS_VENT.asItem())));
     }
 }

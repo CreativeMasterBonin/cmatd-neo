@@ -2,6 +2,7 @@ package net.bcm.cmatd.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.DecorativeBaseDynamoEngineBE;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -42,15 +43,15 @@ public class BaseEngineModel extends Model {
     float preRingY = 0;
     float postRingY = 0;
 
-    public void setupAnim(DecorativeBaseDynamoEngineBE be){
-        preRingY = (float)Math.clamp(Math.cos(be.ticks / 2.35f) * 8.14150f,-3.1001D,2.50001D);
+    public void setupAnim(DecorativeBaseDynamoEngineBE be,float partialTick){
+        preRingY = Utility.oscillateFloatBetween(be.ticks + partialTick,(float)Utility.dynamoRangeCalibrated.getRangeValues().getFirst(),(float)Utility.dynamoRangeCalibrated.getRangeValues().getLast()) - 5.6f; //(float)Math.clamp(Math.cos(be.ticks / 2.35f) * 8.14150f,-3.1001D,2.50001D);
         postRingY = preRingY - 2.50001f;
         this.ring.y = postRingY;
         this.bellows.yScale = 2f;
         this.bellows.y = ring.y + 12f;
     }
 
-    public void setupAnimSlowDown(DecorativeBaseDynamoEngineBE be){
+    public void setupAnimSlowDown(DecorativeBaseDynamoEngineBE be,float partialTick){
         preRingY = 0;
         postRingY = 0;
         this.bellows.yScale = 0;

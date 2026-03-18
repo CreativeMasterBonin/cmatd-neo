@@ -98,7 +98,7 @@ public class FoodReactorScreen extends AbstractContainerScreen<FoodReactorMenu> 
                     leftPos + LIQUID_LEFT,topPos + LIQUID_TOP);
         }
         catch(Exception e){
-            Cmatd.getLogger().error("FoodReactorScreen encountered an error: {}",e.getMessage());
+            //Cmatd.getLogger().error("FoodReactorScreen encountered an error: {}",e.getMessage());
         }
     }
 

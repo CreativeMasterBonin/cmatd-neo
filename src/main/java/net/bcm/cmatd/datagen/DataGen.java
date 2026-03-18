@@ -45,6 +45,9 @@ public class DataGen{
         event.getGenerator().addProvider(event.includeServer(),
                 new ItemTagProvider(packOutput, lookupProvider, blockTags.contentsGetter(),event.getExistingFileHelper()));
 
+        event.getGenerator().addProvider(event.includeServer(),
+                new GasTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
+
         generator.addProvider(event.includeServer(),new Recipe(packOutput,lookupProvider));
 
         generator.addProvider(event.includeServer(),new DatamapGen(packOutput,lookupProvider));

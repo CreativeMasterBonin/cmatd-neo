@@ -2,6 +2,7 @@ package net.bcm.cmatd.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -10,6 +11,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class GasInWorldModel extends Model {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
@@ -31,10 +33,10 @@ public class GasInWorldModel extends Model {
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public void setupAnim(GasTankBE gasTankBE){
-        this.main.xRot = gasTankBE.ticks / 32f;
-        this.main.yRot = gasTankBE.ticks / 30f;
-        this.main.zRot = gasTankBE.ticks / 31f;
+    public void setupAnim(GasTankBE gasTankBE,float partialTick){
+        this.main.xRot = (gasTankBE.ticks + partialTick) * 0.09f;
+        this.main.yRot = (gasTankBE.ticks + partialTick) * 0.07f;
+        this.main.zRot = (gasTankBE.ticks + partialTick) * 0.1f;
     }
 
     @Override
