@@ -101,6 +101,13 @@ public class Language extends LanguageProvider{
         this.add("desc.item.gas_vent.additional_info","Gas Produced:");
         this.add("desc.item.gas_tank.additional_info","Holds any kind of Gas including radioactive types, and can be dumped.");
         this.add("desc.item.gas_tank.radioactive_gas_warning","Radioactive gases cannot be dumped");
+        this.add("desc.item.burnable_fuel_generator.additional_info","Burns anything that can be used as fuel");
+        this.add("desc.item.burnable_fuel_generator.fuel_notice","Only items that are not used in blast furnaces or smokers");
+        this.add("desc.item.burnable_fuel_generator.fun","Great for those extra crafting outputs you don't need!");
+
+        this.add("desc.item.food_reactor.additional_info","Turns food into energy using coolant and the special underground materials");
+        this.add("desc.item.food_reactor.requirements","Needs a coolant, food and no waste items to function; waste tank must be empty as well");
+        this.add("desc.item.food_reactor.tip","Pro Tip: Some foods may have significant output!");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");

@@ -52,6 +52,18 @@ public class BaseEnergyMakerBE extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) {
             setChanged();
         }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            switch(slot){
+                case 0:{
+                    return stack.getBurnTime(RecipeType.SMELTING) > 0;
+                }
+                default:{
+                    return super.isItemValid(slot,stack);
+                }
+            }
+        }
     };
 
     private final ContainerData machineData;

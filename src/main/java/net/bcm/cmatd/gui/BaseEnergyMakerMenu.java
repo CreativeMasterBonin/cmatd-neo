@@ -74,6 +74,28 @@ public class BaseEnergyMakerMenu extends AbstractContainerMenu{
                     burnTime = value;
                 }
             });
+
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 9; j++) {
+                    this.addSlot(new Slot(player.getInventory(), j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                }
+            }
+            for (int k = 0; k < 9; k++) {
+                this.addSlot(new Slot(player.getInventory(), k, 8 + k * 18, 142));
+            }
+        }
+    }
+
+    private void playerSlots(Player player,int yOffset){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                this.addSlot(new Slot(player.getInventory(), j + i * 9 + 9, 8 + j * 18, yOffset + i * 18));
+            }
+        }
+        for (int k = 0; k < 9; k++) {
+            // 142 is old or 'standard' y pos
+            this.addSlot(new Slot(player.getInventory(), k, 8 + k * 18, 192));
         }
     }
 

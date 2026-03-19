@@ -69,7 +69,7 @@ public class TierUpgrade extends Item{
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        if(context.getLevel().isClientSide){
+        if(!context.getLevel().isClientSide){
             return InteractionResult.SUCCESS;
         }
         else{
@@ -90,7 +90,7 @@ public class TierUpgrade extends Item{
                         return InteractionResult.CONSUME;
                     }
                     // if not same tier, continue to upgrade (server only)
-                    if(!context.getLevel().isClientSide){
+                    if(context.getLevel().isClientSide){
                         try{
                             PacketDistributor.sendToServer(new BaseCobbleMakerTierUpdatePayload(
                                     clickedPos,
@@ -107,15 +107,6 @@ public class TierUpgrade extends Item{
                             return InteractionResult.FAIL;
                         }
                     }
-                    /*
-                    ((BaseCobbleMakerBE) be).setNewTierSettings(
-                            itemInHand.get(Components.MACHINE_TIER).getMachineTier(),
-                            itemInHand.get(Components.MACHINE_TIER).getMaxEnergy(),
-                            itemInHand.get(Components.MACHINE_TIER).getMaxReceive(),
-                            itemInHand.get(Components.MACHINE_TIER).getMaxExtract(),
-                            itemInHand.get(Components.MACHINE_TIER).getModulesAllowed(),
-                            itemInHand.get(Components.MACHINE_TIER).getEnergyGenRate()
-                    );*/
                     context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
                     itemInHand.shrink(1);
                     context.getPlayer().swing(context.getHand());

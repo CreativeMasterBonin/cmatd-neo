@@ -2,12 +2,16 @@ package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.CmatdClient;
+import net.bcm.cmatd.CmatdClientActionHandler;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.JamMakerBE;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.gui.FoodReactorMenu;
 import net.bcm.cmatd.gui.JamMakerMenu;
 import net.bcm.cmatd.network.FoodReactorWrenchUpdate;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -18,7 +22,9 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -37,6 +43,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.Nullable;
 import net.bcm.cmatd.blockentity.FoodReactorMultiblock;
 
+import java.util.List;
+
 public class FoodReactorBlock extends BaseEntityBlock{
     public static final MapCodec<FoodReactorBlock> CODEC =
             simpleCodec(FoodReactorBlock::new);
@@ -54,6 +62,25 @@ public class FoodReactorBlock extends BaseEntityBlock{
                 .requiresCorrectToolForDrops().pushReaction(PushReaction.BLOCK));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH));
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("desc.item.generator.gen_rate",50)
+                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("desc.item.food_reactor.additional_info")
+                .withStyle(ChatFormatting.GOLD));
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            tooltipComponents.add(Component.translatable("desc.item.food_reactor.requirements")
+                    .withColor(Utility.BAD_WARNING_YELLOW));
+            tooltipComponents.add(Component.translatable("desc.item.food_reactor.tip")
+                    .withColor(Utility.GOOD_STATE_GREEN));
+        }
+        else{
+            tooltipComponents.add(Component.translatable("desc.item.generator.hidden_details",
+                            Component.translatable(CmatdClient.itemDescriptionKeyMapping.getKey().getName()))
+                    .withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
     }
 
     @Override
@@ -84,7 +111,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(!level.isClientSide){
+        if(level.isClientSide){
             if(stack.isEmpty()){
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
@@ -92,7 +119,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
             if(stack.is(Tags.Items.TOOLS_WRENCH)){
                 try{
                     PacketDistributor.sendToServer(new FoodReactorWrenchUpdate(pos));
-                    return ItemInteractionResult.SUCCESS;
+                    return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
                 }
                 catch (Exception e){
                     Cmatd.getLogger().error("Food Reactor error at: {}! Error: {}", pos.toShortString(), e.getMessage());

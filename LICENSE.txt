@@ -1,5 +1,11 @@
-This mod is licensed under a custom license. Ver 3.
+This mod is licensed under a custom license. Ver 4A.
+Any license with an appended 'A-Z' character means most content falls under this license plus content that is not under this license, which means the content not under this license will have its own license stated.
+As such, the following section describes and lists content not under this license.
 
+Section A:
+    In all cases, the program methods Utility.oscillateFloatBetween, Utility.normalizeDoubleToFloatValue, and Utility.normalizeIntToFloatValue do not fall under this license, and fall under their own explicitly specified licenses, as required.
+
+License:
 The license terms are as follows, and ARE NOT LEGAL ADVICE, just guidelines:
 
 You can make videos showcasing the content in this mod, including series that may have some monetization, granted that they follow the MC EULA and MUG.
@@ -11,6 +17,7 @@ If you contribute to the mod, you will gain credit in some form, either text or 
 
 The code is public, and you can rename methods and their layout (their logic)[please try and redo the logic, so it is original to you] when using them in your own mods IF YOU GIVE CREDIT BACK TO THIS MOD AND CREATIVEMASTERBONIN.
 Failure to credit the proper persons (when using programming from this repository) will result in a C&D or other applicable punishment by law.
+Excluded content is anything under another license (marked with 'Section A'), which has its own guidelines. Follow terms for 'Section A' content under its license, and not this one.
 
 You may study the code and assets freely, without payment to access the content. You cannot copy and paste any images or text files (including JSON files). Addon mod files can reference model files, but cannot copy them verbatim (meaning they cannot use a single line of code from them, only model reference names).
 Mixins used in this mod cannot be copied verbatim into your own mods. If you can meaningfully change the mixins to be more useful and robust, you may add to the mixins by contributing some code in the repository, but changes must be approved before they are added, otherwise the changes will be reverted.

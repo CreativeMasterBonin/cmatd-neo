@@ -15,6 +15,8 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 public class BiomeModifierGen{
     public static final ResourceKey<BiomeModifier> ORE_COMPOUNDITE = registerKey("ore_compoundite");
     public static final ResourceKey<BiomeModifier> ORE_LODEALITE = registerKey("ore_lodealite");
+    public static final ResourceKey<BiomeModifier> METHANE_GAS_VENT = registerKey("methane_gas_vent");
+    public static final ResourceKey<BiomeModifier> STEAM_GAS_VENT = registerKey("steam_gas_vent");
 
     public static void bootstrap(BootstrapContext<BiomeModifier> context){
         var placedFeatures = context.lookup(Registries.PLACED_FEATURE);
@@ -22,14 +24,26 @@ public class BiomeModifierGen{
 
         context.register(ORE_COMPOUNDITE, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(OrePlacementGen.ORE_COMPOUNDITE)),
+                HolderSet.direct(placedFeatures.getOrThrow(PlacementGen.ORE_COMPOUNDITE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES
         ));
 
         context.register(ORE_LODEALITE, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(OrePlacementGen.ORE_LODEALITE)),
+                HolderSet.direct(placedFeatures.getOrThrow(PlacementGen.ORE_LODEALITE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES
+        ));
+
+        context.register(METHANE_GAS_VENT, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(PlacementGen.METHANE_GAS_VENT)),
+                GenerationStep.Decoration.RAW_GENERATION
+        ));
+
+        context.register(STEAM_GAS_VENT, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biomes.getOrThrow(Tag.GENERATES_STEAM_VENTS),
+                HolderSet.direct(placedFeatures.getOrThrow(PlacementGen.STEAM_GAS_VENT)),
+                GenerationStep.Decoration.RAW_GENERATION
         ));
     }
 

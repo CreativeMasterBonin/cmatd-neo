@@ -39,6 +39,9 @@ public class DataGen{
         generator.addProvider(event.includeServer(),new LootTableProvider(packOutput, Collections.emptySet(),
                 List.of(new LootTableProvider.SubProviderEntry(Loot::new, LootContextParamSets.BLOCK)),lookupProvider));
 
+        BiomeTagProvider biomeTags = new BiomeTagProvider(packOutput,lookupProvider,event.getExistingFileHelper());
+        generator.addProvider(event.includeServer(),biomeTags);
+
         BlockTagProvider blockTags = new BlockTagProvider(packOutput, lookupProvider, event.getExistingFileHelper());
         generator.addProvider(event.includeServer(), blockTags);
 

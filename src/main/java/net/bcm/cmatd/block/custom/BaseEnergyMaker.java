@@ -2,6 +2,9 @@ package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.CmatdClient;
+import net.bcm.cmatd.CmatdClientActionHandler;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.BaseEnergyMakerBE;
 import net.bcm.cmatd.gui.BaseEnergyMakerMenu;
 import net.minecraft.ChatFormatting;
@@ -57,6 +60,19 @@ public class BaseEnergyMaker extends Block implements EntityBlock{
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("desc.item.generator.gen_rate",50)
                 .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("desc.item.burnable_fuel_generator.additional_info")
+                .withStyle(ChatFormatting.GOLD));
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            tooltipComponents.add(Component.translatable("desc.item.burnable_fuel_generator.fuel_notice")
+                    .withColor(Utility.BAD_WARNING_YELLOW));
+            tooltipComponents.add(Component.translatable("desc.item.burnable_fuel_generator.fun")
+                    .withColor(Utility.GOOD_STATE_GREEN));
+        }
+        else{
+            tooltipComponents.add(Component.translatable("desc.item.generator.hidden_details",
+                            Component.translatable(CmatdClient.itemDescriptionKeyMapping.getKey().getName()))
+                    .withStyle(ChatFormatting.GRAY).withStyle(ChatFormatting.ITALIC));
+        }
     }
 
     @Override

@@ -13,8 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class WorldlyProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-            .add(Registries.CONFIGURED_FEATURE,OreFeatureGen::bootstrap)
-            .add(Registries.PLACED_FEATURE,OrePlacementGen::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatureGen::bootstrap)
+            .add(Registries.PLACED_FEATURE, PlacementGen::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS,BiomeModifierGen::bootstrap)
             ;
 
