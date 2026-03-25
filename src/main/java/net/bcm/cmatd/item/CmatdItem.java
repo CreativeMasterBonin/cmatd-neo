@@ -98,6 +98,11 @@ public class CmatdItem{
             ITEMS.register("deepslate_steam_gas_vent",
                     () -> new BlockItem(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get(),new Item.Properties()));
 
+    // dimensional related
+    public static final DeferredItem<BlockItem> DIMENSIONAL_TRANSPORTER =
+            ITEMS.register("dimensional_transporter",
+                    () -> new BlockItem(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(),new Item.Properties()));
+
 
     // mutliblocks
     public static final DeferredItem<BlockItem> FOOD_REACTOR_MULTIBLOCK =
@@ -117,7 +122,6 @@ public class CmatdItem{
     public static final DeferredItem<BlockItem> DIESEL_ENGINE =
             ITEMS.register("diesel_engine",
                     () -> new BlockItem(CmatdBlock.DIESEL_ENGINE.get(),new Item.Properties()));
-
     // conduits cables
     public static final DeferredItem<BlockItem> CONDUIT =
             ITEMS.register("conduit_cable",

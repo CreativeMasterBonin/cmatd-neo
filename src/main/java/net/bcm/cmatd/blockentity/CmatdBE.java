@@ -2,6 +2,7 @@ package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.block.custom.DimensionalTransporter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -108,14 +109,15 @@ public class CmatdBE {
                             .build(null));
 
     public static final Supplier<BlockEntityType<RotationalInductionGenerator>> ROTATIONAL_INDUCTION_GENERATOR = BLOCK_ENTITIES.register(
-            "", () ->
+            "rotational_induction_generator", () ->
                     BlockEntityType.Builder.of(RotationalInductionGenerator::new, CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
                             .build(null)
     );
-    /*
-    public static final Supplier<BlockEntityType<MasherBE>> MASHER = BLOCK_ENTITIES.register(
-            "masher_be",() ->
-                    BlockEntityType.Builder.of(MasherBE::new, CmatdBlock.MASHER.get())
-                            .build(null));*/
+
+    public static final Supplier<BlockEntityType<DimensionalTransporterBE>> DIMENSIONAL_TRANSPORTER = BLOCK_ENTITIES.register(
+            "dimensional_transporter", () ->
+                    BlockEntityType.Builder.of(DimensionalTransporterBE::new, CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
+                            .build(null));
+
 }
 

@@ -80,6 +80,10 @@ public class CmatdBlock{
     public static final DeferredBlock<Block> HEAT_GENERATOR = BLOCKS.register("heat_generator",
             () -> new HeatGenerator(BlockBehaviour.Properties.of().strength(1.15f,17f))); // has recipe
 
+    // dimensional related
+    public static final DeferredBlock<Block> DIMENSIONAL_TRANSPORTER = BLOCKS.register("dimensional_transporter",
+            () -> new DimensionalTransporter(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+                    .strength(1.5f,75f)));
 
     // conduits
     public static final DeferredBlock<Block> CONDUIT = BLOCKS.register("conduit_cable",
@@ -99,7 +103,6 @@ public class CmatdBlock{
 
     public static final DeferredBlock<Block> ROTATIONAL_INDUCTION_GENERATOR = BLOCKS.register("rotational_induction_generator",
             () -> new RotationalInductionGeneratorBlock(BlockBehaviour.Properties.of().strength(1.25f,50f))); // has recipe
-
 
     // gas vents
     public static final DeferredBlock<Block> METHANE_GAS_VENT = BLOCKS.register("methane_gas_vent",

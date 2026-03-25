@@ -8,6 +8,7 @@ import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.Fluid;
 
 public class Tag{
@@ -56,6 +57,9 @@ public class Tag{
     public static final TagKey<GasType> BURNABLE_GASES = gasTag("burnable");
     public static final TagKey<GasType> FREEZABLE_GASES = gasTag("freezable");
 
+    // dimensional tags
+    public static final TagKey<DimensionType> DIMENSIONAL_TRANSPORTER_ALLOWED = dimensionTypeTag("dimensional_transporter_allowed");
+
     private static TagKey<Fluid> fluidTag(String name){
         return FluidTags.create(ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
     }
@@ -66,6 +70,10 @@ public class Tag{
 
     private static TagKey<Item> itemTag(String name){
         return ItemTags.create(ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
+    }
+
+    private static TagKey<DimensionType> dimensionTypeTag(String name){
+        return TagKey.create(net.minecraft.core.registries.Registries.DIMENSION_TYPE,ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
     }
 
     private static TagKey<Biome> biomeTag(String name){
