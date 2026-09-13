@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = Cmatd.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Cmatd.MODID)
 public class DataGen{
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
