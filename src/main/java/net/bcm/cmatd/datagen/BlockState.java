@@ -5,6 +5,7 @@ import net.bcm.cmatd.block.CmatdBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class BlockState extends BlockStateProvider {
@@ -23,6 +24,9 @@ public class BlockState extends BlockStateProvider {
         simpleBlock(CmatdBlock.RAW_LODEALITE_BLOCK.get());
         simpleBlock(CmatdBlock.COMPOUNDITE_BLOCK.get());
         simpleBlock(CmatdBlock.LODEALITE_BLOCK.get());
-    }
 
+        simpleBlockWithItem(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(), new ModelFile.UncheckedModelFile(
+                ResourceLocation.parse("cmatd:block/conduit_all")
+        ));
+    }
 }
