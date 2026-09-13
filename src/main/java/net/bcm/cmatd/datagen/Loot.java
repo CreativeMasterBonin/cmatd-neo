@@ -74,6 +74,9 @@ public class Loot extends VanillaBlockLoot {
         this.dropWhenSilkTouch(CmatdBlock.STEAM_GAS_VENT.get());
         this.dropWhenSilkTouch(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get());
         this.dropWhenSilkTouch(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get());
+
+        // dimension stuff
+        this.add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(),noDrop()); // TODO: replace this with itself when ready
     }
 
     @Override
