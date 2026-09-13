@@ -1,7 +1,9 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.CmatdBlockStateProperties;
 import net.bcm.cmatd.CmatdSound;
+import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.datagen.Jammables;
 import net.bcm.cmatd.gui.JamMakerMenu;
 import net.bcm.cmatd.item.CmatdItem;
@@ -32,6 +34,7 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
     private int ticks;
     public int process_bits = 0;
     public int solar = 0;
+    public boolean nightUpgrade = false;
 
     /*
     sugar slot 0
@@ -39,6 +42,18 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
     jammable input slot 2
     jammable output slot 3
     */
+
+    public void updateBlock(){
+        this.setChanged();
+        if(this.level != null){
+            this.level.sendBlockUpdated(this.getBlockPos(),this.getBlockState(),this.getBlockState(),3);
+        }
+    }
+
+    public void setNightMode(){
+        nightUpgrade = true;
+        updateBlock();
+    }
 
     public JamMakerBE(BlockPos pos, BlockState blockState) {
         super(CmatdBE.JAM_MAKER.get(), pos, blockState);
@@ -100,6 +115,7 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
         tag.putInt("ticks",ticks);
         tag.putInt("process_bits",process_bits);
         tag.putInt("solar",solar);
+        tag.putBoolean("night_upgrade",nightUpgrade);
     }
 
     @Override
@@ -111,9 +127,18 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
         itemHandler.setStackInSlot(1,itemsLoad.get(1));
         itemHandler.setStackInSlot(2,itemsLoad.get(2));
         itemHandler.setStackInSlot(3,itemsLoad.get(3));
-        ticks = tag.getInt("ticks");
-        process_bits = tag.getInt("process_bits");
-        solar = tag.getInt("solar");
+        if(tag.contains("ticks")){
+            ticks = tag.getInt("ticks");
+        }
+        if(tag.contains("process_bits")){
+            process_bits = tag.getInt("process_bits");
+        }
+        if(tag.contains("solar")){
+            solar = tag.getInt("solar");
+        }
+        if(tag.contains("night_upgrade")){
+            nightUpgrade = tag.getBoolean("night_upgrade");
+        }
     }
 
     @Nullable
@@ -129,7 +154,19 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
             setChanged();
         }
 
-        if(level.isDay()){
+        if(this.getBlockState().is(CmatdBlock.JAM_MAKER)){
+            if(this.getBlockState().hasProperty(CmatdBlockStateProperties.ALL_DAY_NIGHT)){
+                if(nightUpgrade == true){
+                    this.getLevel().setBlock(
+                            this.getBlockPos(),
+                            this.getBlockState()
+                                    .setValue(CmatdBlockStateProperties.ALL_DAY_NIGHT,true),3);
+                    this.updateBlock();
+                }
+            }
+        }
+
+        if(level.isDay() || nightUpgrade){
             solar = 1;
             doStuff();
         }

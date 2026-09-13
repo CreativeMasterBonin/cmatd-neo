@@ -95,8 +95,8 @@ public class SolarGeneratorBE extends BlockEntity {
         if(!(level == null)){
             boolean notTheEnd = !(level.dimension() == Level.END);
             boolean notTheNether = !(level.dimension() == Level.NETHER);
-
-            if(this.level.canSeeSky(this.getBlockPos()) && this.level.isDay() && notTheNether && notTheEnd){
+            // add skylight check
+            if(this.level.canSeeSky(this.getBlockPos()) && this.level.isDay() && notTheNether && notTheEnd && level.dimensionType().hasSkyLight()){
                 generateEnergy();
             }
             distributeEnergy();

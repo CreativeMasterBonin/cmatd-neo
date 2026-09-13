@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -26,9 +27,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class LightningGenerator extends Block implements EntityBlock {
     public static final MapCodec<LightningGenerator> CODEC =
@@ -37,11 +43,23 @@ public class LightningGenerator extends Block implements EntityBlock {
     protected MapCodec<? extends Block> codec() {
         return CODEC;
     }
+    public static final VoxelShape ALL = Stream.of(
+            Block.box(0, 0, 0, 16, 8, 16),
+            Block.box(7, 8, 7, 9, 16, 9),
+            Block.box(5, 8, 5, 11, 10, 11),
+            Block.box(4, 11, 4, 12, 13, 12),
+            Block.box(3, 13.99, 3, 13, 15.99, 13)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
     public LightningGenerator(BlockBehaviour.Properties properties) {
         super(properties.sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLACK)
                 .noOcclusion());
         this.registerDefaultState(this.defaultBlockState().setValue(BlockStateProperties.POWERED,false));
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return ALL;
     }
 
     @Override

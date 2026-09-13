@@ -109,7 +109,7 @@ public class LightningGeneratorBE extends BlockEntity{
             ticks = 0;
         }
 
-        if(ticks % ServerConfig.LIGHTNING_GEN_TIMER_SCALE.getAsInt() == 0){
+        if(ticks % Mth.clamp(ServerConfig.LIGHTNING_GEN_TIMER_SCALE.getAsInt(),1,Integer.MAX_VALUE - 1) == 0){
             if(cooldownTicksLeft >= 1){
                 cooldownTicksLeft--;
             }
@@ -129,7 +129,7 @@ public class LightningGeneratorBE extends BlockEntity{
                     level.playSound(null,getBlockPos(),
                             SoundEvents.RESPAWN_ANCHOR_CHARGE, SoundSource.BLOCKS,
                             1.0f,0.75f);
-                    cooldownTicksLeft = ServerConfig.LIGHTNING_GEN_COOLDOWN_TIME.getAsInt();
+                    cooldownTicksLeft = Mth.clamp(ServerConfig.LIGHTNING_GEN_COOLDOWN_TIME.getAsInt(),1,Integer.MAX_VALUE - 1);
                     this.getLevel().setBlockAndUpdate(getBlockPos(),getBlockState().setValue(BlockStateProperties.POWERED,true));
                     setChanged();
                 }
@@ -140,7 +140,7 @@ public class LightningGeneratorBE extends BlockEntity{
 
     private void generateEnergy(){
         if (energyStorage.getEnergyStored() < energyStorage.getMaxEnergyStored()){
-            energyStorage.receiveEnergy(ServerConfig.LIGHTNING_GEN_RATE.getAsInt(), false);
+            energyStorage.receiveEnergy(Mth.clamp(ServerConfig.LIGHTNING_GEN_RATE.getAsInt(),1,Integer.MAX_VALUE - 1), false);
             setChanged();
         }
     }

@@ -128,7 +128,8 @@ public class CmatdItem{
                     () -> new BlockItem(CmatdBlock.CONDUIT.get(),new Item.Properties()){
                         @Override
                         public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-                            tooltipComponents.add(Component.literal("Slightly broken. Duplicates power when received, which is not intentional. Connects to CMATD machines as well as other mods' machines").withStyle(ChatFormatting.RED));
+                            tooltipComponents.add(Component.translatable("cmatd.conduit.unfinished_warning_desc").withStyle(ChatFormatting.RED)
+                                    .withStyle(ChatFormatting.BOLD));
                         }
                     });
 

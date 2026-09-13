@@ -3,7 +3,10 @@ package net.bcm.cmatd.item;
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.Components;
 import net.bcm.cmatd.blockentity.BaseCobbleMakerBE;
+import net.bcm.cmatd.blockentity.JamMakerBE;
+import net.bcm.cmatd.blockentity.PresserBE;
 import net.bcm.cmatd.network.BaseCobbleMakerTierUpdatePayload;
+import net.bcm.cmatd.network.UpdateNightModePayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -77,10 +80,13 @@ public class TierUpgrade extends Item{
             BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
             BlockPos clickedPos = context.getClickedPos();
             ItemStack itemInHand = context.getItemInHand();
+            // item in hand must have the machine tier component to do anything
             if(!itemInHand.has(Components.MACHINE_TIER)){
                 return InteractionResult.PASS;
             }
-            //
+            // get tier
+            int tier = itemInHand.get(Components.MACHINE_TIER).getMachineTier();
+            // check blockentity type
             if(be != null){
                 if(be instanceof BaseCobbleMakerBE){
                     if(((BaseCobbleMakerBE) be).getTierSettings(0) == itemInHand.get(Components.MACHINE_TIER).getMachineTier()){
@@ -90,7 +96,7 @@ public class TierUpgrade extends Item{
                         return InteractionResult.CONSUME;
                     }
                     // if not same tier, continue to upgrade (server only)
-                    if(context.getLevel().isClientSide){
+                    if(context.getLevel().isClientSide()){
                         try{
                             PacketDistributor.sendToServer(new BaseCobbleMakerTierUpdatePayload(
                                     clickedPos,
@@ -111,6 +117,26 @@ public class TierUpgrade extends Item{
                     itemInHand.shrink(1);
                     context.getPlayer().swing(context.getHand());
                     return InteractionResult.CONSUME;
+                }
+                else if(be instanceof JamMakerBE jamMakerBE){
+                    if(tier == 1){
+                        if(context.getLevel().isClientSide()){
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new UpdateNightModePayload(clickedPos,true));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                else if(be instanceof PresserBE presserBE){
+                    if(tier == 1){
+                        if(context.getLevel().isClientSide()){
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new UpdateNightModePayload(clickedPos,true));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
                 }
             }
         }

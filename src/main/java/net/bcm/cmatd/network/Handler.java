@@ -11,5 +11,6 @@ public class Handler{
         regex_reg.playToServer(BaseCobbleMakerTierUpdatePayload.TYPE,BaseCobbleMakerTierUpdatePayload.STREAM_CODEC,BaseCobbleMakerTierUpdatePacket.get()::handle);
         regex_reg.playToServer(FoodReactorWrenchUpdate.TYPE,FoodReactorWrenchUpdate.STREAM_CODEC, FoodReactorWrenchUpdatePacket.get()::handle);
         regex_reg.playToServer(GasTankUpdate.GAS_TANK_UPDATE_TYPE,GasTankUpdate.STREAM_CODEC,GasTankUpdate::handle);
+        regex_reg.playToServer(UpdateNightModePayload.TYPE,UpdateNightModePayload.STREAM_CODEC,UpdateNightModePacket.get()::handle);
     }
 }

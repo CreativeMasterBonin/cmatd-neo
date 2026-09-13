@@ -41,6 +41,7 @@ public class Language extends LanguageProvider{
         this.add("title.lunar_status.off","Not dark enough to operate");
         this.add("title.liquid_amt","%s Mb");
         this.add("title.liquid_amt_with_max","%s Mb / %s Mb");
+        this.add("title.solar_status.always_active","Always Active");
 
         // data and integration
         this.add("integration.data.gas","Gas: %s");
@@ -154,6 +155,7 @@ public class Language extends LanguageProvider{
         this.add(CmatdBlock.LIGHTNING_GENERATOR.get(),"Lightning Generator");
         this.add(CmatdBlock.HEAT_GENERATOR.get(),"Heat Generator");
         this.add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),"Rotational Induction Generator");
+        this.add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(),"Dimensional Transporter");
 
         // gas vents
         this.add(CmatdBlock.METHANE_GAS_VENT.get(),"Methane Gas Vent");
@@ -270,13 +272,33 @@ public class Language extends LanguageProvider{
         this.add("button.gas_tank.dump.desc","Dumps all gas (not radioactive) into the air");
 
         // CMATD config
+        // client config
         this.add("cmatd.configuration.show_gas_type_beam","Show Gas Type");
         this.add("cmatd.configuration.show_gas_type_beam.tooltip","Whether to show the gas type beam on the Gas Tank");
         this.add("cmatd.configuration.show_gas_amount_cube","Show Gas Amount");
         this.add("cmatd.configuration.show_gas_amount_cube.tooltip","Whether to show the gas amount cube on the Gas Tank");
+        this.add("cmatd.configuration.silence_masher","Silence Masher");
+        this.add("cmatd.configuration.silence_masher.tooltip","Whether to silence masher sounds");
+        // server config
+        this.add("cmatd.configuration.lightning_gen_timer_scale", "Lightning Gen Timer Scale");
+        this.add("cmatd.configuration.lightning_gen_timer_scale.tooltip", "How often the timer ticks");
+        this.add("cmatd.configuration.lightning_gen_max_receive_send", "Lightning Gen Max Send/Receive");
+        this.add("cmatd.configuration.lightning_gen_max_receive_send.tooltip", "The maximum amount of energy that can be sent or received at a time");
+        this.add("cmatd.configuration.lightning_gen_cooldown_time","Lightning Gen Cooldown");
+        this.add("cmatd.configuration.lightning_gen_cooldown_time.tooltip","The time until lightning can strike the generator to produce energy again");
+        this.add("cmatd.configuration.lightning_gen_capacity","Lightning Gen Energy Capacity");
+        this.add("cmatd.configuration.lightning_gen_capacity.tooltip","The total capacity of the battery in the Lightning Generator");
+        this.add("cmatd.configuration.lightning_gen_rate","Lightning Gen Energy Rate");
+        this.add("cmatd.configuration.lightning_gen_rate.tooltip","How much energy per lightning strike is generated");
+        // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");
         this.add("cmatd.configuration.section.cmatd.client.toml","Client Config");
         this.add("cmatd.configuration.section.cmatd.client.toml.title","Client");
+        this.add("cmatd.configuration.section.cmatd.server.toml.title","Server");
+
+        // CMATD debug or developer only
+        this.add("cmatd.dimensional_transporter.unfinished_warning_desc","Although the dimensional transporter can be configured to teleport, it currently does not teleport correctly and may lead to bugs or crashes! DO NOT USE!");
+        this.add("cmatd.conduit.unfinished_warning_desc","Doesn't work at all when placed, and may accidentally duplicate energy.");
     }
 }

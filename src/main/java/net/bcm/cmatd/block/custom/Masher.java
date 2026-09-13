@@ -1,8 +1,6 @@
 package net.bcm.cmatd.block.custom;
 
-import net.bcm.cmatd.Cmatd;
-import net.bcm.cmatd.CmatdSound;
-import net.bcm.cmatd.ServerUtilities;
+import net.bcm.cmatd.*;
 import net.bcm.cmatd.datagen.Mashables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -30,72 +28,47 @@ public class Masher extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(level.isClientSide){
-            return ItemInteractionResult.SUCCESS;
+        if(level.isClientSide()){
+            // client side only
+            Holder<Item> itemHolder = stack.getItemHolder();
+            Mashables mashables = itemHolder.getData(Cmatd.MASHABLES);
+            if(mashables != null){
+                // move sound to client side and add a configurable option
+                if(ClientConfig.SILENCE_MASHER.get().booleanValue() == false){
+                    level.playSound(player,pos, CmatdSound.MASHER_METALLIC.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+                }
+                return ItemInteractionResult.SUCCESS;
+            }
         }
         else{
+            // server side only
             double yPos = pos.getY() + 1.0D; // item entity pop location for y
             double ySpeed = 0.35D;
             RandomSource rand = level.getRandom();
             double randX = rand.nextDouble() * 0.15D;
             double randZ = rand.nextDouble() * 0.15D;
 
-            try{
-                Holder<Item> itemHolder = stack.getItemHolder();
-                Mashables mashables = itemHolder.getData(Cmatd.MASHABLES);
-                if(mashables != null){
-                    player.getItemInHand(hand).shrink(1);
-
-                    ItemEntity resultItem = new ItemEntity(level,
-                            pos.getX() + 0.5,yPos,pos.getZ() + 0.5,
-                            new ItemStack(mashables.outputItem()),
-                            randX,ySpeed,randZ);
-
-                    level.addFreshEntity(resultItem);
-                    level.playSound(player,pos, CmatdSound.MASHER_METALLIC.get(), SoundSource.BLOCKS, 1.0f,1.0f);
-
-                    if(level instanceof ServerLevel){
-                        ((ServerLevel) level).sendParticles(ParticleTypes.DUST_PLUME,
-                                pos.getX() + 0.5,pos.getY() + 1.0, pos.getZ() + 0.5,
-                                4,0,0,0,0);
-                    }
-
-                    player.swing(hand);
-                    return ItemInteractionResult.CONSUME;
-                }
-                else {
-                    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-                }
-            }
-            catch (Exception e){
-                Cmatd.getLogger().error("Masher at {} cannot do operation as exception was thrown: {}",pos.toShortString(),e.getMessage());
-            }
-
-            /*
-            if(player.getItemInHand(hand).is(Items.POTATO)){
+            Holder<Item> itemHolder = stack.getItemHolder();
+            Mashables mashables = itemHolder.getData(Cmatd.MASHABLES);
+            if(mashables != null){
                 player.getItemInHand(hand).shrink(1);
 
                 ItemEntity resultItem = new ItemEntity(level,
-                        pos.getX(),yPos,pos.getZ(),
-                        new ItemStack(CmatdItem.MASHED_POTATOES.asItem()),
-                        0,ySpeed,0);
+                        pos.getX() + 0.5,yPos,pos.getZ() + 0.5,
+                        new ItemStack(mashables.outputItem()),
+                        randX,ySpeed,randZ);
 
                 level.addFreshEntity(resultItem);
-                level.playSound(player,pos, CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+
+                if(level instanceof ServerLevel){
+                    ((ServerLevel) level).sendParticles(ParticleTypes.DUST_PLUME,
+                            pos.getX() + 0.5,pos.getY() + 1.0, pos.getZ() + 0.5,
+                            4,0,0,0,0);
+                }
+
+                player.swing(hand);
+                return ItemInteractionResult.CONSUME;
             }
-            else if(player.getItemInHand(hand).is(Items.POISONOUS_POTATO)){
-                player.getItemInHand(hand).shrink(1);
-
-                ItemEntity resultItem = new ItemEntity(level,
-                        pos.getX(),yPos,pos.getZ(),
-                        new ItemStack(CmatdItem.POISONOUS_MASHED_POTATOES.asItem()),
-                        0,ySpeed,0);
-
-                level.addFreshEntity(resultItem);
-                level.playSound(player,pos, CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
-            }
-
-             */
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

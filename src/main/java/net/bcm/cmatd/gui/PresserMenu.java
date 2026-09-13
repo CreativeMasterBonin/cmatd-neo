@@ -19,6 +19,7 @@ public class PresserMenu extends AbstractContainerMenu {
     public int processBits;
     public int sameItem;
     public int solar;
+    public int nightMode;
 
     private int SLOT = 0;
     private int SLOT_COUNT = 6;
@@ -61,6 +62,17 @@ public class PresserMenu extends AbstractContainerMenu {
                 @Override
                 public void set(int value) {
                     solar = value;
+                }
+            });
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return presser.nightUpgrade ? 1 : 0;
+                }
+
+                @Override
+                public void set(int i) {
+                    nightMode = i;
                 }
             });
         }

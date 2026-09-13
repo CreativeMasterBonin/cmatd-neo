@@ -102,7 +102,7 @@ public class GasTankBE extends AbstractGasContainingBE{
                     gasTank.setGas(gasVent.getDefaultGasStack(),false);
                     level.playSound(null,getBlockPos(),
                             SoundEvents.BUCKET_FILL_LAVA,SoundSource.BLOCKS,
-                            0.75f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
+                            0.15f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
                     setChanged();
                 }
                 else{
@@ -112,7 +112,7 @@ public class GasTankBE extends AbstractGasContainingBE{
                             if(level.getRandom().nextIntBetweenInclusive(1,12) <= 2){
                                 level.playSound(null,getBlockPos(),
                                         SoundEvents.POINTED_DRIPSTONE_DRIP_LAVA_INTO_CAULDRON,SoundSource.BLOCKS,
-                                        0.75f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
+                                        0.15f,Mth.nextFloat(level.getRandom(),0.95f,1.1f));
                             }
                             setChanged();
                         }

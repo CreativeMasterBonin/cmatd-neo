@@ -38,7 +38,7 @@ public class BaseCobbleMaker extends Block implements EntityBlock{
     }
 
     public BaseCobbleMaker(Properties properties) {
-        super(properties.sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLACK));
+        super(properties.sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLACK).noOcclusion());
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(HorizontalDirectionalBlock.FACING, Direction.NORTH)
                 .setValue(BlockStateProperties.POWERED,false));

@@ -1,15 +1,19 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.Cmatd;
+import net.bcm.cmatd.CmatdBlockStateProperties;
 import net.bcm.cmatd.Components;
+import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
@@ -29,6 +33,19 @@ public class PresserBE extends BlockEntity{
     private final int INVENTORY_SIZE = 6;
     public int sameItem = 0;
     public int solar = 0;
+    public boolean nightUpgrade = false;
+
+    public void updateBlock(){
+        this.setChanged();
+        if(this.level != null){
+            this.level.sendBlockUpdated(this.getBlockPos(),this.getBlockState(),this.getBlockState(),3);
+        }
+    }
+
+    public void setNightMode(){
+        nightUpgrade = true;
+        updateBlock();
+    }
 
     public PresserBE(BlockPos pos, BlockState blockState) {
         super(CmatdBE.PRESSER.get(),pos, blockState);
@@ -75,6 +92,7 @@ public class PresserBE extends BlockEntity{
         tag.putInt("ticks",ticks);
         tag.putInt("process_bits",process_bits);
         tag.putInt("same_item",sameItem);
+        tag.putBoolean("night_upgrade",nightUpgrade);
     }
 
     @Override
@@ -89,9 +107,18 @@ public class PresserBE extends BlockEntity{
         itemHandler.setStackInSlot(3,itemsLoad.get(3));
         itemHandler.setStackInSlot(4,itemsLoad.get(4));
         itemHandler.setStackInSlot(5,itemsLoad.get(5));
-        ticks = tag.getInt("ticks");
-        process_bits = tag.getInt("process_bits");
-        sameItem = tag.getInt("same_item");
+        if(tag.contains("ticks")){
+            ticks = tag.getInt("ticks");
+        }
+        if(tag.contains("process_bits")){
+            process_bits = tag.getInt("process_bits");
+        }
+        if(tag.contains("same_item")){
+            sameItem = tag.getInt("same_item");
+        }
+        if(tag.contains("night_upgrade")){
+            nightUpgrade = tag.getBoolean("night_upgrade");
+        }
     }
 
     public void serverTick(){
@@ -101,7 +128,19 @@ public class PresserBE extends BlockEntity{
             setChanged();
         }
 
-        if(level.isDay()){
+        if(this.getBlockState().is(CmatdBlock.PRESSER)){
+            if(this.getBlockState().hasProperty(CmatdBlockStateProperties.ALL_DAY_NIGHT)){
+                if(nightUpgrade == true){
+                    this.getLevel().setBlock(
+                            this.getBlockPos(),
+                            this.getBlockState()
+                                    .setValue(CmatdBlockStateProperties.ALL_DAY_NIGHT,true),3);
+                    this.updateBlock();
+                }
+            }
+        }
+
+        if(level.isDay() || nightUpgrade){
             solar = 1;
             if(ticks % 5 == 0){
                 ItemStack pressPatternItem = getItemHandler().getStackInSlot(0);
@@ -161,6 +200,11 @@ public class PresserBE extends BlockEntity{
                                 process_bits = 0;
                                 level.playSound(null,getBlockPos(),
                                         SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS,1.0f,1.0f);
+                                if(level instanceof ServerLevel serverLevel){
+                                    serverLevel.sendParticles(ParticleTypes.SCRAPE,
+                                            getBlockPos().getX() + 0.5,getBlockPos().getY() + 0.45, getBlockPos().getZ() + 0.5,
+                                            1,0,0,0,0);
+                                }
                                 setChanged();
                             }
                             else{
@@ -171,6 +215,11 @@ public class PresserBE extends BlockEntity{
                                     process_bits = 0;
                                     level.playSound(null,getBlockPos(),
                                             SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS,1.0f,1.0f);
+                                    if(level instanceof ServerLevel serverLevel){
+                                        serverLevel.sendParticles(ParticleTypes.SCRAPE,
+                                                getBlockPos().getX() + 0.5,getBlockPos().getY() + 0.45, getBlockPos().getZ() + 0.5,
+                                                1,0,0,0,0);
+                                    }
                                     setChanged();
                                 }
                                 else{

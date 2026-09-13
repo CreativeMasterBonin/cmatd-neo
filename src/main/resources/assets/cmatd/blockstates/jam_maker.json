@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "all_day_night=false": {
       "model": "cmatd:block/jam_maker"
+    },
+    "all_day_night=true": {
+      "model": "cmatd:block/jam_maker_lunar"
     }
   }
 }

@@ -24,7 +24,9 @@ public class FacadeConduitCableItem extends BlockItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.literal("Duplicates power and doesn't work at all when placed.").withStyle(ChatFormatting.RED));
+        tooltipComponents.add(Component.translatable("cmatd.conduit.unfinished_warning_desc")
+                .withStyle(ChatFormatting.RED)
+                .withStyle(ChatFormatting.BOLD));
         if(stack.has(DataComponents.BLOCK_ENTITY_DATA)){
             if(stack.getComponents().get(DataComponents.BLOCK_ENTITY_DATA).contains("facade")){
 

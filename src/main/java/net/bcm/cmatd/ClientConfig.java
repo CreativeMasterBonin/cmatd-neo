@@ -13,5 +13,9 @@ public class ClientConfig {
             .comment("Render the gas type beam on gas tanks")
             .define("show_gas_type_beam",true);
 
+    public static final ModConfigSpec.BooleanValue SILENCE_MASHER = BUILDER
+            .comment("Whether to silence the masher")
+            .define("silence_masher",false);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }
