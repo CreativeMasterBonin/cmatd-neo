@@ -1,5 +1,6 @@
 package net.bcm.cmatd.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.bcm.cmatd.Utility;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,8 +32,8 @@ public class PresserScreen extends AbstractContainerScreen<PresserMenu> {
         guiGraphics.blit(BG, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
 
         int length = Mth.ceil(this.menu.processBits * 1.0f);
-
-
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(Utility.normalizeIntToFloatValue(this.menu.processBits,0,18,0.0f,1.0f),Utility.normalizeIntToFloatValue(this.menu.processBits,0,18,0.0f,1.0f),Utility.normalizeIntToFloatValue(this.menu.processBits,0,18,0.0f,1.0f),1.0f);
         if(menu.sameItem == 0){
             guiGraphics.blit(this.progressBarFullBad,
                     this.leftPos + PROGRESS_BAR_X - 1, this.topPos + PROGRESS_BAR_Y - 1,
@@ -45,6 +46,8 @@ public class PresserScreen extends AbstractContainerScreen<PresserMenu> {
                     0, 0,
                     length, 34,length,34);
         }
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
+        RenderSystem.disableBlend();
 
         float f = 1.0f - Mth.sin(Util.getMillis() / 360.0f) + 1.0f;
         // solar check

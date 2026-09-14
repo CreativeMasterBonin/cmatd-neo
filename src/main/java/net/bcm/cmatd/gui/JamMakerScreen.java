@@ -1,5 +1,6 @@
 package net.bcm.cmatd.gui;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.bcm.cmatd.Utility;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -41,11 +42,18 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
 
         // process bar
         int length = Mth.ceil(this.menu.processBits * 1.0F);
-
+        // alpha calculation
+        float alpha = Utility.normalizeIntToFloatValue(this.menu.processBits,0,50,0.0f,1.0f);
+        // enable blending in the rendering system
+        RenderSystem.enableBlend();
+        // set the color for the next rendered thing
+        RenderSystem.setShaderColor(0.25f,Mth.clamp(alpha + 0.5f,0.5f,1.0f),alpha,1.0f);
         guiGraphics.blit(this.progressBarFull,
                 this.leftPos + PROGRESS_BAR_X - 1, this.topPos + PROGRESS_BAR_Y - 1,
                 0, 0,
                 length, 4,length,4);
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
+        RenderSystem.disableBlend();
 
         guiGraphics.blit(this.lockedSlotSprite,this.leftPos + 151,this.topPos + 25,0,0,
                 18,18,18,18);

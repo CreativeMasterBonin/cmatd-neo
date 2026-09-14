@@ -5,7 +5,9 @@ import net.bcm.cmatd.Components;
 import net.bcm.cmatd.blockentity.BaseCobbleMakerBE;
 import net.bcm.cmatd.blockentity.JamMakerBE;
 import net.bcm.cmatd.blockentity.PresserBE;
+import net.bcm.cmatd.blockentity.TieredMachine;
 import net.bcm.cmatd.network.BaseCobbleMakerTierUpdatePayload;
+import net.bcm.cmatd.network.MachineTierUpgradePayload;
 import net.bcm.cmatd.network.UpdateNightModePayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -119,17 +121,25 @@ public class TierUpgrade extends Item{
                     return InteractionResult.CONSUME;
                 }
                 else if(be instanceof JamMakerBE jamMakerBE){
-                    if(tier == 1){
+                    if(tier == 1 && (!jamMakerBE.nightUpgrade || jamMakerBE.machineTier < 1)){
                         if(context.getLevel().isClientSide()){
                             context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
                             PacketDistributor.sendToServer(new UpdateNightModePayload(clickedPos,true));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                    else{
+                        if(context.getLevel().isClientSide()) {
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new MachineTierUpgradePayload(clickedPos, tier));
                             return InteractionResult.SUCCESS;
                         }
                         return InteractionResult.SUCCESS;
                     }
                 }
                 else if(be instanceof PresserBE presserBE){
-                    if(tier == 1){
+                    if(tier == 1 && (!presserBE.nightUpgrade || presserBE.machineTier < 1)){
                         if(context.getLevel().isClientSide()){
                             context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
                             PacketDistributor.sendToServer(new UpdateNightModePayload(clickedPos,true));
@@ -137,6 +147,20 @@ public class TierUpgrade extends Item{
                         }
                         return InteractionResult.SUCCESS;
                     }
+                    else{
+                        if(context.getLevel().isClientSide()) {
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new MachineTierUpgradePayload(clickedPos, tier));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                else if(be instanceof TieredMachine tieredMachine){
+                    if(tieredMachine.machineTier < tier){
+
+                    }
+                    return InteractionResult.SUCCESS;
                 }
             }
         }

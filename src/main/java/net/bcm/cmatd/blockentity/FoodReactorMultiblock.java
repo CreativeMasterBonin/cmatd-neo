@@ -2,6 +2,7 @@ package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.*;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.block.custom.FoodReactorBlock;
 import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.item.CmatdItem;
@@ -25,8 +26,10 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.EnergyStorage;
@@ -384,51 +387,54 @@ public class FoodReactorMultiblock extends BlockEntity {
     public void checkMultiblockForm(){
         int validBlockCount = 0;
         int blocksToBeReplaced = 0;
-        for(int x = getBlockPos().getX() - 3; x < getBlockPos().getX() + 1; x++){
-            for(int y = getBlockPos().getY() - 1; y < getBlockPos().getY() + 2; y++){
-                for(int z = getBlockPos().getZ() - 3; z < getBlockPos().getZ() + 1; z++){
-                    boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
-                    if(isIron){
-                        validBlockCount++;
-                        if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
-                            validBlockCount--;
+        BlockPos relativePos = getBlockPos();
+        if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
+            for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
+                    for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
+                        boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
+                        if(isIron){
+                            validBlockCount++;
+                            if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                                validBlockCount--;
+                            }
                         }
-                    }
-                    else{
-                        if(!level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
-                            blocksToBeReplaced++;
-                            if(level instanceof ServerLevel){
-                                ((ServerLevel) level).sendParticles(ParticleTypes.DRIPPING_LAVA,
-                                        x + 0.5,y + 0.5,z + 0.5,
-                                        1,0,0,0,0);
+                        else{
+                            if(!level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                                blocksToBeReplaced++;
+                                if(level instanceof ServerLevel){
+                                    ((ServerLevel) level).sendParticles(ParticleTypes.DRIPPING_LAVA,
+                                            x + 0.5,y + 0.5,z + 0.5,
+                                            1,0,0,0,0);
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        // all blocks minus the controller
-        if(validBlockCount == 47 && blocksToBeReplaced == 0) {
-            if(!multiblockFormed){
-                multiblockFormed = true;
-                getLevel().playSound(null,getBlockPos(),SoundEvents.IRON_GOLEM_DEATH,SoundSource.BLOCKS,1.0f,0.95f);
-                for(int x = getBlockPos().getX() - 3; x < getBlockPos().getX() + 1; x++){
-                    for(int y = getBlockPos().getY() - 1; y < getBlockPos().getY() + 2; y++){
-                        for(int z = getBlockPos().getZ() - 3; z < getBlockPos().getZ() + 1; z++){
-                            if(level instanceof ServerLevel){
-                                ((ServerLevel) level).sendParticles(ParticleTypes.EXPLOSION,
-                                        x + 0.5,y + 0.5,z + 0.5,
-                                        1,0,0,0,0);
+            // all blocks minus the controller
+            if(validBlockCount == 47 && blocksToBeReplaced == 0) {
+                if(!multiblockFormed){
+                    multiblockFormed = true;
+                    getLevel().playSound(null,getBlockPos(),SoundEvents.IRON_GOLEM_DEATH,SoundSource.BLOCKS,1.0f,0.95f);
+                    for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
+                        for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
+                            for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
+                                if(level instanceof ServerLevel){
+                                    ((ServerLevel) level).sendParticles(ParticleTypes.GUST,
+                                            x + 0.5,y + 0.5,z + 0.5,
+                                            1,0,0,0,0);
+                                }
                             }
                         }
                     }
                 }
+                setChanged();
             }
-            setChanged();
-        }
-        else{
-            multiblockFormed = false;
-            setChanged();
+            else{
+                multiblockFormed = false;
+                setChanged();
+            }
         }
     }
 
@@ -438,19 +444,23 @@ public class FoodReactorMultiblock extends BlockEntity {
     public boolean onlyCheckMultiblockFormNoUpdate(){
         int validBlockCount = 0;
         int blocksToBeReplaced = 0;
-        for(int x = getBlockPos().getX() - 3; x < getBlockPos().getX() + 1; x++){
-            for(int y = getBlockPos().getY() - 1; y < getBlockPos().getY() + 2; y++){
-                for(int z = getBlockPos().getZ() - 3; z < getBlockPos().getZ() + 1; z++){
-                    boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
-                    if(isIron){
-                        validBlockCount++;
-                        if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
-                            validBlockCount--;
+
+        BlockPos relativePos = getBlockPos();
+        if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
+            for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
+                    for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
+                        boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
+                        if(isIron){
+                            validBlockCount++;
+                            if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                                validBlockCount--;
+                            }
                         }
-                    }
-                    else{
-                        if(!level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
-                            blocksToBeReplaced++;
+                        else{
+                            if(!level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                                blocksToBeReplaced++;
+                            }
                         }
                     }
                 }
