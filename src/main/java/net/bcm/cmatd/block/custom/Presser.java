@@ -2,6 +2,7 @@ package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.bcm.cmatd.CmatdBlockStateProperties;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.PresserBE;
 import net.bcm.cmatd.gui.PresserMenu;
 import net.bcm.cmatd.item.TierUpgrade;
@@ -16,6 +17,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -31,9 +33,14 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Presser extends BaseEntityBlock {
     public static final MapCodec<Presser> CODEC =
@@ -48,6 +55,11 @@ public class Presser extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(ALL_DAY_NIGHT);
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return Utility.BASE_MACHINE_SHAPE_ALL;
     }
 
     @Override
@@ -76,6 +88,8 @@ public class Presser extends BaseEntityBlock {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("desc.item.presser.additional_info")
                 .withStyle(ChatFormatting.GOLD));
+        tooltipComponents.add(Component.translatable("desc.item.machine_needs_upgrade_to_work_constantly")
+                .withStyle(ChatFormatting.YELLOW));
     }
 
     @Override

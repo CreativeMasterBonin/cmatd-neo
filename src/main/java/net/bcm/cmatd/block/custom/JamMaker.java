@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -32,9 +33,14 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class JamMaker extends BaseEntityBlock {
     public static final MapCodec<JamMaker> CODEC =
@@ -44,6 +50,17 @@ public class JamMaker extends BaseEntityBlock {
         return CODEC;
     }
     public static final BooleanProperty ALL_DAY_NIGHT = CmatdBlockStateProperties.ALL_DAY_NIGHT;
+    public static final VoxelShape ALL = Stream.of(
+            Block.box(0, 0, 0, 16, 4, 16),
+            Block.box(0, 12, 0, 16, 16, 16),
+            Block.box(4, 4, 0, 12, 12, 2),
+            Block.box(4, 4, 14, 12, 12, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return ALL;
+    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -71,6 +88,8 @@ public class JamMaker extends BaseEntityBlock {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("desc.item.jam_maker.additional_info")
                 .withStyle(ChatFormatting.GOLD));
+        tooltipComponents.add(Component.translatable("desc.item.machine_needs_upgrade_to_work_constantly")
+                .withStyle(ChatFormatting.YELLOW));
     }
 
     @Override

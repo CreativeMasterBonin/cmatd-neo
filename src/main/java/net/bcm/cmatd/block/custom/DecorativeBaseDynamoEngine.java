@@ -1,6 +1,7 @@
 package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.CmatdBE;
 import net.bcm.cmatd.blockentity.DecorativeBaseDynamoEngineBE;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,6 +22,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class DecorativeBaseDynamoEngine extends BaseEntityBlock implements EntityBlock, SimpleWaterloggedBlock {
@@ -29,6 +34,22 @@ public class DecorativeBaseDynamoEngine extends BaseEntityBlock implements Entit
         return CODEC;
     }
     public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if(state.getBlock() instanceof RedstoneDynamoEngine){
+            switch (state.getValue(BlockStateProperties.FACING)){
+                case NORTH -> {return Utility.DYNAMO_ENGINE_FACING_NORTH;}
+                case SOUTH -> {return Utility.DYNAMO_ENGINE_FACING_SOUTH;}
+                case EAST -> {return Utility.DYNAMO_ENGINE_FACING_EAST;}
+                case WEST -> {return Utility.DYNAMO_ENGINE_FACING_WEST;}
+                case UP -> {return Utility.DYNAMO_ENGINE_FACING_UP;}
+                case DOWN -> {return Utility.DYNAMO_ENGINE_FACING_DOWN;}
+            }
+        }
+        return Shapes.block();
+    }
+
     public DecorativeBaseDynamoEngine(Properties properties){
         super(properties.noOcclusion());
         this.registerDefaultState(this.defaultBlockState()

@@ -110,6 +110,7 @@ public class Language extends LanguageProvider{
         this.add("desc.item.food_reactor.additional_info","Turns food into energy using coolant and the special underground materials");
         this.add("desc.item.food_reactor.requirements","Needs a coolant, food and no waste items to function; waste tank must be empty as well");
         this.add("desc.item.food_reactor.tip","Pro Tip: Some foods may have significant output!");
+        this.add("desc.item.machine_needs_upgrade_to_work_constantly","Machine only works at day, but can be upgraded to work at night as well");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");

@@ -8,11 +8,16 @@ import net.bcm.cmatd.datagen.Jammables;
 import net.bcm.cmatd.gui.JamMakerMenu;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.*;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
@@ -29,6 +34,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
 public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyContainer {
     private final ItemStackHandler itemHandler;
@@ -201,6 +207,18 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
                                 getItemHandler().getStackInSlot(2).shrink(1);
                                 level.playSound(null,getBlockPos(),
                                         CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+                                if(level instanceof ServerLevel serverLevel){
+                                    try{
+                                        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM,getItemHandler().getStackInSlot(3)),
+                                                (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                (double)getBlockPos().getY() + 0.45D,
+                                                (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                1,0,0,0,0.1D);
+                                    }
+                                    catch (Exception e){
+
+                                    }
+                                }
                                 process_bits = 0;
                                 setChanged();
                             }
@@ -212,6 +230,18 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
                                     getItemHandler().getStackInSlot(2).shrink(1);
                                     level.playSound(null,getBlockPos(),
                                             CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+                                    if(level instanceof ServerLevel serverLevel){
+                                        try{
+                                            serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM,getItemHandler().getStackInSlot(3)),
+                                                    (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                    (double)getBlockPos().getY() + 0.45D,
+                                                    (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                    1,0,0,0,0.1D);
+                                        }
+                                        catch (Exception e){
+
+                                        }
+                                    }
                                     process_bits = 0;
                                     setChanged();
                                 }

@@ -20,14 +20,14 @@ public class CmatdBlock{
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Cmatd.MODID);
 
     public static final DeferredBlock<Block> MACHINE_FRAME = BLOCKS.register("machine_frame",
-            () -> new Block(BlockBehaviour.Properties.of().sound(SoundType.NETHERITE_BLOCK)
+            () -> new MachineFrame(BlockBehaviour.Properties.of().sound(SoundType.NETHERITE_BLOCK)
                     .strength(1.15f,7f)
                     .requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLACK)
                     .instrument(NoteBlockInstrument.BIT).isViewBlocking(CmatdBlock::never)
                     .isSuffocating(CmatdBlock::never).noOcclusion())); // has recipe
 
     public static final DeferredBlock<Block> LESSER_MACHINE_FRAME = BLOCKS.register("lesser_machine_frame",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new MachineFrame(BlockBehaviour.Properties.of()
                     .strength(1f,4f)
                     .sound(SoundType.NETHERITE_BLOCK)
                     .requiresCorrectToolForDrops().mapColor(MapColor.COLOR_BLACK)
@@ -35,7 +35,6 @@ public class CmatdBlock{
                     .isSuffocating(CmatdBlock::never).noOcclusion())); // has recipe
 
     // machines and generators
-
     public static final DeferredBlock<Block> BASE_ENERGY_MAKER = BLOCKS.register("base_energy_maker",
             () -> new BaseEnergyMaker(BlockBehaviour.Properties.of().strength(1f,20f))); // has recipe
 

@@ -9,7 +9,6 @@ import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -316,7 +315,9 @@ public class PresserBE extends BlockEntity{
                                 if(efficiency_modules < silenceSoundsAsTooFast && speedModules < silenceSoundsAsTooFast){
                                     if(level instanceof ServerLevel serverLevel){
                                         serverLevel.sendParticles(ParticleTypes.SCRAPE,
-                                                getBlockPos().getX() + 0.5,getBlockPos().getY() + 0.45, getBlockPos().getZ() + 0.5,
+                                                (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                (double)getBlockPos().getY() + 0.45D,
+                                                (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
                                                 1,0,0,0,0);
                                     }
                                 }
@@ -391,7 +392,9 @@ public class PresserBE extends BlockEntity{
                                     if(efficiency_modules < silenceSoundsAsTooFast && speedModules < silenceSoundsAsTooFast){
                                         if(level instanceof ServerLevel serverLevel){
                                             serverLevel.sendParticles(ParticleTypes.SCRAPE,
-                                                    getBlockPos().getX() + 0.5,getBlockPos().getY() + 0.45, getBlockPos().getZ() + 0.5,
+                                                    (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                    (double)getBlockPos().getY() + 0.45D,
+                                                    (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
                                                     1,0,0,0,0);
                                         }
                                     }

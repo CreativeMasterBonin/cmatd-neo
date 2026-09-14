@@ -1,10 +1,12 @@
 package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.BaseEnergyMakerBE;
 import net.bcm.cmatd.blockentity.CmatdBE;
 import net.bcm.cmatd.blockentity.RedstoneDynamoEngineBE;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -15,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,6 +31,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -37,6 +43,21 @@ public class RedstoneDynamoEngine extends BaseEntityBlock implements EntityBlock
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
+    }
+
+    @Override
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        if(state.getBlock() instanceof RedstoneDynamoEngine){
+            switch (state.getValue(BlockStateProperties.FACING)){
+                case NORTH -> {return Utility.DYNAMO_ENGINE_FACING_NORTH;}
+                case SOUTH -> {return Utility.DYNAMO_ENGINE_FACING_SOUTH;}
+                case EAST -> {return Utility.DYNAMO_ENGINE_FACING_EAST;}
+                case WEST -> {return Utility.DYNAMO_ENGINE_FACING_WEST;}
+                case UP -> {return Utility.DYNAMO_ENGINE_FACING_UP;}
+                case DOWN -> {return Utility.DYNAMO_ENGINE_FACING_DOWN;}
+            }
+        }
+        return Shapes.block();
     }
 
     @Override

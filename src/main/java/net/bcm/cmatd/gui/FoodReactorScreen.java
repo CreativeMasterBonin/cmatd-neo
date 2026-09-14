@@ -1,8 +1,11 @@
 package net.bcm.cmatd.gui;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.BaseEnergyMakerBE;
+import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -62,12 +65,25 @@ public class FoodReactorScreen extends AbstractContainerScreen<FoodReactorMenu> 
         guiGraphics.fillGradient(leftPos + ENERGY_LEFT, topPos + ENERGY_TOP, leftPos + ENERGY_LEFT + p, topPos + ENERGY_TOP + ENERGY_HEIGHT, Utility.BRIGHT_LIGHT_BLUE, Utility.DARKER_BLUE);
         guiGraphics.fill(leftPos + ENERGY_LEFT + p, topPos + ENERGY_TOP, leftPos + ENERGY_LEFT + ENERGY_WIDTH, topPos + ENERGY_TOP + ENERGY_HEIGHT, Utility.DARKEST_GRAYER_BLUE);
 
-        int progressTicks = Mth.ceil(menu.progress * 1.0F);
+        int progressTicks = Mth.ceil(menu.progress * 1.0f);
 
-        guiGraphics.blit(REACTOR_HEAT,this.leftPos + 72,this.topPos + 44,
+        int yPos = this.topPos + 44;
+
+        float alpha = Utility.normalizeIntToFloatValue(progressTicks,0,32,0.0f,1.0f);
+
+        /*float flicker = Mth.clamp((float)Mth.lerp(partialTick,0.02f,1.0f) - Mth.sin(Util.getMillis() / 320.0f - Mth.lerp(partialTick,(float)Math.random() * -20.0f,(float)Math.random() * 20.0f)) + (float)Mth.lerp(partialTick,0.09f,1.1f),
+                0.7f,1.0f);*/
+
+        // enable blending in the rendering system
+        RenderSystem.enableBlend();
+        // set the color for the next rendered thing
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,alpha);
+        guiGraphics.blit(REACTOR_HEAT,this.leftPos + 72,(yPos + 32) - progressTicks,
                 0,0,
-                0,32,progressTicks,
+                32,32,progressTicks,
                 32,32);
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);// reset color to default
+        RenderSystem.disableBlend(); // disable the mixing mode
     }
 
     @Override

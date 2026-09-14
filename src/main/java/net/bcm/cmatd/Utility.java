@@ -197,7 +197,53 @@ public class Utility{
     public static final VoxelShape DOWN_CONDUIT = Block.box(5, 0, 5, 11, 4, 11);
     public static final VoxelShape UP_CONDUIT = Block.box(5, 12, 5, 11, 16, 11);
 
-
+    public static final VoxelShape BASE_MACHINE_SHAPE_ALL = Stream.of(
+            Block.box(0, 0, 0, 16, 4, 16),
+            Block.box(0, 12, 0, 16, 16, 16),
+            Block.box(0, 4, 0, 4, 12, 4),
+            Block.box(12, 4, 0, 16, 12, 4),
+            Block.box(12, 4, 12, 16, 12, 16),
+            Block.box(0, 4, 12, 4, 12, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape MACHINE_FRAME_ALL = Stream.of(
+            Block.box(0, 0, 0, 16, 4, 16),
+            Block.box(0, 4, 0, 4, 12, 4),
+            Block.box(12, 4, 0, 16, 12, 4),
+            Block.box(12, 4, 12, 16, 12, 16),
+            Block.box(0, 4, 12, 4, 12, 16),
+            Block.box(0, 12, 0, 16, 16, 16),
+            Block.box(6, 6, 6, 10, 10, 10)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_UP = Stream.of(
+            Block.box(0, 6, 0, 16, 10, 16),
+            Block.box(5, 1, 5, 11, 16, 11),
+            Block.box(0, 0, 0, 16, 6, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_DOWN = Stream.of(
+            Block.box(0, 6, 0, 16, 10, 16),
+            Block.box(5, 0, 5, 11, 15, 11),
+            Block.box(0, 10, 0, 16, 16, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_NORTH = Stream.of(
+            Block.box(0, 0, 6, 16, 16, 10),
+            Block.box(5, 5, 0, 11, 11, 15),
+            Block.box(0, 0, 10, 16, 16, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_EAST = Stream.of(
+            Block.box(6, 0, 0, 10, 16, 16),
+            Block.box(1, 5, 5, 16, 11, 11),
+            Block.box(0, 0, 0, 6, 16, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_SOUTH = Stream.of(
+            Block.box(0, 0, 6, 16, 16, 10),
+            Block.box(5, 5, 1, 11, 11, 16),
+            Block.box(0, 0, 0, 16, 16, 6)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    public static final VoxelShape DYNAMO_ENGINE_FACING_WEST = Stream.of(
+            Block.box(6, 0, 0, 10, 16, 16),
+            Block.box(0, 5, 5, 15, 11, 11),
+            Block.box(10, 0, 0, 16, 16, 16)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
     // MATH
     // some functions here don't function at all, so they are useless
