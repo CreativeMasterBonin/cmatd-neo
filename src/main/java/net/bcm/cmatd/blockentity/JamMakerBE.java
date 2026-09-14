@@ -14,6 +14,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
@@ -35,6 +36,7 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
     public int process_bits = 0;
     public int solar = 0;
     public boolean nightUpgrade = false;
+    public int machineTier = 0;
 
     /*
     sugar slot 0
@@ -116,6 +118,7 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
         tag.putInt("process_bits",process_bits);
         tag.putInt("solar",solar);
         tag.putBoolean("night_upgrade",nightUpgrade);
+        tag.putInt("machine_tier",machineTier);
     }
 
     @Override
@@ -139,6 +142,9 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
         if(tag.contains("night_upgrade")){
             nightUpgrade = tag.getBoolean("night_upgrade");
         }
+        if(tag.contains("machine_tier")){
+            machineTier = Mth.clamp(tag.getInt("machine_tier"),1,9);
+        }
     }
 
     @Nullable
@@ -156,7 +162,7 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
 
         if(this.getBlockState().is(CmatdBlock.JAM_MAKER)){
             if(this.getBlockState().hasProperty(CmatdBlockStateProperties.ALL_DAY_NIGHT)){
-                if(nightUpgrade == true){
+                if(nightUpgrade == true && !this.getBlockState().getValue(CmatdBlockStateProperties.ALL_DAY_NIGHT)){
                     this.getLevel().setBlock(
                             this.getBlockPos(),
                             this.getBlockState()
@@ -176,7 +182,8 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
     }
 
     public void doStuff(){
-        if(ticks % 10 == 0){
+        // machine tier affects how quickly the machine processes
+        if(ticks % (10 - Mth.clamp(machineTier,1,9)) == 0){
             ItemStack sugarSlotItem = getItemHandler().getStackInSlot(0);
             ItemStack jamJarSlotItem = getItemHandler().getStackInSlot(1);
             Holder<Item> itemHolder = getItemHandler().getStackInSlot(2).getItemHolder();

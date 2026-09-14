@@ -49,6 +49,7 @@ public class Language extends LanguageProvider{
         this.add("integration.data.gas_amount_with_max","%s GU / %s GU");
         this.add("config.jade.plugin_cmatd.gas_type_provider","Gas Type Provider");
         this.add("config.jade.plugin_cmatd.rotational_object_type_provider","Rotational Type Provider");
+        this.add("config.jade.plugin_cmatd.machine_tier_type_provider","Machine Data");
         this.add("integration.data.gas.is_empty","Tank Empty");
 
         // subtitles
@@ -84,10 +85,10 @@ public class Language extends LanguageProvider{
         this.add("desc.item.generator.gen_rate_variable","Base Gen Rate: Varies on %s");
         this.add("desc.item.redstone_dynamo_engine.additional_info","+%s FE For Sides with a %s");
         this.add("desc.item.solar_generator.additional_info","Sky darkness affects output");
-        this.add("desc.item.jam_maker.additional_info","Keeps crafting progress without items; works only at daytime");
+        this.add("desc.item.jam_maker.additional_info","Keeps crafting progress without items");
         this.add("desc.item.lunar_generator.additional_info","Only generates at night, moon phases affect output");
         this.add("desc.item.hydro_generator.additional_info","Needs flowing water around it");
-        this.add("desc.item.presser.additional_info","Uses patterns to make items; works only at daytime");
+        this.add("desc.item.presser.additional_info","Uses patterns to make items");
         this.add("desc.item.lightning_generator.additional_info","Harness the power of lightning! Has a long cooldown after a bolt strikes it, and requires a lightning rod on top to function at all");
         this.add("desc.item.generator.wind_generator.additional_info","Height of generator affects output greatly");
         this.add("desc.item.generator.heat_generator.additional_info","Hot dimensions and low tier heat sources slowly produce output, while high tier heat sources have the best output");
@@ -117,6 +118,11 @@ public class Language extends LanguageProvider{
         this.add("integration.data.no_rotational_power","No Rotational Ability");
         this.add("integration.data.rotational_power_amount","Rotation Ability: %s Being Rotated: %s");
         this.add("desc.item.generator.variable_type.rotational_ability","Rotational Ability");
+        this.add("integration.data.machine_tier","Machine Tier : %s");
+        this.add("integration.data.can_work_at_type","Can Work At: %s");
+        this.add("integration.data.day","Day");
+        this.add("integration.data.night","Night");
+        this.add("integration.data.day_and_night","Day And Night");
 
         // key mappings
         this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");

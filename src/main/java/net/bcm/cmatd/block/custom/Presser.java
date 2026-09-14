@@ -2,9 +2,7 @@ package net.bcm.cmatd.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.bcm.cmatd.CmatdBlockStateProperties;
-import net.bcm.cmatd.blockentity.JamMakerBE;
 import net.bcm.cmatd.blockentity.PresserBE;
-import net.bcm.cmatd.gui.JamMakerMenu;
 import net.bcm.cmatd.gui.PresserMenu;
 import net.bcm.cmatd.item.TierUpgrade;
 import net.minecraft.ChatFormatting;
@@ -30,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +48,17 @@ public class Presser extends BaseEntityBlock {
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(ALL_DAY_NIGHT);
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        BlockEntity blockEntity = (BlockEntity)params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if(blockEntity instanceof PresserBE presserBE){
+            ItemStack stack = new ItemStack(this);
+            stack.applyComponents(presserBE.collectComponents());
+            return List.of(stack);
+        }
+        return super.getDrops(state, params);
     }
 
     public Presser(Properties properties) {

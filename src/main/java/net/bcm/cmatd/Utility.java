@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static net.minecraft.util.Mth.floor;
@@ -39,6 +40,21 @@ public class Utility{
     private static final Throwable BAD_HEX_COLOR_CODE = new Throwable("bad HEX color String provided as argument");
 
     public static final Utility.Range dynamoRangeCalibrated = new Utility.Range(Utility.RangeType.FLOAT,List.of(-6.2f,0.0f));
+
+    public static float nextFloatBetweenInclusive(float min, float max) {
+        Random random = new Random();
+        return random.nextFloat(max - min + 1) + min;
+    }
+
+    public static double nextDoubleBetweenInclusive(double min, double max) {
+        Random random = new Random();
+        return random.nextDouble(max - min + 1) + min;
+    }
+
+    public static int nextIntBetweenInclusive(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
+    }
 
     /**
      * An integer to RGB color converter, useful to convert MC integer values to rendering red, green and blue values;

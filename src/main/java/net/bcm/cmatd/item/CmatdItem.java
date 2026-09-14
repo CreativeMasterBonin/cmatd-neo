@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -48,11 +49,13 @@ public class CmatdItem{
 
     public static final DeferredItem<BlockItem> JAM_MAKER =
             ITEMS.register("jam_maker",
-                    () -> new BlockItem(CmatdBlock.JAM_MAKER.get(),new Item.Properties()));
+                    () -> new BlockItem(CmatdBlock.JAM_MAKER.get(),new Item.Properties()
+                            .component(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY)));
 
     public static final DeferredItem<BlockItem> PRESSER =
             ITEMS.register("presser",
-                    () -> new BlockItem(CmatdBlock.PRESSER.get(),new Item.Properties()));
+                    () -> new BlockItem(CmatdBlock.PRESSER.get(),new Item.Properties()
+                            .component(DataComponents.BLOCK_ENTITY_DATA, CustomData.EMPTY)));
 
     public static final DeferredItem<BlockItem> WIND_GENERATOR =
             ITEMS.register("wind_generator",

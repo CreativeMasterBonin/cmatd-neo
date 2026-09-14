@@ -26,7 +26,7 @@ public enum GasBlockComponentProvider implements IBlockComponentProvider, IServe
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         if(blockAccessor.getServerData().contains("gas")){
             if(blockAccessor.getServerData().getString("gas").equals(Gases.EMPTY.getDescriptionId())){
-                iTooltip.append(Component.literal("\n"));
+                iTooltip.append(Component.literal(" "));
                 iTooltip.append(Component.translatable("integration.data.gas.is_empty"));
                 return;
             }
