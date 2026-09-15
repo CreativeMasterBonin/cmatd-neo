@@ -6,6 +6,7 @@ import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.CmatdBE;
 import net.bcm.cmatd.blockentity.CmatdFluidTank;
 import net.bcm.cmatd.blockentity.FoodReactorMultiblock;
+import net.bcm.cmatd.blockentity.RadioactiveReactor;
 import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Jammables;
 import net.bcm.cmatd.datagen.Mashables;
@@ -155,6 +156,14 @@ public class Cmatd {
                 return new CmatdFluidTank(0);
             }).build());
 
+
+    public static final Supplier<AttachmentType<CmatdFluidTank>> RADIOACTIVE_REACTOR_FLUID_HANDLER = ATTACHMENTS.register(
+            "radioactive_reactor_fluid_handler", () -> AttachmentType.serializable(holder -> {
+                if (holder instanceof RadioactiveReactor be)
+                    return new CmatdFluidTank(Utility.RADIOACTIVE_REACTOR_FLUID_CAPACITY);
+                return new CmatdFluidTank(0);
+            }).build());
+
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS =
             DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER,MODID);
 
@@ -251,9 +260,20 @@ public class Cmatd {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,CmatdBE.FOOD_REACTOR.get(),
                 (o, direction) -> o.getEnergyStorage());
 
-
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,CmatdBE.FOOD_REACTOR.get(),
                 (o, direction) -> o.getData(FOOD_REACTOR_FLUID_HANDLER));
+
+        // radioactive reactor
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,CmatdBE.RADIOACTIVE_REACTOR.get(),
+                (o, direction) -> o.itemStackHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,CmatdBE.RADIOACTIVE_REACTOR.get(),
+                (o, direction) -> o.battery);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,CmatdBE.RADIOACTIVE_REACTOR.get(),
+                (o, direction) -> o.getData(RADIOACTIVE_REACTOR_FLUID_HANDLER));
+        event.registerBlockEntity(net.bcm.cmatd.api.Capabilities.GasHandler.BLOCK,CmatdBE.RADIOACTIVE_REACTOR.get(),
+                (o,direction) -> o.wasteGasTank);
+
+
 
         // lightning gen
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK,CmatdBE.LIGHTNING_GENERATOR.get(),

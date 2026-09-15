@@ -1,13 +1,15 @@
 package net.bcm.cmatd.blockentity;
 
 import net.bcm.cmatd.BaseEnergyStorage;
+import net.bcm.cmatd.Components;
+import net.bcm.cmatd.api.GasTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.List;
@@ -72,10 +74,38 @@ public class RadioactiveReactor extends TieredMachine{
                     this.getBlockPos().west().below().below().getZ())
     );
 
-    public final ItemStackHandler itemStackHandler = new ItemStackHandler();
+    public final ItemStackHandler itemStackHandler = new ItemStackHandler(35){
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            if(slot > 30){
+                return stack.has(Components.MODULE_TYPE);
+            }
+            return super.isItemValid(slot, stack);
+        }
+    };
+    public int gasAmount = 0;
+    public RadioactiveReactorGasContainerData gasContainerData;
+    public RadioactiveReactorFluidContainerData fluidContainerData;
+
+    public final GasTank wasteGasTank = new GasTank(1000000){
+        @Override
+        public void update() {
+            gasAmount = this.getGasAmount();
+            setChanged();
+            if(!level.isClientSide){
+                level.sendBlockUpdated(getBlockPos(),getBlockState(),getBlockState(),3);
+            }
+        }
+    };
+    public GasTank getWasteGasTank(){return this.wasteGasTank;}
+    public FluidTank getWasteConvertedToFluidTank(){return this.wasteConversionToFluidTank;}
+    public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000);
+
 
     public RadioactiveReactor(BlockPos pos, BlockState blockState) {
         super(CmatdBE.RADIOACTIVE_REACTOR.get(), pos, blockState);
+        gasContainerData = new RadioactiveReactorGasContainerData(this);
+        fluidContainerData = new RadioactiveReactorFluidContainerData(this);
     }
 
     public boolean canForm(){
@@ -107,11 +137,23 @@ public class RadioactiveReactor extends TieredMachine{
         if(tag.contains("formed")){
             isFormed=tag.getBoolean("formed");
         }
+        wasteGasTank.load(registries,tag);
+        if(tag.contains("gas_amount")){
+            gasAmount = tag.getInt("gas_amount");
+        }
+        wasteConversionToFluidTank.readFromNBT(registries,tag);
+        if(tag.contains("stored_energy")){
+            battery.setEnergy(tag.getInt("stored_energy"));
+        }
     }
 
     @Override
     public void saveExtraValues(CompoundTag tag, HolderLookup.Provider registries) {
         tag.putBoolean("formed",isFormed);
+        wasteGasTank.save(registries,tag);
+        tag.putInt("gas_amount",gasAmount);
+        wasteConversionToFluidTank.writeToNBT(registries,tag);
+        tag.putInt("stored_energy",battery.getEnergyStored());
     }
 
     @Override

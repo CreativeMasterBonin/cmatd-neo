@@ -42,6 +42,7 @@ public class Language extends LanguageProvider{
         this.add("title.liquid_amt","%s Mb");
         this.add("title.liquid_amt_with_max","%s Mb / %s Mb");
         this.add("title.solar_status.always_active","Always Active");
+        this.add("title.radioactive_reactor","Radioactive Reactor");
 
         // data and integration
         this.add("integration.data.gas","Gas: %s");

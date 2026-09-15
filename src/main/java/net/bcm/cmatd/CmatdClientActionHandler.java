@@ -13,6 +13,11 @@ import java.util.logging.Logger;
 @OnlyIn(Dist.CLIENT)
 public class CmatdClientActionHandler {
     public static boolean keyMappingPressed(KeyMapping inputMapping){
+        // needs to be on the same thread as mc is
+        if(!Minecraft.getInstance().isSameThread()){
+            return false;
+        }
+        // unbound values cannot be pressed
         if(inputMapping.isUnbound()){
             return false;
         }

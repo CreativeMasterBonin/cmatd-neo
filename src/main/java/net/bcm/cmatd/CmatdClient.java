@@ -63,6 +63,7 @@ public class CmatdClient {
         event.register(CmatdMenu.PRESSER_MENU.get(), PresserScreen::new);
         event.register(CmatdMenu.FOOD_REACTOR_MENU.get(),FoodReactorScreen::new);
         event.register(CmatdMenu.GAS_TANK_MENU.get(),GasTankScreen::new);
+        event.register(CmatdMenu.RADIOACTIVE_REACTOR_MENU.get(),RadioactiveReactorScreen::new);
     }
 
     public void registerModelLayers(EntityRenderersEvent.RegisterLayerDefinitions event){

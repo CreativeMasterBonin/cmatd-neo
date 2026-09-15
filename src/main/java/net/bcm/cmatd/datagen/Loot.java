@@ -67,6 +67,7 @@ public class Loot extends VanillaBlockLoot {
 
         // multiblocks
         this.dropSelf(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get());
+        this.dropSelf(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get());
 
 
         // gas vents

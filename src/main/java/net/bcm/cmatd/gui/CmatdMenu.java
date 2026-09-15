@@ -48,6 +48,12 @@ public class CmatdMenu{
                             (id, inv, data) ->
                                     new GasTankMenu(id,inv.player,data.readBlockPos())));
 
+    public static final Supplier<MenuType<RadioactiveReactorMenu>> RADIOACTIVE_REACTOR_MENU =
+            MENUS.register("radioactive_reactor_menu",
+                    () -> IMenuTypeExtension.create(
+                            (id, inv, data) ->
+                                    new RadioactiveReactorMenu(id,inv.player,data.readBlockPos())));
+
     /*
     public static final Supplier<MenuType<MasherMenu>> MASHER_MENU =
             MENUS.register("masher_menu",

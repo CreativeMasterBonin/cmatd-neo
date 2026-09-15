@@ -159,6 +159,7 @@ public class Utility{
     public static final int MACHINE_SOUND_DISTANCE = 6; // not used outside datagen
     public static final VoxelShape DOUBLE_TALL_BLOCK_SHAPE_ALL = Block.box(0.0D,0.0D,0.0D,16.0D,32.0D,16.0D);
     public static final int FOOD_REACTOR_FLUID_CAPACITY = 100000; // in Mb
+    public static final int RADIOACTIVE_REACTOR_FLUID_CAPACITY = 1000000; // in Mb
 
     public static int MAX_CONDUIT_ENERGY_TRANSFER_RATE = 500; // in FE
     public static int MAX_CONDUIT_ENERGY_CAPACITY = 1_000; // in FE
