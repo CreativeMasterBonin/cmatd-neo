@@ -41,9 +41,13 @@ public class MachineTierUpgradePacket{
                 presserBE.machineTier = payload.tierToUpgradeTo();
                 presserBE.updateBlock();
                 return;
-            }
+            } // for any machines specifically capable of mass upgrading tiers
             else if(level.getBlockEntity(payload.position()) instanceof TieredMachine tieredMachine){
-
+                if(!(tieredMachine.machineTier >= payload.tierToUpgradeTo())){
+                    tieredMachine.machineTier = payload.tierToUpgradeTo();
+                    tieredMachine.updateBlock();
+                }
+                return;
             }
         });
     }

@@ -155,12 +155,16 @@ public class TierUpgrade extends Item{
                         }
                         return InteractionResult.SUCCESS;
                     }
-                }
+                }// mass upgrade tiered machines
                 else if(be instanceof TieredMachine tieredMachine){
                     if(tieredMachine.machineTier < tier){
-
+                        if(context.getLevel().isClientSide()){
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new MachineTierUpgradePayload(clickedPos,tier));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
                     }
-                    return InteractionResult.SUCCESS;
                 }
             }
         }

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -71,6 +72,9 @@ public class CmatdBlock{
     // multiblocks
     public static final DeferredBlock<Block> FOOD_REACTOR_MULTIBLOCK = BLOCKS.register("food_reactor",
             () -> new FoodReactorBlock(BlockBehaviour.Properties.of())); // has recipe
+
+    public static final DeferredBlock<Block> RADIOACTIVE_REACTOR_MULTIBLOCK = BLOCKS.register("radioactive_reactor",
+            () -> new RadioactiveReactorBlock(BlockBehaviour.Properties.of()));
     // end multiblocks
 
 

@@ -119,5 +119,10 @@ public class CmatdBE {
                     BlockEntityType.Builder.of(DimensionalTransporterBE::new, CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
                             .build(null));
 
+    public static final Supplier<BlockEntityType<RadioactiveReactor>> RADIOACTIVE_REACTOR = BLOCK_ENTITIES.register(
+            "radioactive_reactor", () ->
+                    BlockEntityType.Builder.of(RadioactiveReactor::new, CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+                            .build(null));
+
 }
 
