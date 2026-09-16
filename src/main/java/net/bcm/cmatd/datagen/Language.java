@@ -66,9 +66,10 @@ public class Language extends LanguageProvider{
         this.add("tooltip.module.useless","A useless module");
         this.add("tooltip.module.speedup", "Speeds up machines");
         this.add("tooltip.module.efficiency", "Machines use less energy");
-        this.add("tooltip.module.doubler", "Chance to double output");
-        this.add("tooltip.module.tripled", "Chance to triple output");
+        this.add("tooltip.module.doubler", "Chance to double output, some machines guarantee doubled output");
+        this.add("tooltip.module.tripled", "Chance to triple output, some machines guarantee tripled output");
         this.add("tooltip.module.blank_module", "Needs to be turned into a usable module");
+        this.add("tooltip.module.heat_dispersion", "Disperses heat evenly in heat producing machines, reducing gradual buildup to nothing");
         this.add("tooltip.tier_upgrade.desc", "Upgrades machines up to tier: ");
         this.add("tooltip.tier_upgrade.downgrade.desc", "Downgrades machines to tier: ");
         this.add("tooltip.tier_upgrade.unknown", "%s");
@@ -148,6 +149,7 @@ public class Language extends LanguageProvider{
         // blocks
         this.add(CmatdBlock.LESSER_MACHINE_FRAME.get(),"Lesser Machine Frame");
         this.add(CmatdBlock.MACHINE_FRAME.get(),"Machine Frame");
+        this.add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),"Radioactive Reactor Casing");
 
         this.add(CmatdBlock.BASE_ENERGY_MAKER.get(),"Energy Maker");
         this.add(CmatdBlock.DECORATIVE_BASE_DYNAMO_ENGINE.get(), "Decorative Dynamo Engine");
@@ -188,6 +190,7 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.EFFICIENCY_MODULE.get(),"Module: Efficiency");
         this.add(CmatdItem.DOUBLER_MODULE.get(),"Module: Doubler");
         this.add(CmatdItem.TRIPLED_MODULE.get(),"Module: Tripled");
+        this.add(CmatdItem.HEAT_DISPERSION_MODULE.get(),"Module: Heat Dispersion");
 
         // tier items
         this.add(CmatdItem.BASIC_TIER_DOWNGRADE.get(),"Tier Downgrade: Basic");

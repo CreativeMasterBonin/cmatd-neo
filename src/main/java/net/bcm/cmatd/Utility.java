@@ -41,6 +41,12 @@ public class Utility{
 
     public static final Utility.Range dynamoRangeCalibrated = new Utility.Range(Utility.RangeType.FLOAT,List.of(-6.2f,0.0f));
 
+    public static final int MODULE_TYPE_SPEED = 0;
+    public static final int MODULE_TYPE_EFFICIENCY = 1;
+    public static final int MODULE_TYPE_DOUBLING= 2;
+    public static final int MODULE_TYPE_TRIPLING = 3;
+    public static final int MODULE_TYPE_HEAT_DISPERSING = 4;
+
     public static float nextFloatBetweenInclusive(float min, float max) {
         Random random = new Random();
         return random.nextFloat(max - min + 1) + min;

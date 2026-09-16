@@ -52,6 +52,11 @@ public class ModuleItem extends Item{
                             .withStyle(ChatFormatting.GRAY));
                     break;
                 }
+                case 4 -> {
+                    tooltipComponents.add(Component.translatable("tooltip.module.heat_dispersion")
+                            .withStyle(ChatFormatting.GRAY));
+                    break;
+                }
                 case null -> {
                     Cmatd.getLogger().error("{}: Illegal MODULE_TYPE specified, type is null", stack.toString());
                     break;

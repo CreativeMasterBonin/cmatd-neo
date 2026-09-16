@@ -11,6 +11,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
+import java.util.List;
+
 public class RadioactiveReactorScreen extends AbstractContainerScreen<RadioactiveReactorMenu> {
     private static final ResourceLocation BG = ResourceLocation.parse("cmatd:textures/gui/radioactive_reactor.png");
     private ResourceLocation GAS_METER_MARKS = ResourceLocation.parse("cmatd:textures/gui/sprites/gas_meter_marks.png");
@@ -19,6 +21,11 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
     public static final int heatMeterStartBottomX = 15;
     public static final int reactorMetersStartBottomY = 150;
     public static final int coolantMeterStartBottomX = 25;
+    public FluidTankGUIRenderer fluidRendererForGas;
+    public int fluidRendererX = 146;
+    public int fluidRendererY = 36;
+    public int fluidRendererWidth = 20;
+    public int fluidRendererHeight = 114;
 
     public RadioactiveReactorScreen(RadioactiveReactorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, Component.translatable("title.radioactive_reactor").withStyle(ChatFormatting.WHITE));
@@ -26,6 +33,13 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         this.inventoryLabelY = this.topPos + 156;
         this.imageHeight = 256;
         this.imageWidth = 176;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.fluidRendererForGas = new FluidTankGUIRenderer(1000000,
+                fluidRendererWidth, fluidRendererHeight);
     }
 
     @Override
@@ -37,7 +51,9 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         guiGraphics.blit(GAS_METER_MARKS,this.leftPos + 146,this.topPos + 38,0,0,
                 gasMeterMarksWidth,gasMeterMarksHeight,gasMeterMarksWidth,gasMeterMarksHeight);
 
+        // the heat level converted to a range that a sprite can use in the ui
         int heat = (int)Mth.clamp(Utility.normalizeIntToFloatValue(menu.heat,0,15000,0,126),0,126);
+        // the color of the heat level, which is used when the heat level is not higher than 9000
         float hotValue = Mth.clamp(Utility.normalizeIntToFloatValue(menu.heat,0,15000,0.0f,1.0f),0.0f,1.0f);
 
         RenderSystem.enableBlend();
@@ -65,6 +81,24 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        if(mouseX >= leftPos + fluidRendererX && mouseX < leftPos + fluidRendererX + fluidRendererWidth && mouseY >= topPos + fluidRendererY && mouseY < topPos + fluidRendererY + fluidRendererHeight){
+            int gasAmount = menu.getGasAmount();
+            List<Component> components2 = List.of(
+                    Component.translatable("title.gas_amt_with_max",gasAmount,
+                            menu.wasteCapacity)
+            );
+            guiGraphics.renderComponentTooltip(this.font,components2,mouseX,mouseY);
+        }
+        else{
+            this.renderTooltip(guiGraphics, mouseX, mouseY);
+        }
+
+        // render the fluid contents (which in this case is gas)
+        if(fluidRendererForGas != null){
+            fluidRendererForGas.renderGas(guiGraphics,menu.getGasStack(),
+                    leftPos + fluidRendererX,topPos + fluidRendererY);
+        }
     }
 
     @Override

@@ -42,5 +42,8 @@ public class Components{
                     builder.persistent(BlockComponent.CODEC)
                             .networkSynchronized(BlockComponent.STREAM_CODEC));
 
-
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> COOLANT =
+            COMPONENTS.registerComponentType("coolant", builder ->
+                    builder.persistent(Codec.BOOL)
+                            .networkSynchronized(ByteBufCodecs.BOOL));
 }

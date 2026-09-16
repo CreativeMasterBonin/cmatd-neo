@@ -100,6 +100,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
                 .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -137,6 +138,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
         tag(JustDireBlockTags.PARADOX_ABSORB_DENY)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
@@ -178,6 +180,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -256,6 +259,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(Blocks.LAVA)
                 .add(CmatdBlock.STEAM_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
         ;
         tag(Tag.HEAT_PRODUCERS)
                 .addTag(Tag.LOW_HEAT_PRODUCERS)
@@ -273,6 +277,9 @@ public class BlockTagProvider extends BlockTagsProvider {
         tag(JustDireBlockTags.PHASEDENY)
                 .addTag(Tag.PRODUCES_METHANE_GAS)
                 .addTag(Tag.PRODUCES_STEAM_GAS)
+        ;
+        tag(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS)
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
     }
 

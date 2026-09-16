@@ -38,6 +38,8 @@ public class Tag{
     public static final TagKey<Item> VALID_FOOD_REACTOR_FUELS = itemTag("valid_food_reactor_fuels");
     public static final TagKey<Item> VALID_FOOD_REACTOR_COOLANTS = itemTag("valid_food_reactor_coolants");
 
+    public static final TagKey<Block> VALID_RADIOACTIVE_REACTOR_CASINGS = blockTag("valid_radioactive_reactor_casings");
+
     // biome tags
     public static final TagKey<Biome> GENERATES_STEAM_VENTS = biomeTag("generates_steam_vents");
 

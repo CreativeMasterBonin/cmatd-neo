@@ -8,6 +8,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -75,6 +76,12 @@ public class CmatdBlock{
 
     public static final DeferredBlock<Block> RADIOACTIVE_REACTOR_MULTIBLOCK = BLOCKS.register("radioactive_reactor",
             () -> new RadioactiveReactorBlock(BlockBehaviour.Properties.of()));
+    // multiblock part blocks
+    public static final DeferredBlock<Block> RADIOACTIVE_REACTOR_MULTIBLOCK_CASING = BLOCKS.register("radioactive_reactor_casing",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops()
+                    .mapColor(MapColor.TERRACOTTA_GRAY).pushReaction(PushReaction.BLOCK)
+                    .instrument(NoteBlockInstrument.BANJO)));
     // end multiblocks
 
 

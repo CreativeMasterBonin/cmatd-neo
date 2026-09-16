@@ -274,6 +274,10 @@ public class CmatdItem{
             ITEMS.register("tripled_module",
                     () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,3)));
 
+    public static final DeferredItem<Item> HEAT_DISPERSION_MODULE =
+            ITEMS.register("heat_dispersion_module",
+                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,4)));
+
     // tier upgrades
     public static final DeferredItem<Item> BASIC_TIER_DOWNGRADE =
             ITEMS.register("basic_tier_downgrade",

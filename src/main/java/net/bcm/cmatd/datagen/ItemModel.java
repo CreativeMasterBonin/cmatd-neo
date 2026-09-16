@@ -26,6 +26,7 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.EFFICIENCY_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.DOUBLER_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.TRIPLED_MODULE.get());
+        defaultCustomSimpleItem(CmatdItem.HEAT_DISPERSION_MODULE.get());
         // tier upgrades
         defaultCustomSimpleItem(CmatdItem.BASIC_TIER_DOWNGRADE.asItem());
         defaultCustomSimpleItem(CmatdItem.ADVANCED_TIER_UPGRADE.asItem());

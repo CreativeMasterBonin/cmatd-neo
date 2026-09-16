@@ -39,6 +39,10 @@ public class RadioactiveReactorMenu extends AbstractContainerMenu {
     public int energy;
     public int coolant;
     public int heat;
+    public int energyCapacity;
+    public int coolantCapacity;
+    public int heatCapacity;
+    public int wasteCapacity;
 
     public RadioactiveReactorMenu(int id, Player player, BlockPos position) {
         super(CmatdMenu.RADIOACTIVE_REACTOR_MENU.get(),id);
@@ -48,6 +52,50 @@ public class RadioactiveReactorMenu extends AbstractContainerMenu {
             this.reactor = (RadioactiveReactor)blockEntity;
             this.gasContainerData = reactor.gasContainerData;
             this.fluidContainer = reactor.fluidContainerData;
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return reactor.heatAmountToGoBoomAt;
+                }
+
+                @Override
+                public void set(int value) {
+                    heatCapacity = value;
+                }
+            });
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return reactor.maxCoolantAmount;
+                }
+
+                @Override
+                public void set(int value) {
+                    coolantCapacity = value;
+                }
+            });
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return reactor.getEnergyStorage().getCapacity();
+                }
+
+                @Override
+                public void set(int value) {
+                    energyCapacity = value;
+                }
+            });
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return reactor.getWasteGasTank().getCapacity();
+                }
+
+                @Override
+                public void set(int value) {
+                    wasteCapacity = value;
+                }
+            });
             this.addDataSlot(new DataSlot() {
                 @Override
                 public int get() {

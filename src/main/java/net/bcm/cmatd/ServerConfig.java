@@ -31,5 +31,13 @@ public class ServerConfig {
                     2_000_000,
                     1,Integer.MAX_VALUE);
 
+    public static final ModConfigSpec.BooleanValue RADIOACTIVE_REACTOR_EXPLODES_WHEN_TOO_HOT = BUILDER
+            .comment("Whether the Radioactive Reactor blows up if too hot")
+            .define("radioactive_reactor_blows_up_when_too_hot",true);
+
+    public static final ModConfigSpec.BooleanValue RADIOACTIVE_REACTOR_MAKES_DAMAGE_SOUNDS = BUILDER
+            .comment("Whether the Radioactive Reactor makes damaging sounds when heat level is critical")
+            .define("radioactive_reactor_makes_damage_sounds",true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

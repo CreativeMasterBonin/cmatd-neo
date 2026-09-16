@@ -27,9 +27,28 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class RadioactiveReactorBlock extends TieredMachineBlock{
-    public static final VoxelShape ALL = Shapes.join(Block.box(4, 12, 4, 12, 20, 12),
-            Block.box(0, 0, 0, 16, 16, 16), BooleanOp.OR);
+    public static final VoxelShape ALL = Stream.of(
+            Block.box(12, 16, 0, 16, 20, 4),
+            Block.box(0, 0, 0, 16, 16, 16),
+            Block.box(12, 16, 4, 16, 20, 8),
+            Block.box(12, 16, 12, 16, 20, 16),
+            Block.box(8, 16, 12, 12, 20, 16),
+            Block.box(8, 16, 4, 12, 20, 8),
+            Block.box(8, 16, 0, 12, 20, 4),
+            Block.box(4, 16, 12, 8, 20, 16),
+            Block.box(4, 16, 4, 8, 20, 8),
+            Block.box(4, 16, 0, 8, 20, 4),
+            Block.box(0, 16, 12, 4, 20, 16),
+            Block.box(0, 16, 4, 4, 20, 8),
+            Block.box(0, 16, 0, 4, 20, 4),
+            Block.box(0, 16, 8, 4, 20, 12),
+            Block.box(4, 16, 8, 8, 20, 12),
+            Block.box(8, 16, 8, 12, 20, 12),
+            Block.box(12, 16, 8, 16, 20, 12)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
@@ -39,7 +58,7 @@ public class RadioactiveReactorBlock extends TieredMachineBlock{
     public RadioactiveReactorBlock(Properties properties) {
         super(properties.strength(1f,50f)
                 .sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops()
-                .mapColor(MapColor.COLOR_GRAY).pushReaction(PushReaction.BLOCK)
+                .mapColor(MapColor.TERRACOTTA_GRAY).pushReaction(PushReaction.BLOCK)
                 .instrument(NoteBlockInstrument.BANJO));
     }
 

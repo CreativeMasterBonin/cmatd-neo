@@ -4,6 +4,7 @@ import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -30,6 +31,9 @@ public class BlockState extends BlockStateProvider {
         ));
         simpleBlockWithItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),new ModelFile.UncheckedModelFile(
                 ResourceLocation.parse("cmatd:block/radioactive_reactor_core")
+        ));
+        simpleBlockWithItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),new ModelFile.UncheckedModelFile(
+                ResourceLocation.parse("cmatd:block/radioactive_reactor_casing")
         ));
     }
 }

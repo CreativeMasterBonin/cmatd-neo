@@ -42,6 +42,12 @@ public class Gases {
                             Utility.hexToInt("0x8C7A3D"))
             ));
 
+    public static final DeferredHolder<GasType,GasType> RADIOACTIVE_WASTE =
+            GASES.register("radioactive_waste",() -> new GasType(
+                    new GasType.Properties(Rarity.COMMON,8,true,1.0f,32,
+                            Utility.hexToInt("0x5D6D42"))
+            ));
+
     public static void register(IEventBus eventBus) {
         GASES.register(eventBus);
     }

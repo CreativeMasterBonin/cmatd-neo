@@ -4,6 +4,7 @@ import net.bcm.cmatd.BaseEnergyStorage;
 import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.block.custom.HeatGenerator;
+import net.bcm.cmatd.block.custom.RadioactiveReactorBlock;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.ContainerData;
@@ -142,10 +144,24 @@ public class HeatGeneratorBE extends BlockEntity {
                         }
                         else if(level.getBlockState(getBlockPos().relative(direction)).is(Tag.HIGH_HEAT_PRODUCERS)){
                             boolean isCampfireLike = level.getBlockState(getBlockPos().relative(direction)).getBlock() instanceof CampfireBlock;
+                            boolean isRadioactiveReactor = level.getBlockState(getBlockPos().relative(direction)).getBlock() instanceof RadioactiveReactorBlock;
                             if(isCampfireLike){
                                 if(level.getBlockState(getBlockPos().relative(direction)).getValue(BlockStateProperties.LIT)){
                                     generateEnergy(1000);
                                     heaterCount++;
+                                }
+                            }
+                            else if(isRadioactiveReactor){ // the reactor's heat output can be used to generate more energy
+                                if(level instanceof ServerLevel serverLevel){
+                                    if(serverLevel.getBlockEntity(getBlockPos().relative(direction)) instanceof RadioactiveReactor radioactiveReactor){
+                                        // dynamic heat input to energy
+                                        if(!(radioactiveReactor.heatAmount <= 0)){
+                                            generateEnergy(radioactiveReactor.heatAmount); // always try to convert the reactor heat to energy, even at low values
+                                            radioactiveReactor.heatAmount -= 1;
+                                            radioactiveReactor.updateBlock();
+                                            heaterCount++;
+                                        }
+                                    }
                                 }
                             }
                             else{
