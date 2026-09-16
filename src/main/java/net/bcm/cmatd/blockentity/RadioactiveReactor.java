@@ -5,6 +5,7 @@ import net.bcm.cmatd.Components;
 import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.api.*;
+import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +24,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
+import net.minecraft.world.level.block.state.predicate.BlockPredicate;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -132,7 +137,9 @@ public class RadioactiveReactor extends TieredMachine{
     };
     public GasTank getWasteGasTank(){return this.wasteGasTank;}
     public FluidTank getWasteConvertedToFluidTank(){return this.wasteConversionToFluidTank;}
-    public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000);
+    public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000){
+
+    };
 
     public RadioactiveReactor(BlockPos pos, BlockState blockState) {
         super(CmatdBE.RADIOACTIVE_REACTOR.get(), pos, blockState);
@@ -289,6 +296,13 @@ public class RadioactiveReactor extends TieredMachine{
                     produceWaste();
                     // heat level increase based on conditions
                     if(isProcessing){
+                        // make a sound if processing and active, no matter what occasion
+                        if(level instanceof ServerLevel serverLevel){
+                            if(serverLevel.getGameTime() % 100 == 0){
+                                serverLevel.playSound(null,getBlockPos(),
+                                        SoundEvents.BEACON_AMBIENT,SoundSource.BLOCKS,1.0f,0.7f);
+                            }
+                        }
                         if(coolantAmount > 0){
                             // just make sure heat is never less than zero
                             heatAmount = Mth.clamp(heatAmount - (efficiencyModules + 1),0,heatAmountToGoBoomAt);
@@ -321,6 +335,32 @@ public class RadioactiveReactor extends TieredMachine{
                         heatAmount = Mth.clamp(heatAmount - 1,0,heatAmountToGoBoomAt);
                         setChanged();
                     }
+                    // show some flair for when off but full of things
+                    if(getEnergyStorage().getEnergyStored() >= getEnergyStorage().getCapacity() || getWasteGasTank().getGasAmount() >= getWasteGasTank().getCapacity()){
+                        if(level instanceof ServerLevel serverLevel){
+                            if(serverLevel.getRandom().nextIntBetweenInclusive(0,1200) <= 2){
+                                serverLevel.playSound(null,
+                                        getBlockPos(),
+                                        SoundEvents.BREEZE_WHIRL,
+                                        SoundSource.BLOCKS,1.0f,2.0f);
+                            }
+                            if(serverLevel.getRandom().nextIntBetweenInclusive(0,72) <= 1){
+                                serverLevel.playSound(null,
+                                        getBlockPos(),
+                                        SoundEvents.FIRE_EXTINGUISH,
+                                        SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(0.3f,0.4f));
+                                serverLevel.sendParticles(ParticleTypes.CLOUD,
+                                        (double)getBlockPos().getX() + 0.5 +
+                                                serverLevel.getRandom().nextDouble() / 2.0 *
+                                                        (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                        (double)getBlockPos().getY() + 0.45D,
+                                        (double)getBlockPos().getZ() + 0.5 +
+                                                serverLevel.getRandom().nextDouble() / 2.0 *
+                                                        (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                        7,0,0,0,serverLevel.getRandom().nextFloat() * 0.07f);
+                            }
+                        }
+                    }
                 }
 
                 // if heat dispersion is active, then when the heat is at the ideal temperature, keep it at that temperature
@@ -342,6 +382,7 @@ public class RadioactiveReactor extends TieredMachine{
                     if(level != null){
                         if(level instanceof ServerLevel serverLevel){
                             if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_DAMAGE_SOUNDS.getAsBoolean()){
+                                // if the reactor is going to explode at some point, warn players around
                                 if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(),37,76) == 0){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
@@ -354,6 +395,7 @@ public class RadioactiveReactor extends TieredMachine{
                                             (double)getBlockPos().getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
                                             7,0,0,0,serverLevel.getRandom().nextFloat() * 0.3f);
                                 }
+                                // sizzle, sizzle
                                 if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(), 25,91) == 0){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
@@ -361,37 +403,45 @@ public class RadioactiveReactor extends TieredMachine{
                                             SoundSource.BLOCKS,0.5f,serverLevel.getRandom().nextFloat() * 0.91f);
                                 }
 
+                                // the alarms will start sounding
                                 if(serverLevel.getGameTime() % 20 == 0 && heatAmount < 14000){
+                                    // consider resupplying the reactor with coolant
                                     if(heatAmount < 12000 && heatAmount >= 11000){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
                                                 SoundSource.BLOCKS,0.4f,0.77f);
-                                    }
+                                    } // heat level excessive
                                     else if(heatAmount < 13000 && heatAmount >= 12000){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
                                                 SoundSource.BLOCKS,0.4f,0.86f);
-                                    }
+                                    } // heat levels are too high
                                     else if(heatAmount < 14000 && heatAmount >= 13000){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
                                                 SoundSource.BLOCKS,0.5f,0.91f);
                                     }
-                                }
+                                } // the heat level is reaching a critical stage
                                 else if(serverLevel.getGameTime() % 10 == 0 && heatAmount > 14000 && heatAmount < 14500){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
                                             SoundEvents.NOTE_BLOCK_PLING.value(),
                                             SoundSource.BLOCKS,0.7f,1.25f);
-                                }
-                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount >= 14500){
+                                } // better do something now
+                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount > 14500 && heatAmount < 14825){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
                                             SoundEvents.NOTE_BLOCK_PLING.value(),
                                             SoundSource.BLOCKS,1.0f,1.5f);
+                                } // it's over
+                                else if(serverLevel.getGameTime() % 2 == 0 && heatAmount >= 14825){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.NOTE_BLOCK_PLING.value(),
+                                            SoundSource.BLOCKS,1.0f,2.0f);
                                 }
                             }
                         }
@@ -402,7 +452,9 @@ public class RadioactiveReactor extends TieredMachine{
                     if(level != null){
                         if(level instanceof ServerLevel serverLevel){
                             // the extremely dangerous consequence if the reactor is too hot
+                            // you will lose items
                             if(ServerConfig.RADIOACTIVE_REACTOR_EXPLODES_WHEN_TOO_HOT.getAsBoolean()){
+                                serverLevel.setBlock(getBlockPos(),Blocks.AIR.defaultBlockState(),3);
                                 serverLevel.explode(null,
                                         getBlockPos().getX(),
                                         getBlockPos().getY(),
@@ -425,11 +477,42 @@ public class RadioactiveReactor extends TieredMachine{
                         }
                     }
                     updateBlock();
-                    return;
+                    return; // the reactor is toast, stop code execution from going any farther
                 }
             }
             distributeProducts(); // try sending waste out
         }
+    }
+
+    // access in 3d what the required pattern is for reference
+    @SuppressWarnings("unused")
+    public BlockPattern multiBlockPattern(){
+        BlockPattern reactorPattern =
+        BlockPatternBuilder.start()
+                .aisle("       ",
+                        "       ",
+                        "   #   ",
+                        "  #C#  ",
+                        "   #   ",
+                        "       ",
+                        "       ")
+                .aisle("       ",
+                        "       ",
+                        "   #   ",
+                        "  ###  ",
+                        "   #   ",
+                        "       ",
+                        "       ")
+                .aisle("       ",
+                        "       ",
+                        "   #   ",
+                        "  # #  ",
+                        "   #   ",
+                        "       ",
+                        "       ")
+                .where('#',BlockInWorld.hasState(BlockPredicate.forBlock(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())))
+                .where('C',BlockInWorld.hasState(BlockPredicate.forBlock(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get()))).build();
+        return reactorPattern;
     }
 
     public void distributeProducts(){
@@ -560,12 +643,12 @@ public class RadioactiveReactor extends TieredMachine{
                     // we do not want energy to be multiplied by zero with no modules installed, so add 1
                     getEnergyStorage().receiveEnergy(1000 * (1 + (doubleOutputModules + tripleOutputModules)),false);
                     if(!wasteGasTank.getGasStack().isEmpty()){
-                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (10 * (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
+                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (1000 / (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
                         wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }
                     else{
-                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,10 * (1 + efficiencyModules)),true);
+                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,1000 / (1 + efficiencyModules)),true);
                         wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }
@@ -573,6 +656,7 @@ public class RadioactiveReactor extends TieredMachine{
                     isProcessing = false;
                     updateBlock();
                 }
+                // we are full if this area is reached, but don't punish for having too much waste
             }
             else{
                 if(level instanceof ServerLevel serverLevel){

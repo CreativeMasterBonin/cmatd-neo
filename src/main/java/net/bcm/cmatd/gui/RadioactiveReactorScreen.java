@@ -3,6 +3,7 @@ package net.bcm.cmatd.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.bcm.cmatd.Utility;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -55,6 +56,20 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         int heat = (int)Mth.clamp(Utility.normalizeIntToFloatValue(menu.heat,0,15000,0,126),0,126);
         // the color of the heat level, which is used when the heat level is not higher than 9000
         float hotValue = Mth.clamp(Utility.normalizeIntToFloatValue(menu.heat,0,15000,0.0f,1.0f),0.0f,1.0f);
+
+        int coolant = (int)Mth.clamp(Utility.normalizeIntToFloatValue(menu.coolant,0,30000,0,126),0,126);
+
+        float coolantFadeInOut = Mth.clamp(Mth.sin(Util.getMillis() / 3200.0f) + 1.0f,0.0f,1.0f);
+
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(0.01f,coolantFadeInOut,1.0f,1.0f);
+        guiGraphics.blit(ResourceLocation.parse("cmatd:textures/gui/sprites/reactor_heat_bar.png"),
+                this.leftPos + 25,(this.topPos + 150) - coolant,
+                0,8,
+                0,5,coolant,
+                32,126);
+        RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);// reset color to default
+        RenderSystem.disableBlend();
 
         RenderSystem.enableBlend();
         if(menu.heat < 9000){

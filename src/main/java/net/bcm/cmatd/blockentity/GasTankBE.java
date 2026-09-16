@@ -125,7 +125,7 @@ public class GasTankBE extends AbstractGasContainingBE{
 
         // slowly destroy radioactive gas
         if(level instanceof ServerLevel serverLevel){
-            if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % 275 == 0){
+            if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % 77 == 0){
                 gasTank.gas.setAmount(gasTank.getGasAmount() - Mth.randomBetweenInclusive(serverLevel.getRandom(),34,327));
                 setChanged();
                 serverLevel.playSound(null,getBlockPos(),

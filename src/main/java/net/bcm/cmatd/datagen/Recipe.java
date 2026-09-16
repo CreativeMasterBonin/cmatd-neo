@@ -661,7 +661,7 @@ public class Recipe extends RecipeProvider{
 
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(CmatdItem.INFUSED_INGOT),RecipeCategory.MISC,
                         new ItemStack(CmatdItem.BLAST_PROOF_INGOT.asItem()),
-                        0.1f,1)
+                        0.1f,72)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.INFUSED_INGOT))
                 .save(rc);
 

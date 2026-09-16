@@ -253,6 +253,7 @@ public class Language extends LanguageProvider{
         this.add(Tag.ORES_LODEALITE,"Lodealite Ores");
         this.add(Tag.ORES_LODEALITE_ITEM,"Lodealite Ore Items");
         this.add(Tag.VALID_FOOD_REACTOR_CASINGS,"Valid Food Reactor Casings");
+        this.add(Tag.VALID_FOOD_REACTOR_CASINGS_ITEM,"Valid Food Reactor Casings (Item)");
         this.add(Tag.VALID_FOOD_REACTOR_COOLANTS,"Valid Food Reactor Coolants");
         this.add(Tag.VALID_FOOD_REACTOR_FUELS,"Valid Food Reactor Fuels");
         this.add(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS,"Valid Radioactive Reactor Casings");

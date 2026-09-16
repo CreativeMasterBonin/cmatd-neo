@@ -21,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -45,6 +46,13 @@ public class GasTank extends BaseEntityBlock {
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if(newState.is(state.getBlock())){
             return;
+        }
+        else{
+            if(level.getBlockEntity(pos) instanceof GasTankBE gasTankBE){
+                if(gasTankBE.getGasTank().gas.getGas().isRadioactive()){
+                    level.setBlock(pos, Blocks.WATER.defaultBlockState(),3);
+                }
+            }
         }
         super.onRemove(state,level,pos,newState,movedByPiston);
     }
