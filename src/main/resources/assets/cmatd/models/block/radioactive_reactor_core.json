@@ -3,11 +3,11 @@
 	"credit": "CreativeMasterBonin",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "cmatd:block/blast_casing",
+		"0": "cmatd:block/blast_casing_side",
 		"1": "cmatd:block/radioactive_reactor_core_side",
 		"2": "cmatd:block/blast_casing_top",
 		"3": "cmatd:block/blast_casing_bottom",
-		"particle": "cmatd:block/blast_casing"
+		"particle": "cmatd:block/blast_casing_side"
 	},
 	"elements": [
 		{

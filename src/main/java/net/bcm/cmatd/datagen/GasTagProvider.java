@@ -20,7 +20,11 @@ public class GasTagProvider extends TagsProvider<GasType> {
     @Override
     public void addTags(HolderLookup.Provider provider) {
         tag(Tag.BURNABLE_GASES)
-                .add(Gases.METHANE.getKey());
+                .add(Gases.METHANE.getKey())
+        ;
+        tag(Tag.RADIOACTIVE)
+                .add(Gases.RADIOACTIVE_WASTE.getKey())
+        ;
     }
 
     @Override

@@ -4,11 +4,10 @@ import net.bcm.cmatd.BaseEnergyStorage;
 import net.bcm.cmatd.Components;
 import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.Utility;
-import net.bcm.cmatd.api.GasStack;
-import net.bcm.cmatd.api.GasTank;
-import net.bcm.cmatd.api.Gases;
+import net.bcm.cmatd.api.*;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
@@ -24,6 +23,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -124,7 +127,7 @@ public class RadioactiveReactor extends TieredMachine{
 
         @Override
         public boolean canGasBeInsertedIntoTank(GasStack gasStack) {
-            return gasStack.getGas().isRadioactive() && gasStack.is(Gases.RADIOACTIVE_WASTE);
+            return false;
         }
     };
     public GasTank getWasteGasTank(){return this.wasteGasTank;}
@@ -226,17 +229,17 @@ public class RadioactiveReactor extends TieredMachine{
                 // if multiblock can be formed, then set as formed
                 if(canForm()){
                     if(level instanceof ServerLevel serverLevel){
-                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                        serverLevel.sendParticles(ParticleTypes.SONIC_BOOM,
                                 (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
                                 (double)getBlockPos().getY() + 0.45D,
                                 (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                3,0,0,0,0);
+                                1,0,0,0,0);
                         for(BlockPos position : neighborPositions){
-                            serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                                    (double)position.getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                            serverLevel.sendParticles(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER_OMINOUS,
+                                    (double)position.getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -1.25 : 1.25),
                                     (double)position.getY() + 0.45D,
-                                    (double)position.getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                    2,0,0,0,0.02);
+                                    (double)position.getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                    1,0,0,0,0.04);
                         }
                         serverLevel.playSound(null,getBlockPos(),
                                 SoundEvents.END_PORTAL_FRAME_FILL,SoundSource.BLOCKS);
@@ -344,6 +347,51 @@ public class RadioactiveReactor extends TieredMachine{
                                             getBlockPos(),
                                             SoundEvents.HEAVY_CORE_BREAK,
                                             SoundSource.BLOCKS);
+
+                                    serverLevel.sendParticles(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER,
+                                            (double)getBlockPos().getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                            (double)getBlockPos().getY() + 0.45D,
+                                            (double)getBlockPos().getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                            7,0,0,0,serverLevel.getRandom().nextFloat() * 0.3f);
+                                }
+                                if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(), 25,91) == 0){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.FIRE_EXTINGUISH,
+                                            SoundSource.BLOCKS,0.5f,serverLevel.getRandom().nextFloat() * 0.91f);
+                                }
+
+                                if(serverLevel.getGameTime() % 20 == 0 && heatAmount < 14000){
+                                    if(heatAmount < 12000 && heatAmount >= 11000){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                SoundSource.BLOCKS,0.4f,0.77f);
+                                    }
+                                    else if(heatAmount < 13000 && heatAmount >= 12000){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                SoundSource.BLOCKS,0.4f,0.86f);
+                                    }
+                                    else if(heatAmount < 14000 && heatAmount >= 13000){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                SoundSource.BLOCKS,0.5f,0.91f);
+                                    }
+                                }
+                                else if(serverLevel.getGameTime() % 10 == 0 && heatAmount > 14000 && heatAmount < 14500){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.NOTE_BLOCK_PLING.value(),
+                                            SoundSource.BLOCKS,0.7f,1.25f);
+                                }
+                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount >= 14500){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.NOTE_BLOCK_PLING.value(),
+                                            SoundSource.BLOCKS,1.0f,1.5f);
                                 }
                             }
                         }
@@ -378,6 +426,40 @@ public class RadioactiveReactor extends TieredMachine{
                     }
                     updateBlock();
                     return;
+                }
+            }
+            distributeProducts(); // try sending waste out
+        }
+    }
+
+    public void distributeProducts(){
+        for(Direction direction : Direction.values()){
+            // only try gas first, and if not present, then try fluid
+            IGasHandler handler = level.getCapability(Capabilities.GasHandler.BLOCK,
+                    getBlockPos().relative(direction), null);
+            if (handler != null) {
+                if (handler.getGasTanks() >= 1) {
+                    int received = handler.fill(wasteGasTank.gas,false);
+                    // drain the gas tank of the amount to drain
+                    this.wasteGasTank.drain(received, false);
+                    // force remove liquid from the tank
+                    this.wasteConversionToFluidTank.drain(received, IFluidHandler.FluidAction.EXECUTE);
+                    setChanged();
+                }
+            }
+            else{
+                IFluidHandler fluidHandler = level.getCapability(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK,
+                        getBlockPos().relative(direction),null);
+                if(fluidHandler != null){
+                    if(fluidHandler.getTanks() >= 1){
+                        int receivedFluid = fluidHandler.fill(wasteConversionToFluidTank.getFluid(), IFluidHandler.FluidAction.EXECUTE);
+                        // force remove gas from the gas tank
+                        this.wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),wasteGasTank.getGasStack().getAmount() - receivedFluid),true);
+
+                        // drain the fluid tank of the amount to drain
+                        this.wasteConversionToFluidTank.drain(receivedFluid, IFluidHandler.FluidAction.EXECUTE);
+                        setChanged();
+                    }
                 }
             }
         }
@@ -478,11 +560,13 @@ public class RadioactiveReactor extends TieredMachine{
                     // we do not want energy to be multiplied by zero with no modules installed, so add 1
                     getEnergyStorage().receiveEnergy(1000 * (1 + (doubleOutputModules + tripleOutputModules)),false);
                     if(!wasteGasTank.getGasStack().isEmpty()){
-                        wasteGasTank.fill(10 * (1 + efficiencyModules));
+                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (10 * (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
+                        wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }
                     else{
-                        wasteGasTank.fill(new GasStack(Gases.RADIOACTIVE_WASTE.get().getRegistryHolder(),10 * (1 + efficiencyModules)),false);
+                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,10 * (1 + efficiencyModules)),true);
+                        wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }
                     processBits = 0;

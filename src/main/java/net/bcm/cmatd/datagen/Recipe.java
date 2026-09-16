@@ -11,9 +11,13 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.SmithingRecipe;
+import net.minecraft.world.item.crafting.SmithingTrimRecipe;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -652,7 +656,40 @@ public class Recipe extends RecipeProvider{
                 .pattern("iri")
                 .pattern("pfp")
                 .pattern("imi")
-                .unlockedBy(Utility.HAS_ITEM,has(Items.LIGHTNING_ROD))
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.MACHINE_FRAME))
+                .save(rc);
+
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CmatdItem.INFUSED_INGOT),RecipeCategory.MISC,
+                        new ItemStack(CmatdItem.BLAST_PROOF_INGOT.asItem()),
+                        0.1f,1)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.INFUSED_INGOT))
+                .save(rc);
+
+        SmithingTransformRecipeBuilder.smithing(Ingredient.of(Items.NETHERITE_INGOT),
+                Ingredient.of(CmatdItem.PLATE),Ingredient.of(Tags.Items.SLIME_BALLS),RecipeCategory.MISC,CmatdItem.SEALED_STRONG_PLATE.asItem())
+                .unlocks(Utility.HAS_ITEM,has(CmatdItem.PLATE))
+                .save(rc,"sealed_strong_plate_using_smithing_transform");
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('f',CmatdItem.MACHINE_FRAME)
+                .define('b',CmatdItem.BLAST_PROOF_INGOT)
+                .pattern("pbp")
+                .pattern("bfb")
+                .pattern("pbp")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.MACHINE_FRAME))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK)
+                .define('p',CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING)
+                .define('i',Items.BUCKET)
+                .define('g',CmatdItem.GAS_TANK)
+                .define('e',CmatdItem.POWER_BOARD)
+                .define('r',Items.ROTTEN_FLESH)
+                .pattern("ppp")
+                .pattern("irg")
+                .pattern("pep")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING))
                 .save(rc);
     }
 

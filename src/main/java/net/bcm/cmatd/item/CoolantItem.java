@@ -7,6 +7,6 @@ import net.minecraft.world.item.Rarity;
 public class CoolantItem extends Item {
     public CoolantItem(Properties properties) {
         super(properties.component(Components.COOLANT,true)
-                .stacksTo(8).rarity(Rarity.UNCOMMON));
+                .stacksTo(1).rarity(Rarity.UNCOMMON));
     }
 }

@@ -62,6 +62,9 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.REDSTONE_ENERGY_COLUMN.asItem());
         defaultCustomHeldItem(CmatdItem.CMATD_WRENCH.asItem());
 
+        defaultCustomSimpleItem(CmatdItem.SEALED_STRONG_PLATE.asItem());
+        defaultCustomSimpleItem(CmatdItem.BLAST_PROOF_INGOT.asItem());
+
 
         // pattern items
         defaultCustomSimpleItem(CmatdItem.PATTERN_BASE.asItem());

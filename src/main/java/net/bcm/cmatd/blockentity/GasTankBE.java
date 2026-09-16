@@ -5,10 +5,12 @@ import net.bcm.cmatd.block.custom.GasVent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -118,6 +120,20 @@ public class GasTankBE extends AbstractGasContainingBE{
                         }
                     }
                 }
+            }
+        }
+
+        // slowly destroy radioactive gas
+        if(level instanceof ServerLevel serverLevel){
+            if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % 275 == 0){
+                gasTank.gas.setAmount(gasTank.getGasAmount() - Mth.randomBetweenInclusive(serverLevel.getRandom(),34,327));
+                setChanged();
+                serverLevel.playSound(null,getBlockPos(),
+                        SoundEvents.LAVA_EXTINGUISH,SoundSource.BLOCKS,
+                        0.13f,Mth.nextFloat(level.getRandom(),0.87f,0.96f));
+                serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                        getBlockPos().getX() + 0.5D,getBlockPos().getY() + 0.75D, getBlockPos().getZ() + 0.5D,
+                        7,0,0,0,0.02);
             }
         }
     }

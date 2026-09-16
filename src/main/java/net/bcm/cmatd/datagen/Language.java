@@ -166,6 +166,7 @@ public class Language extends LanguageProvider{
         this.add(CmatdBlock.HEAT_GENERATOR.get(),"Heat Generator");
         this.add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get(),"Rotational Induction Generator");
         this.add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(),"Dimensional Transporter");
+        this.add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),"Radioactive Reactor");
 
         // gas vents
         this.add(CmatdBlock.METHANE_GAS_VENT.get(),"Methane Gas Vent");
@@ -218,6 +219,8 @@ public class Language extends LanguageProvider{
 
         // processed materials
         this.add(CmatdItem.INFUSED_INGOT.get(),"Infused Ingot");
+        this.add(CmatdItem.SEALED_STRONG_PLATE.get(),"Sealed Strong Plate");
+        this.add(CmatdItem.BLAST_PROOF_INGOT.get(),"Blast Proof Ingot");
 
         // machine assembler parts
         this.add(CmatdItem.COPPER_PCB_BASE.get(),"Copper PCB Base");
@@ -252,10 +255,12 @@ public class Language extends LanguageProvider{
         this.add(Tag.VALID_FOOD_REACTOR_CASINGS,"Valid Food Reactor Casings");
         this.add(Tag.VALID_FOOD_REACTOR_COOLANTS,"Valid Food Reactor Coolants");
         this.add(Tag.VALID_FOOD_REACTOR_FUELS,"Valid Food Reactor Fuels");
+        this.add(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS,"Valid Radioactive Reactor Casings");
 
         // gas tags
         this.add(Tag.BURNABLE_GASES,"Burnable");
         this.add(Tag.FREEZABLE_GASES,"Freezable");
+        this.add(Tag.RADIOACTIVE,"Radioactive");
 
         // recipe translations
         this.add("emi.category.cmatd..presser_category","Pressing");
@@ -275,6 +280,7 @@ public class Language extends LanguageProvider{
         this.addGas(Gases.STEAM,"Steam");
         this.addGas(Gases.COMPOUNDITE,"Gaseous Compoundite");
         this.addGas(Gases.LODEALITE,"Gaseous Lodealite");
+        this.addGas(Gases.RADIOACTIVE_WASTE,"Gaseous Radioactive Waste");
         this.add("gas.cmatd.empty","Empty");
         this.add("message.dumping_attempt.gas_is_radioactive","Cannot dump radioactive gases!");
         this.add("title.gas_amt","%s GU");

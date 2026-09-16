@@ -58,6 +58,7 @@ public class Tag{
     // gas tags
     public static final TagKey<GasType> BURNABLE_GASES = gasTag("burnable");
     public static final TagKey<GasType> FREEZABLE_GASES = gasTag("freezable");
+    public static final TagKey<GasType> RADIOACTIVE = gasTag("radioactive");
 
     // dimensional tags
     public static final TagKey<DimensionType> DIMENSIONAL_TRANSPORTER_ALLOWED = dimensionTypeTag("dimensional_transporter_allowed");

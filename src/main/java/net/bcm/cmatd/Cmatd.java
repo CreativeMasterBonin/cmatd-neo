@@ -69,6 +69,8 @@ public class Cmatd {
                         output.accept(CmatdItem.LIGHTNING_GENERATOR.asItem());
                         output.accept(CmatdItem.FOOD_REACTOR_MULTIBLOCK.asItem());
                         output.accept(CmatdItem.ROTATIONAL_INDUCTION_GENERATOR.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.asItem());
                         // conduits
                         /*output.accept(CmatdItem.CONDUIT.asItem());
                         output.accept(CmatdItem.FACADE_CONDUIT.asItem());*/
@@ -86,11 +88,16 @@ public class Cmatd {
 
                         output.accept(CmatdItem.CMATD_WRENCH.asItem());
 
+                        // coolants for super reactors
+                        output.accept(CmatdItem.BASIC_COOLANT_PACKAGE.asItem());
+
+                        // modules for use in certain machines
                         output.accept(CmatdItem.BLANK_MODULE.asItem());
                         output.accept(CmatdItem.SPEED_MODULE.asItem());
                         output.accept(CmatdItem.EFFICIENCY_MODULE.asItem());
                         output.accept(CmatdItem.DOUBLER_MODULE.asItem());
                         output.accept(CmatdItem.TRIPLED_MODULE.asItem());
+                        output.accept(CmatdItem.HEAT_DISPERSION_MODULE.asItem());
 
                         output.accept(CmatdItem.BASIC_TIER_DOWNGRADE.asItem());
                         output.accept(CmatdItem.ADVANCED_TIER_UPGRADE.asItem());
@@ -122,6 +129,8 @@ public class Cmatd {
                         output.accept(CmatdItem.LODEALITE_INGOT.asItem());
                         output.accept(CmatdItem.LODEALITE_BLOCK.asItem());
                         output.accept(CmatdItem.INFUSED_INGOT.asItem());
+                        output.accept(CmatdItem.SEALED_STRONG_PLATE.asItem());
+                        output.accept(CmatdItem.BLAST_PROOF_INGOT.asItem());
 
                         output.accept(CmatdItem.PATTERN_BASE.asItem());
                         output.accept(CmatdItem.PCB_PATTERN.asItem());

@@ -25,6 +25,9 @@ public class CmatdItem{
     public static final DeferredItem<BlockItem> LESSER_MACHINE_FRAME =
             ITEMS.register("lesser_machine_frame",
                     () -> new BlockItem(CmatdBlock.LESSER_MACHINE_FRAME.get(),new Item.Properties()));
+    public static final DeferredItem<BlockItem> RADIOACTIVE_REACTOR_MULTIBLOCK_CASING =
+            ITEMS.register("radioactive_reactor_casing",
+                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),new Item.Properties()));
 
 
     public static final DeferredItem<BlockItem> BASE_ENERGY_MAKER =
@@ -422,6 +425,18 @@ public class CmatdItem{
                             .stacksTo(1)
                             .rarity(Rarity.UNCOMMON)
                             .fireResistant()));
+
+    public static final DeferredItem<Item> BLAST_PROOF_INGOT =
+            ITEMS.register("blast_proof_ingot",
+                    () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> SEALED_STRONG_PLATE =
+            ITEMS.register("sealed_strong_plate",
+                    () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> BASIC_COOLANT_PACKAGE =
+            ITEMS.register("basic_coolant_package",
+                    () -> new CoolantItem(new Item.Properties().durability(1000)));
 
     // debug items
 }

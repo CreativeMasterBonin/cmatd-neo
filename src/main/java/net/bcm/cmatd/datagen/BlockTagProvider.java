@@ -279,6 +279,8 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .addTag(Tag.PRODUCES_STEAM_GAS)
         ;
         tag(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS)
+                .add(CmatdBlock.HEAT_GENERATOR.get())
+                .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
     }
