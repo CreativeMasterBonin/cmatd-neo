@@ -28,5 +28,8 @@ public class BlockState extends BlockStateProvider {
         simpleBlockWithItem(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(), new ModelFile.UncheckedModelFile(
                 ResourceLocation.parse("cmatd:block/conduit_all")
         ));
+        simpleBlockWithItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),new ModelFile.UncheckedModelFile(
+                ResourceLocation.parse("cmatd:block/radioactive_reactor_core")
+        ));
     }
 }

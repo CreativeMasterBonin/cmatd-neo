@@ -111,6 +111,9 @@ public class CmatdItem{
     public static final DeferredItem<BlockItem> FOOD_REACTOR_MULTIBLOCK =
             ITEMS.register("food_reactor",
                     () -> new BlockItem(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get(),new Item.Properties()));
+    public static final DeferredItem<BlockItem> RADIOACTIVE_REACTOR_MULTIBLOCK =
+            ITEMS.register("radioactive_reactor",
+                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),new Item.Properties()));
 
 
     // gas supporting blockitems

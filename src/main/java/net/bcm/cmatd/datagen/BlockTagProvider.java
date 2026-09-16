@@ -98,6 +98,8 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.STEAM_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
+                .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
         ;
         tag(BlockTags.NEEDS_STONE_TOOL)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -131,6 +133,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
+                .add(CmatdBlock.CONDUIT.get())
+                .add(CmatdBlock.FACADE_CONDUIT.get())
+                .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
         ;
         tag(JustDireBlockTags.PARADOX_ABSORB_DENY)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
@@ -156,6 +162,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.STEAM_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
+                .add(CmatdBlock.CONDUIT.get())
+                .add(CmatdBlock.FACADE_CONDUIT.get())
+                .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
         ;
         tag(JustDireBlockTags.TICK_SPEED_DENY)
                 .add(CmatdBlock.WIND_GENERATOR.get())
@@ -165,6 +175,9 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.HEAT_GENERATOR.get())
                 .add(CmatdBlock.LIGHTNING_GENERATOR.get())
                 .add(CmatdBlock.GAS_TANK.get())
+                .add(CmatdBlock.CONDUIT.get())
+                .add(CmatdBlock.FACADE_CONDUIT.get())
+                .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
