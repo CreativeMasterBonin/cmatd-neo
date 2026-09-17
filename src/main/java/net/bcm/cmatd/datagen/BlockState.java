@@ -20,11 +20,15 @@ public class BlockState extends BlockStateProvider {
         simpleBlock(CmatdBlock.DEEPSLATE_COMPOUNDITE_ORE.get());
         simpleBlock(CmatdBlock.LODEALITE_ORE.get());
         simpleBlock(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get());
+        simpleBlock(CmatdBlock.VITIATIUM_ORE.get());
+        simpleBlock(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get());
 
         simpleBlock(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get());
         simpleBlock(CmatdBlock.RAW_LODEALITE_BLOCK.get());
+        simpleBlock(CmatdBlock.RAW_VITIATIUM_BLOCK.get());
         simpleBlock(CmatdBlock.COMPOUNDITE_BLOCK.get());
         simpleBlock(CmatdBlock.LODEALITE_BLOCK.get());
+        simpleBlock(CmatdBlock.VITIATIUM_BLOCK.get());
 
         simpleBlockWithItem(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(), new ModelFile.UncheckedModelFile(
                 ResourceLocation.parse("cmatd:block/conduit_all")

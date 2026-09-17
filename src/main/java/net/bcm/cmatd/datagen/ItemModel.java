@@ -48,8 +48,10 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.INFUSED_INGOT.asItem());
         defaultCustomSimpleItem(CmatdItem.RAW_COMPOUNDITE.asItem());
         defaultCustomSimpleItem(CmatdItem.RAW_LODEALITE.asItem());
+        defaultCustomSimpleItem(CmatdItem.RAW_VITIATIUM.asItem());
         defaultCustomSimpleItem(CmatdItem.COMPOUNDITE_INGOT.asItem());
         defaultCustomSimpleItem(CmatdItem.LODEALITE_INGOT.asItem());
+        defaultCustomSimpleItem(CmatdItem.VITIATIUM_INGOT.asItem());
 
         defaultCustomSimpleItem(CmatdItem.COPPER_PCB_BASE.asItem());
         defaultCustomSimpleItem(CmatdItem.UNPRESSED_PCB.asItem());
@@ -75,11 +77,15 @@ public class ItemModel extends ItemModelProvider{
         simpleBlockItem(CmatdBlock.DEEPSLATE_COMPOUNDITE_ORE.get());
         simpleBlockItem(CmatdBlock.LODEALITE_ORE.get());
         simpleBlockItem(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get());
+        simpleBlockItem(CmatdBlock.VITIATIUM_ORE.get());
+        simpleBlockItem(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get());
 
         simpleBlockItem(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get());
         simpleBlockItem(CmatdBlock.RAW_LODEALITE_BLOCK.get());
         simpleBlockItem(CmatdBlock.COMPOUNDITE_BLOCK.get());
         simpleBlockItem(CmatdBlock.LODEALITE_BLOCK.get());
+        simpleBlockItem(CmatdBlock.RAW_VITIATIUM_BLOCK.get());
+        simpleBlockItem(CmatdBlock.VITIATIUM_BLOCK.get());
     }
 
     private ItemModelBuilder defaultCustomSimpleItem(Item item){

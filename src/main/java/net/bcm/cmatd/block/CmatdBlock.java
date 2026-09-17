@@ -168,6 +168,26 @@ public class CmatdBlock{
                     .mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GILDED_BLACKSTONE)
                     .strength(3.5f,3.5f)));
 
+    public static final DeferredBlock<Block> VITIATIUM_ORE = BLOCKS.register("vitiatium_ore",
+            () -> new CustomOreBlock(3,5,3.15f,5.5f,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE).sound(SoundType.STONE)));
+
+    public static final DeferredBlock<Block> DEEPSLATE_VITIATIUM_ORE = BLOCKS.register("deepslate_vitiatium_ore",
+            () -> new CustomOreBlock(3,5,3.35f,5.75f,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE)));
+
+    public static final DeferredBlock<Block> RAW_VITIATIUM_BLOCK = BLOCKS.register("raw_vitiatium_block",
+            () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.DRIPSTONE_BLOCK)
+                    .strength(3.5f,3.5f)));
+
+    public static final DeferredBlock<Block> VITIATIUM_BLOCK = BLOCKS.register("vitiatium_block",
+            () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.METAL)
+                    .strength(3.71f,5.92f)));
+
     // state predicates
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return false;

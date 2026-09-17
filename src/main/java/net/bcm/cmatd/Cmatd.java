@@ -121,6 +121,11 @@ public class Cmatd {
                         output.accept(CmatdItem.RAW_LODEALITE.asItem());
                         output.accept(CmatdItem.RAW_LODEALITE_BLOCK.asItem());
 
+                        output.accept(CmatdItem.VITIATIUM_ORE.asItem());
+                        output.accept(CmatdItem.DEEPSLATE_VITIATIUM_ORE.asItem());
+                        output.accept(CmatdItem.RAW_VITIATIUM.asItem());
+                        output.accept(CmatdItem.RAW_VITIATIUM_BLOCK.asItem());
+
                         output.accept(CmatdItem.IRON_DUST.asItem());
                         output.accept(CmatdItem.GOLD_DUST.asItem());
 
@@ -131,6 +136,8 @@ public class Cmatd {
                         output.accept(CmatdItem.INFUSED_INGOT.asItem());
                         output.accept(CmatdItem.SEALED_STRONG_PLATE.asItem());
                         output.accept(CmatdItem.BLAST_PROOF_INGOT.asItem());
+                        output.accept(CmatdItem.VITIATIUM_INGOT.asItem());
+                        output.accept(CmatdItem.VITIATIUM_BLOCK.asItem());
 
                         output.accept(CmatdItem.PATTERN_BASE.asItem());
                         output.accept(CmatdItem.PCB_PATTERN.asItem());

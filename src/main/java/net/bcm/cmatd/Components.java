@@ -46,4 +46,9 @@ public class Components{
             COMPONENTS.registerComponentType("coolant", builder ->
                     builder.persistent(Codec.BOOL)
                             .networkSynchronized(ByteBufCodecs.BOOL));
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<RadioactiveComponent>> RADIOACTIVE =
+            COMPONENTS.registerComponentType("radioactive", builder ->
+                    builder.persistent(RadioactiveComponent.CODEC)
+                            .networkSynchronized(RadioactiveComponent.STREAM_CODEC));
 }

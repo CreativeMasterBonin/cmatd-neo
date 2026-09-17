@@ -15,10 +15,17 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -29,7 +36,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockPredicate;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -99,7 +106,7 @@ public class RadioactiveReactor extends TieredMachine{
 
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(30){
         public NonNullList<ItemStack> getStacks(){
-            return stacks;
+            return stacks; // completely useless as the method is inaccessible outside the object itself
         }
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
@@ -110,8 +117,8 @@ public class RadioactiveReactor extends TieredMachine{
         }
     };
     public int gasAmount = 0;
-    public RadioactiveReactorGasContainerData gasContainerData;
-    public RadioactiveReactorFluidContainerData fluidContainerData;
+    public RadioactiveReactorGasContainerData gasContainerData; // shared via menu
+    public RadioactiveReactorFluidContainerData fluidContainerData; // shared via menu
     public int heatAmount = 0; // the heat stored in this machine if not dissipated using coolant
     public int coolantAmount = 0; // the coolant used to cool down the reactor when running and off (0 = kaboom)
     public final int maxCoolantAmount = 30000; // the maximum coolant the reactor can store
@@ -119,6 +126,12 @@ public class RadioactiveReactor extends TieredMachine{
     public final int heatAmountToWarnAt = 10000; // the heat to start warning players at until unstable
     public final int processBitsToProduceAt = 1000; // the amount of 'bits' it takes to make some energy from the items inside the reactor
     public boolean isActive = false;
+    public int maxHeatWhenCooling = 5500; // affects how much heat output is maintained when using coolant
+    public float radioactivityOfFuelAccumulative = 0.0f;
+
+    public float getRadioactivity(){
+        return radioactivityOfFuelAccumulative;
+    }
 
     public final GasTank wasteGasTank = new GasTank(1000000){
         @Override
@@ -138,7 +151,10 @@ public class RadioactiveReactor extends TieredMachine{
     public GasTank getWasteGasTank(){return this.wasteGasTank;}
     public FluidTank getWasteConvertedToFluidTank(){return this.wasteConversionToFluidTank;}
     public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000){
+        @Override
+        protected void onContentsChanged() {
 
+        }
     };
 
     public RadioactiveReactor(BlockPos pos, BlockState blockState) {
@@ -202,6 +218,12 @@ public class RadioactiveReactor extends TieredMachine{
         if(tag.contains("active")){
             isActive = tag.getBoolean("active");
         }
+        if(tag.contains("max_heat_when_cooling")){
+            maxHeatWhenCooling = Mth.clamp(tag.getInt("max_heat_when_cooling"),500,heatAmountToGoBoomAt - 1000);
+        }
+        if(tag.contains("radioactivity")){
+            radioactivityOfFuelAccumulative = tag.getFloat("radioactivity");
+        }
     }
 
     @Override
@@ -222,6 +244,8 @@ public class RadioactiveReactor extends TieredMachine{
         tag.putInt("heat_amount",heatAmount);
         tag.putInt("coolant_amount",coolantAmount);
         tag.putBoolean("active",isActive);
+        tag.putInt("max_heat_when_cooling",Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000));
+        tag.putFloat("radioactivity",radioactivityOfFuelAccumulative);
     }
 
     @Override
@@ -230,6 +254,64 @@ public class RadioactiveReactor extends TieredMachine{
             // enforce chunks needing to be loaded within a range of block positions
             if(!level.hasChunksAt(getBlockPos().south().below(),getBlockPos().north().above())){
                 return;
+            }
+            // iterate over the items (without the module slots)
+            for(int index = 0; index < 25; index++){
+                // this index is not used and is invalid in this case
+                if(index >= 25){
+                    break;
+                }
+                if(itemStackHandler.getStackInSlot(index).is(Tag.VALID_RADIOACTIVE_FUELS)){
+                    ItemStack copiedFuelStack = itemStackHandler.getStackInSlot(index);
+                    // accumulate radioactivity for each piece of fuel, since radioactive material radioactivity sticks around for a while
+                    if(copiedFuelStack.has(Components.RADIOACTIVE)){
+                        if(getRadioactivity() < 1000.0f){
+                            radioactivityOfFuelAccumulative += copiedFuelStack.get(Components.RADIOACTIVE).radioactivity();
+                            updateBlock();
+                        }
+                    }
+                    copiedFuelStack.shrink(1);
+                    itemStackHandler.setStackInSlot(index,copiedFuelStack);
+                    setChanged();
+                }
+            }
+            // check if radioactivity is higher than normal
+            if(getRadioactivity() > 0.0f){
+                if(level instanceof ServerLevel serverLevel){
+                    List<LivingEntity> entities = serverLevel.getNearbyEntities(
+                            LivingEntity.class, TargetingConditions.forNonCombat(),null,new AABB(
+                                    getBlockPos().getX() - 7,
+                                    getBlockPos().getY() - 7,
+                                    getBlockPos().getZ() - 7,
+                                    getBlockPos().getX() + 7,
+                                    getBlockPos().getY() + 7,
+                                    getBlockPos().getZ() + 7
+                            )
+                    );
+
+                    for(LivingEntity livingEntity : entities){
+                        if(!livingEntity.hasEffect(MobEffects.POISON)){
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                        }
+                        if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                        }
+                        if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                            livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                        }
+                        /*if(livingEntity instanceof Player){
+                            System.out.println(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()));
+                        }*/
+                        if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                            livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                        }
+                    }
+
+                    if(serverLevel.getRandom().nextIntBetweenInclusive(0,320) <= 50){
+                        radioactivityOfFuelAccumulative -= 0.01f;
+                    }
+                    setChanged();
+                }
             }
             // multiblock is not formed, check if it should be
             if(!isFormed){
@@ -296,14 +378,17 @@ public class RadioactiveReactor extends TieredMachine{
                     produceWaste();
                     // heat level increase based on conditions
                     if(isProcessing){
-                        // make a sound if processing and active, no matter what occasion
-                        if(level instanceof ServerLevel serverLevel){
-                            if(serverLevel.getGameTime() % 100 == 0){
-                                serverLevel.playSound(null,getBlockPos(),
-                                        SoundEvents.BEACON_AMBIENT,SoundSource.BLOCKS,1.0f,0.7f);
+                        // make a sound if processing and active, no matter what occasion (other than a config option)
+                        if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_AMBIENT_SOUNDS.getAsBoolean()){
+                            if(level instanceof ServerLevel serverLevel){
+                                if(serverLevel.getGameTime() % 100 == 0){
+                                    serverLevel.playSound(null,getBlockPos(),
+                                            SoundEvents.BEACON_AMBIENT,SoundSource.BLOCKS,1.0f,0.7f);
+                                }
                             }
                         }
-                        if(coolantAmount > 0){
+                        // only reduce coolant when needed based on threshold (and if coolant exists at all)
+                        if(coolantAmount > 0 && heatAmount >= Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000)){
                             // just make sure heat is never less than zero
                             heatAmount = Mth.clamp(heatAmount - (efficiencyModules + 1),0,heatAmountToGoBoomAt);
                             // coolant is used less often when efficiency is very high
@@ -364,9 +449,9 @@ public class RadioactiveReactor extends TieredMachine{
                 }
 
                 // if heat dispersion is active, then when the heat is at the ideal temperature, keep it at that temperature
-                if(heatAmount > 5500){
+                if(heatAmount > maxHeatWhenCooling){
                     if(heatDispersionModules > 0){
-                        heatAmount = (5500 + heatDispersionModules);
+                        heatAmount = (maxHeatWhenCooling + heatDispersionModules);
                         setChanged();
                     }
                 }
@@ -378,7 +463,7 @@ public class RadioactiveReactor extends TieredMachine{
                 }
                 // heat level effects
                 // start making noises that tell players the reactor is failing
-                if(heatAmount >= heatAmountToWarnAt && heatAmount < heatAmountToGoBoomAt){
+                if(heatAmount >= heatAmountToWarnAt && heatAmount < heatAmountToGoBoomAt && isActive && isFormed){
                     if(level != null){
                         if(level instanceof ServerLevel serverLevel){
                             if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_DAMAGE_SOUNDS.getAsBoolean()){
@@ -400,7 +485,58 @@ public class RadioactiveReactor extends TieredMachine{
                                     serverLevel.playSound(null,
                                             getBlockPos(),
                                             SoundEvents.FIRE_EXTINGUISH,
-                                            SoundSource.BLOCKS,0.5f,serverLevel.getRandom().nextFloat() * 0.91f);
+                                            SoundSource.BLOCKS,serverLevel.getRandom().nextFloat() * 0.5f,serverLevel.getRandom().nextFloat() * 0.91f);
+                                }
+
+                                if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(),15,50) == 0 && heatAmount > 12000){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.ANVIL_LAND,
+                                            SoundSource.BLOCKS,
+                                            0.12f,Utility.nextFloatBetweenInclusive(0.25f,0.61f));
+
+                                    BlockPos randomPosForParticles = neighborPositions.get(serverLevel.getRandom().nextIntBetweenInclusive(0,neighborPositions.size() - 1));
+
+                                    int selectedParticle = serverLevel.getRandom().nextIntBetweenInclusive(0,2);
+                                    if(selectedParticle == 0){
+                                        serverLevel.sendParticles(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER,
+                                                (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                (double)randomPosForParticles.getY() + 0.45D,
+                                                (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                4,0,0,0,serverLevel.getRandom().nextFloat() * 0.2f);
+                                    }
+                                    else if(selectedParticle == 1){
+                                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+                                                (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                (double)randomPosForParticles.getY() + 0.45D,
+                                                (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                2,0,0,0,0);
+                                    }
+                                    else if(selectedParticle == 2){
+                                        serverLevel.sendParticles(ParticleTypes.SNEEZE,
+                                                (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                (double)randomPosForParticles.getY() + 0.45D,
+                                                (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                2,0,0,0,serverLevel.getRandom().nextFloat() * 0.02f);
+                                    }
+                                }
+
+                                if(heatAmount > 14000){
+                                    if(serverLevel.getGameTime() % 2==0){
+                                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+                                                (double)getBlockPos().getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                (double)getBlockPos().getY() + 0.75D,
+                                                (double)getBlockPos().getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                                1,0,0,0,serverLevel.getRandom().nextFloat() * 0.01f);
+                                    }
+                                }
+                                if(heatAmount > 14500){
+                                    if (serverLevel.getGameTime() % 5 == 0) {
+                                        double d0 = (double)getBlockPos().getX() + serverLevel.getRandom().nextDouble();
+                                        double d1 = (double)getBlockPos().getY() + 1.0;
+                                        double d2 = (double)getBlockPos().getZ() + serverLevel.getRandom().nextDouble();
+                                        serverLevel.addParticle(ParticleTypes.LAVA, d0, d1, d2, 0.0, 0.01, 0.0);
+                                    }
                                 }
 
                                 // the alarms will start sounding
@@ -431,13 +567,13 @@ public class RadioactiveReactor extends TieredMachine{
                                             SoundEvents.NOTE_BLOCK_PLING.value(),
                                             SoundSource.BLOCKS,0.7f,1.25f);
                                 } // better do something now
-                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount > 14500 && heatAmount < 14825){
+                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount > 14500 && heatAmount < 14900){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
                                             SoundEvents.NOTE_BLOCK_PLING.value(),
                                             SoundSource.BLOCKS,1.0f,1.5f);
                                 } // it's over
-                                else if(serverLevel.getGameTime() % 2 == 0 && heatAmount >= 14825){
+                                else if(serverLevel.getGameTime() % 2 == 0 && heatAmount >= 14900){
                                     serverLevel.playSound(null,
                                             getBlockPos(),
                                             SoundEvents.NOTE_BLOCK_PLING.value(),
@@ -454,6 +590,8 @@ public class RadioactiveReactor extends TieredMachine{
                             // the extremely dangerous consequence if the reactor is too hot
                             // you will lose items
                             if(ServerConfig.RADIOACTIVE_REACTOR_EXPLODES_WHEN_TOO_HOT.getAsBoolean()){
+                                int wasteTankAmount = wasteGasTank.getGasAmount();
+                                this.invalidateCapabilities(); // the block will not exist, so invalidate interactions with it
                                 serverLevel.setBlock(getBlockPos(),Blocks.AIR.defaultBlockState(),3);
                                 serverLevel.explode(null,
                                         getBlockPos().getX(),
@@ -463,10 +601,10 @@ public class RadioactiveReactor extends TieredMachine{
                                         true,
                                         Level.ExplosionInteraction.BLOCK);
                                 // if there was any waste in the gas tank then release it
-                                if(wasteGasTank.gas.getAmount() > 0){
-                                    wasteGasTank.setGas(GasStack.EMPTY,true);
+                                if(wasteTankAmount > 0){
                                     serverLevel.setBlock(getBlockPos(),Blocks.WATER.defaultBlockState(),3);
                                 }
+                                return;
                             }
                             else{
                                 // the nice way to make the reactor fail
@@ -557,7 +695,7 @@ public class RadioactiveReactor extends TieredMachine{
                 break;
             }
             ItemStack stack = itemStackHandler.getStackInSlot(index);
-            if(stack.is(Items.COAL)){
+            if(stack.is(Tag.VALID_RADIOACTIVE_FUELS)){
                 fuelDetected = true;
             }
             if(level instanceof ServerLevel serverLevel){
@@ -576,9 +714,20 @@ public class RadioactiveReactor extends TieredMachine{
                         setChanged();
                     }
                     // durable items should be considered special as they can repair or be damaged at the same time
-                    if(stack.has(DataComponents.DAMAGE) && stack.has(Components.COOLANT)){
+                    if(stack.has(DataComponents.DAMAGE) && stack.has(Components.COOLANT) && serverLevel.getRandom().nextIntBetweenInclusive(0,100) <= 2){
                         coolantAmount++;
-                        stack.set(DataComponents.DAMAGE,stack.get(DataComponents.DAMAGE) - 1);
+                        // don't modify item stacks directly, make a copy
+                        ItemStack copiedStack = stack.copy();
+                        int damage = stack.getDamageValue();
+                        int maxDamage = stack.getMaxDamage();
+                        // clamp this value as otherwise the machine cannot save, as damage must be greater than or equal to 0
+                        copiedStack.set(DataComponents.DAMAGE,Mth.clamp(damage - 1,0,maxDamage));
+                        if(copiedStack.getDamageValue() <= 0){
+                            itemStackHandler.setStackInSlot(index,ItemStack.EMPTY);
+                        }
+                        else{
+                            itemStackHandler.setStackInSlot(index,copiedStack);
+                        }
                         setChanged();
                     }
                 }

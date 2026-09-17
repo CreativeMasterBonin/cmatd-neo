@@ -1,13 +1,18 @@
 package net.bcm.cmatd.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.bcm.cmatd.CmatdClient;
+import net.bcm.cmatd.CmatdClientActionHandler;
+import net.bcm.cmatd.Components;
 import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
@@ -48,6 +53,18 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         // bilt the background first
         guiGraphics.blit(BG, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
 
+        int energyWidth = 32;
+        int energyHeight = 3;
+        int energyLeft = 64;
+        int energyTop = 16;
+
+        int powerWidth = menu.energy == Integer.MAX_VALUE ? energyWidth - 2 : Math.max(1,(int)((double)(energyWidth - 2) *
+                Utility.divisionDoubleSplit(menu.energy,menu.energyCapacity)));
+
+        int p = powerWidth;
+        guiGraphics.fillGradient(leftPos + energyLeft, topPos + energyTop, leftPos + energyLeft + p, topPos + energyTop + energyHeight, Utility.BRIGHT_LIGHT_BLUE, Utility.DARKER_BLUE);
+        guiGraphics.fill(leftPos + energyLeft + p, topPos + energyTop, leftPos + energyLeft + energyWidth, topPos + energyTop + energyHeight, Utility.DARKEST_GRAYER_BLUE);
+
         // blit the gas marks sprite next
         guiGraphics.blit(GAS_METER_MARKS,this.leftPos + 146,this.topPos + 38,0,0,
                 gasMeterMarksWidth,gasMeterMarksHeight,gasMeterMarksWidth,gasMeterMarksHeight);
@@ -59,8 +76,10 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
 
         int coolant = (int)Mth.clamp(Utility.normalizeIntToFloatValue(menu.coolant,0,30000,0,126),0,126);
 
+        // fancy color transition fade in and out
         float coolantFadeInOut = Mth.clamp(Mth.sin(Util.getMillis() / 3200.0f) + 1.0f,0.0f,1.0f);
 
+        // coolant bar render
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(0.01f,coolantFadeInOut,1.0f,1.0f);
         guiGraphics.blit(ResourceLocation.parse("cmatd:textures/gui/sprites/reactor_heat_bar.png"),
@@ -71,12 +90,33 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);// reset color to default
         RenderSystem.disableBlend();
 
+        // heat bar render
         RenderSystem.enableBlend();
-        if(menu.heat < 9000){
-            RenderSystem.setShaderColor(1.0f,1.0f,hotValue,1.0f);
+        if(menu.heat < 9000){ // overheating
+            if(menu.heat < 4500){ // very hot
+                if(menu.heat < 3200){ // hot
+                    if(menu.heat < 2000){ // warming up
+                        if(menu.heat < 1500){ // cool
+                            RenderSystem.setShaderColor(0.1f,0.5f,1.0f,1.0f);
+                        }
+                        else{
+                            RenderSystem.setShaderColor(0.5f,0.7f,1.0f,1.0f);
+                        }
+                    }
+                    else{
+                        RenderSystem.setShaderColor(0.9f,0.8f,0.4f,1.0f);
+                    }
+                }
+                else{
+                    RenderSystem.setShaderColor(1.0f,1.0f,hotValue,1.0f);
+                }
+            }
+            else{
+                RenderSystem.setShaderColor(1.0f,0.5f,0.0f,1.0f);
+            }
         }
         else{
-            RenderSystem.setShaderColor(1.0f,0.0f,0.0f,1.0f);
+            RenderSystem.setShaderColor(1.0f,0.0f,0.0f,1.0f); // if the color is here, the reactor is gonna blow, run!
         }
         guiGraphics.blit(ResourceLocation.parse("cmatd:textures/gui/sprites/reactor_heat_bar.png"),
                 this.leftPos + 15,(this.topPos + 150) - heat,
@@ -89,14 +129,34 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
 
     @Override
     protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
-        super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
-        guiGraphics.drawString(this.font,String.valueOf(slot.index),slot.x,slot.y,Utility.INT_WHITE);
+        // color slot highlight based on item type
+        if (slot.isHighlightable()) {
+            if(slot.getItem().has(Components.COOLANT)){
+                renderSlotHighlight(guiGraphics, slot.x, slot.y, 0,
+                        FastColor.ARGB32.colorFromFloat(0.25f,0.1f,0.5f,1.0f));
+            }
+            else if(slot.getItem().is(Tag.VALID_RADIOACTIVE_FUELS)){
+                renderSlotHighlight(guiGraphics, slot.x, slot.y, 0,
+                        FastColor.ARGB32.colorFromFloat(0.25f,0.5f,1.0f,0.1f));
+            }
+            else if(slot.getItem().has(Components.MODULE_TYPE)){
+                renderSlotHighlight(guiGraphics, slot.x, slot.y, 0,
+                        FastColor.ARGB32.colorFromFloat(0.25f,1.0f,0.2f,1.0f));
+            }
+            else{
+                renderSlotHighlight(guiGraphics, slot.x, slot.y, 0,
+                        -2130706433); // default color
+            }
+        }
+        // was a debug feature, now is slot id helper hold-and-press-toggle
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            guiGraphics.drawString(this.font,String.valueOf(slot.index),slot.x,slot.y,Utility.INT_WHITE);
+        }
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-
         if(mouseX >= leftPos + fluidRendererX && mouseX < leftPos + fluidRendererX + fluidRendererWidth && mouseY >= topPos + fluidRendererY && mouseY < topPos + fluidRendererY + fluidRendererHeight){
             int gasAmount = menu.getGasAmount();
             List<Component> components2 = List.of(
@@ -121,19 +181,24 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, Utility.INT_WHITE, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, Utility.INT_WHITE, false);
 
-        // test labels
-        guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.heat)),
-                this.titleLabelX, this.titleLabelY + 32, Utility.BAD_WARNING_YELLOW, false);
-        guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.coolant)),
-                this.titleLabelX + 16, this.titleLabelY + 32, Utility.GOOD_STATE_GREEN, false);
-        // gas amount
-        guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.getGasAmount())),
-                this.titleLabelX + 142, this.titleLabelY + 32, Utility.hexToInt("0xddeedd"), false);
-        // the converted value of gas to fluid
-        guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.getFluidAmount())),
-                this.titleLabelX + 128, this.titleLabelY + 32, Utility.hexToInt("0x0044ff"), false);
-        // processing bits
-        guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.processBits)),
-                this.titleLabelX + 48, this.titleLabelY + 16, Utility.BRIGHT_LIGHT_BLUE, false);
+        if(CmatdClientActionHandler.keyMappingPressed(CmatdClient.itemDescriptionKeyMapping)){
+            // test labels
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.heat)),
+                    this.titleLabelX, this.titleLabelY + 32, Utility.BAD_WARNING_YELLOW, false);
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.coolant)),
+                    this.titleLabelX + 16, this.titleLabelY + 32, Utility.GOOD_STATE_GREEN, false);
+            // gas amount
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.getGasAmount())),
+                    this.titleLabelX + 142, this.titleLabelY + 32, Utility.hexToInt("0xddeedd"), false);
+            // the converted value of gas to fluid
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.getFluidAmount())),
+                    this.titleLabelX + 128, this.titleLabelY + 32, Utility.hexToInt("0x0044ff"), false);
+            // processing bits
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.processBits)),
+                    this.titleLabelX + 48, this.titleLabelY + 16, Utility.BRIGHT_LIGHT_BLUE, false);
+            // energy stored
+            guiGraphics.drawString(this.font, Component.literal(String.valueOf(this.menu.energy)),
+                    this.titleLabelX + 72, this.titleLabelY + 16, Utility.hexToInt("0xffcc77"), false);
+        }
     }
 }

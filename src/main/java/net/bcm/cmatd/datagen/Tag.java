@@ -27,6 +27,9 @@ public class Tag{
     public static final TagKey<Block> STORAGE_BLOCKS_RAW_COMPOUNDITE = commonBlockTag("storage_blocks/raw_compoundite");
     public static final TagKey<Block> STORAGE_BLOCKS_RAW_LODEALITE = commonBlockTag("storage_blocks/raw_lodealite");
 
+    public static final TagKey<Block> STORAGE_BLOCKS_VITIATIUM = commonBlockTag("storage_blocks/vitiatium");
+    public static final TagKey<Block> STORAGE_BLOCKS_RAW_VITIATIUM = commonBlockTag("storage_blocks/raw_vitiatium");
+
     // gas producing blocks and items
     public static final TagKey<Item> GAS_PRODUCER = itemTag("gas_vent");
     public static final TagKey<Block> PRODUCES_METHANE_GAS = blockTag("gas_producers/methane");
@@ -39,15 +42,19 @@ public class Tag{
     public static final TagKey<Item> VALID_FOOD_REACTOR_COOLANTS = itemTag("valid_food_reactor_coolants");
 
     public static final TagKey<Block> VALID_RADIOACTIVE_REACTOR_CASINGS = blockTag("valid_radioactive_reactor_casings");
+    public static final TagKey<Item> VALID_RADIOACTIVE_FUELS = itemTag("valid_radioactive_fuels");
 
     // biome tags
     public static final TagKey<Biome> GENERATES_STEAM_VENTS = biomeTag("generates_steam_vents");
 
-    //COMPOUNDITE LODEALITE
+    //COMPOUNDITE LODEALITE vitiatium
     public static final TagKey<Block> ORES_COMPOUNDITE = commonBlockTag("ores/compoundite");
     public static final TagKey<Block> ORES_LODEALITE = commonBlockTag("ores/lodealite");
     public static final TagKey<Item> ORES_COMPOUNDITE_ITEM = commonItemTag("ores/compoundite");
     public static final TagKey<Item> ORES_LODEALITE_ITEM = commonItemTag("ores/lodealite");
+
+    public static final TagKey<Block> ORES_VITIATIUM = commonBlockTag("ores/vitiatium");
+    public static final TagKey<Item> ORES_VITIATIUM_ITEM = commonItemTag("ores/vitiatium");
 
     // heat producers
     public static final TagKey<Block> HEAT_PRODUCERS = blockTag("heat_producers");

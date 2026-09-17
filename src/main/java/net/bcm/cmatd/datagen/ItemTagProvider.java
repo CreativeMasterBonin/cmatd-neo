@@ -5,6 +5,8 @@ import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -87,17 +89,24 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.LODEALITE_ORE.asItem())
                 .add(CmatdItem.DEEPSLATE_LODEALITE_ORE.asItem())
         ;
+        this.tag(Tag.ORES_VITIATIUM_ITEM)
+                .add(CmatdItem.VITIATIUM_ORE.asItem())
+                .add(CmatdItem.DEEPSLATE_VITIATIUM_ORE.asItem())
+        ;
         this.tag(Tags.Items.ORES_IN_GROUND_STONE)
                 .add(CmatdItem.COMPOUNDITE_ORE.asItem())
                 .add(CmatdItem.LODEALITE_ORE.asItem())
+                .add(CmatdItem.VITIATIUM_ORE.asItem())
         ;
         this.tag(Tags.Items.ORES_IN_GROUND_DEEPSLATE)
                 .add(CmatdItem.DEEPSLATE_COMPOUNDITE_ORE.asItem())
                 .add(CmatdItem.DEEPSLATE_LODEALITE_ORE.asItem())
+                .add(CmatdItem.DEEPSLATE_VITIATIUM_ORE.asItem())
         ;
         this.tag(Tags.Items.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE_ITEM)
                 .addTag(Tag.ORES_LODEALITE_ITEM)
+                .addTag(Tag.ORES_VITIATIUM_ITEM)
         ;
         // tools
         this.tag(Tags.Items.TOOLS_WRENCH)
@@ -114,6 +123,14 @@ public class ItemTagProvider extends ItemTagsProvider{
         this.tag(Tag.VALID_FOOD_REACTOR_CASINGS_ITEM)
                 .add(CmatdItem.COMPOUNDITE_BLOCK.asItem())
                 .add(CmatdItem.LODEALITE_BLOCK.asItem())
+        ;
+        this.tag(Tag.VALID_RADIOACTIVE_FUELS)
+                /*.addOptional(ResourceLocation.parse("projecte:collector_fuel"))
+                .addTag(ItemTags.COALS)*/
+                .add(CmatdItem.RAW_VITIATIUM.asItem())
+                .add(CmatdItem.VITIATIUM_INGOT.asItem())
+                .add(CmatdItem.RAW_VITIATIUM_BLOCK.asItem())
+                .add(CmatdItem.VITIATIUM_BLOCK.asItem())
         ;
     }
 

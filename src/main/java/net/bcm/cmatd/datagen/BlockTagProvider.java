@@ -29,6 +29,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.LODEALITE_ORE.get())
                 .add(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get())
         ;
+        tag(Tag.ORES_VITIATIUM)
+                .add(CmatdBlock.VITIATIUM_ORE.get())
+                .add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get())
+        ;
         tag(Tag.STORAGE_BLOCKS_COMPOUNDITE)
                 .add(CmatdBlock.COMPOUNDITE_BLOCK.get())
         ;
@@ -41,11 +45,19 @@ public class BlockTagProvider extends BlockTagsProvider {
         tag(Tag.STORAGE_BLOCKS_RAW_LODEALITE)
                 .add(CmatdBlock.RAW_LODEALITE_BLOCK.get())
         ;
+        tag(Tag.STORAGE_BLOCKS_VITIATIUM)
+                .add(CmatdBlock.VITIATIUM_BLOCK.get())
+        ;
+        tag(Tag.STORAGE_BLOCKS_RAW_VITIATIUM)
+                .add(CmatdBlock.RAW_VITIATIUM_BLOCK.get())
+        ;
         tag(Tags.Blocks.STORAGE_BLOCKS)
                 .addTag(Tag.STORAGE_BLOCKS_COMPOUNDITE)
                 .addTag(Tag.STORAGE_BLOCKS_LODEALITE)
+                .addTag(Tag.STORAGE_BLOCKS_VITIATIUM)
                 .addTag(Tag.STORAGE_BLOCKS_RAW_COMPOUNDITE)
                 .addTag(Tag.STORAGE_BLOCKS_RAW_LODEALITE)
+                .addTag(Tag.STORAGE_BLOCKS_RAW_VITIATIUM)
         ;
         tag(Tags.Blocks.RELOCATION_NOT_SUPPORTED)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
@@ -80,6 +92,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.MACHINE_FRAME.get())
                 .addTag(Tag.ORES_COMPOUNDITE)
                 .addTag(Tag.ORES_LODEALITE)
+                .addTag(Tag.ORES_VITIATIUM)
                 .add(CmatdBlock.PRESSER.get())
                 .add(CmatdBlock.LESSER_MACHINE_FRAME.get())
                 .add(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get())
@@ -89,8 +102,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.DIESEL_ENGINE.get())
                 .add(CmatdBlock.COMPOUNDITE_BLOCK.get())
                 .add(CmatdBlock.LODEALITE_BLOCK.get())
+                .add(CmatdBlock.VITIATIUM_BLOCK.get())
                 .add(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get())
                 .add(CmatdBlock.RAW_LODEALITE_BLOCK.get())
+                .add(CmatdBlock.RAW_VITIATIUM_BLOCK.get())
                 .add(CmatdBlock.CONDUIT.get())
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.ROTATIONAL_INDUCTION_GENERATOR.get())
@@ -140,6 +155,11 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
+        tag(BlockTags.NEEDS_DIAMOND_TOOL)
+                .addTag(Tag.ORES_VITIATIUM)
+                .add(CmatdBlock.RAW_VITIATIUM_BLOCK.get())
+                .add(CmatdBlock.VITIATIUM_BLOCK.get())
+        ;
         tag(JustDireBlockTags.PARADOX_ABSORB_DENY)
                 .add(CmatdBlock.BASE_ENERGY_MAKER.get())
                 .add(CmatdBlock.DECORATIVE_BASE_DYNAMO_ENGINE.get())
@@ -181,18 +201,26 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+
+                .add(CmatdBlock.VITIATIUM_ORE.get())
+                .add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get())
+                .add(CmatdBlock.VITIATIUM_BLOCK.get())
+                .add(CmatdBlock.RAW_VITIATIUM_BLOCK.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
                 .addTag(Tag.ORES_LODEALITE)
+                .addTag(Tag.ORES_VITIATIUM)
         ;
         tag(Tags.Blocks.ORES_IN_GROUND_STONE)
                 .add(CmatdBlock.COMPOUNDITE_ORE.get())
                 .add(CmatdBlock.LODEALITE_ORE.get())
+                .add(CmatdBlock.VITIATIUM_ORE.get())
         ;
         tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE)
                 .add(CmatdBlock.DEEPSLATE_COMPOUNDITE_ORE.get())
                 .add(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get())
+                .add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get())
         ;
         tag(Tag.VALID_FOOD_REACTOR_CASINGS)
                 .addTag(Tag.STORAGE_BLOCKS_COMPOUNDITE)
@@ -252,6 +280,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(Blocks.FURNACE)
                 .add(Blocks.BLAST_FURNACE)
                 .add(Blocks.SMOKER)
+
+                .addTag(Tag.ORES_VITIATIUM)
+                .addTag(Tag.STORAGE_BLOCKS_VITIATIUM)
+                .addTag(Tag.STORAGE_BLOCKS_RAW_VITIATIUM)
         ;
         tag(Tag.HIGH_HEAT_PRODUCERS)
                 .add(Blocks.SOUL_FIRE)

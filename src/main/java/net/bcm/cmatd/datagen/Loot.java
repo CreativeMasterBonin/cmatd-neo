@@ -56,10 +56,17 @@ public class Loot extends VanillaBlockLoot {
         this.add(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get(), block ->
                 createOreDrop(registrylookup,block,CmatdItem.RAW_LODEALITE.asItem()));
 
+        this.add(CmatdBlock.VITIATIUM_ORE.get(), block ->
+                createOreDrop(registrylookup,block,CmatdItem.RAW_VITIATIUM.asItem()));
+        this.add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get(), block ->
+                createOreDrop(registrylookup,block,CmatdItem.RAW_VITIATIUM.asItem()));
+
         this.dropSelf(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get());
         this.dropSelf(CmatdBlock.RAW_LODEALITE_BLOCK.get());
+        this.dropSelf(CmatdBlock.RAW_VITIATIUM_BLOCK.get());
         this.dropSelf(CmatdBlock.COMPOUNDITE_BLOCK.get());
         this.dropSelf(CmatdBlock.LODEALITE_BLOCK.get());
+        this.dropSelf(CmatdBlock.VITIATIUM_BLOCK.get());
 
 
         this.dropSelf(CmatdBlock.LIGHTNING_GENERATOR.get());

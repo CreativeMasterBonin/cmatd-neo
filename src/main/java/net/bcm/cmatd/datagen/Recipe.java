@@ -250,6 +250,7 @@ public class Recipe extends RecipeProvider{
                 CmatdItem.LODEALITE_INGOT,0.1f,200)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_LODEALITE))
                 .save(rc,"lodealite_ingot");
+
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(CmatdItem.COMPOUNDITE_ORE),RecipeCategory.MISC,
                 CmatdItem.COMPOUNDITE_INGOT,0.1f,200)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.COMPOUNDITE_ORE))
@@ -258,6 +259,7 @@ public class Recipe extends RecipeProvider{
                 CmatdItem.LODEALITE_INGOT,0.1f,200)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.LODEALITE_ORE))
                 .save(rc,"lodealite_ore_to_ingot");
+
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(CmatdItem.DEEPSLATE_COMPOUNDITE_ORE),RecipeCategory.MISC,
                 CmatdItem.COMPOUNDITE_INGOT,0.1f,200)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.DEEPSLATE_COMPOUNDITE_ORE))
@@ -303,6 +305,38 @@ public class Recipe extends RecipeProvider{
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.DEEPSLATE_LODEALITE_ORE))
                 .save(rc,"deep_lodealite_ore_to_ingot_blasting");
 
+        // vitiatium
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CmatdItem.RAW_VITIATIUM),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.1f,500)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_VITIATIUM))
+                .save(rc,"vitiatium_ingot");
+
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CmatdItem.VITIATIUM_ORE),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.1f,500)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.VITIATIUM_ORE))
+                .save(rc,"vitiatium_ore_to_ingot");
+
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(CmatdItem.DEEPSLATE_VITIATIUM_ORE),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.1f,500)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.DEEPSLATE_VITIATIUM_ORE))
+                .save(rc,"deep_vitiatium_ore_to_ingot");
+
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CmatdItem.RAW_VITIATIUM),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.4f,250)
+                .group("blasting")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_VITIATIUM))
+                .save(rc,"raw_vitiatium_from_blasting");
+
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CmatdItem.VITIATIUM_ORE),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.4f,250)
+                .group("blasting")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.VITIATIUM_ORE))
+                .save(rc,"vitiatium_ore_to_ingot_blasting");
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(CmatdItem.DEEPSLATE_VITIATIUM_ORE),RecipeCategory.MISC,
+                        CmatdItem.VITIATIUM_INGOT,0.4f,250)
+                .group("blasting")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.DEEPSLATE_VITIATIUM_ORE))
+                .save(rc,"deep_vitiatium_ore_to_ingot_blasting");
 
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.PHOTOVOLTAIC_CELL,2)
@@ -343,6 +377,18 @@ public class Recipe extends RecipeProvider{
                 .requires(CmatdItem.RAW_LODEALITE)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_LODEALITE))
                 .save(rc);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.RAW_VITIATIUM_BLOCK,1)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .requires(CmatdItem.RAW_VITIATIUM)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_VITIATIUM))
+                .save(rc);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.COMPOUNDITE_BLOCK,1)
                 .requires(CmatdItem.COMPOUNDITE_INGOT)
@@ -370,6 +416,19 @@ public class Recipe extends RecipeProvider{
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.LODEALITE_INGOT))
                 .save(rc);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.VITIATIUM_BLOCK,1)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .requires(CmatdItem.VITIATIUM_INGOT)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.VITIATIUM_INGOT))
+                .save(rc);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.COMPOUNDITE_INGOT,9)
                 .requires(CmatdItem.COMPOUNDITE_BLOCK)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.COMPOUNDITE_BLOCK))
@@ -379,6 +438,11 @@ public class Recipe extends RecipeProvider{
                 .requires(CmatdItem.LODEALITE_BLOCK)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.LODEALITE_BLOCK))
                 .save(rc,"lodealite_block_to_ingots");
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.VITIATIUM_INGOT,9)
+                .requires(CmatdItem.VITIATIUM_BLOCK)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.VITIATIUM_BLOCK))
+                .save(rc,"vitiatium_block_to_ingots");
 
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.RAW_COMPOUNDITE,9)
@@ -390,6 +454,11 @@ public class Recipe extends RecipeProvider{
                 .requires(CmatdItem.RAW_LODEALITE_BLOCK)
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_LODEALITE_BLOCK))
                 .save(rc,"raw_lodealite_block_to_ore_pieces");
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.RAW_VITIATIUM,9)
+                .requires(CmatdItem.RAW_VITIATIUM_BLOCK)
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RAW_VITIATIUM_BLOCK))
+                .save(rc,"raw_vitiatium_block_to_ore_pieces");
 
         // simple machine recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC,CmatdItem.PRESSER,1)
@@ -690,6 +759,16 @@ public class Recipe extends RecipeProvider{
                 .pattern("irg")
                 .pattern("pep")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.HEAT_DISPERSION_MODULE)
+                .define('b',CmatdItem.BLANK_MODULE)
+                .define('r',Items.BLUE_ICE)
+                .define('f',Items.FIRE_CHARGE)
+                .pattern("rfr")
+                .pattern("rbr")
+                .pattern("rfr")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BLANK_MODULE))
                 .save(rc);
     }
 

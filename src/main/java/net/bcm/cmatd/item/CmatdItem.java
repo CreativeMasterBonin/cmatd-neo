@@ -162,15 +162,46 @@ public class CmatdItem{
             ITEMS.register("deepslate_lodealite_ore",
                     () -> new BlockItem(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get(),new Item.Properties()));
 
+    public static final DeferredItem<BlockItem> VITIATIUM_ORE =
+            ITEMS.register("vitiatium_ore",
+                    () -> new RadioactiveBlockItem(CmatdBlock.VITIATIUM_ORE.get(),new Item.Properties()
+                            .component(Components.RADIOACTIVE,
+                                    new RadioactiveComponent(
+                                            0.15f,
+                                            32,
+                                            false))));
+    public static final DeferredItem<BlockItem> DEEPSLATE_VITIATIUM_ORE =
+            ITEMS.register("deepslate_vitiatium_ore",
+                    () -> new RadioactiveBlockItem(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get(),new Item.Properties()
+                            .component(Components.RADIOACTIVE,
+                                    new RadioactiveComponent(
+                                            0.25f,
+                                            37,
+                                            false))));
+
     public static final DeferredItem<Item> RAW_COMPOUNDITE = ITEMS.register("raw_compoundite",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> RAW_LODEALITE = ITEMS.register("raw_lodealite",
             () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> RAW_VITIATIUM = ITEMS.register("raw_vitiatium",
+            () -> new RadioactiveItem(new Item.Properties()
+                    .component(Components.RADIOACTIVE,
+                            new RadioactiveComponent(
+                                    0.5f,
+                                    25,
+                                    false))));
 
     public static final DeferredItem<Item> COMPOUNDITE_INGOT = ITEMS.register("compoundite_ingot",
             () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> LODEALITE_INGOT = ITEMS.register("lodealite_ingot",
             () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> VITIATIUM_INGOT = ITEMS.register("vitiatium_ingot",
+            () -> new RadioactiveItem(new Item.Properties()
+                    .component(Components.RADIOACTIVE,
+                            new RadioactiveComponent(
+                                    0.75f,
+                                    35,
+                                    true))));
 
 
     public static final DeferredItem<BlockItem> RAW_LODEALITE_BLOCK =
@@ -187,8 +218,24 @@ public class CmatdItem{
             ITEMS.register("compoundite_block",
                     () -> new BlockItem(CmatdBlock.COMPOUNDITE_BLOCK.get(),new Item.Properties()));
 
-    // misc items
+    public static final DeferredItem<BlockItem> VITIATIUM_BLOCK =
+            ITEMS.register("vitiatium_block",
+                    () -> new RadioactiveBlockItem(CmatdBlock.VITIATIUM_BLOCK.get(),new Item.Properties()
+                            .component(Components.RADIOACTIVE,
+                                    new RadioactiveComponent(
+                                            1.0f,
+                                            120,
+                                            true))));
+    public static final DeferredItem<BlockItem> RAW_VITIATIUM_BLOCK =
+            ITEMS.register("raw_vitiatium_block",
+                    () -> new RadioactiveBlockItem(CmatdBlock.RAW_VITIATIUM_BLOCK.get(),new Item.Properties()
+                            .component(Components.RADIOACTIVE,
+                                    new RadioactiveComponent(
+                                            0.5f,
+                                            70,
+                                            false))));
 
+    // misc items
     public static final DeferredItem<Item> MASHED_POTATOES =
             ITEMS.register("mashed_potatoes",
                     () -> new Item(new Item.Properties().food(new FoodProperties.Builder()

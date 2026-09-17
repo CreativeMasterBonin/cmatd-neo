@@ -36,8 +36,12 @@ public class ServerConfig {
             .define("radioactive_reactor_blows_up_when_too_hot",true);
 
     public static final ModConfigSpec.BooleanValue RADIOACTIVE_REACTOR_MAKES_DAMAGE_SOUNDS = BUILDER
-            .comment("Whether the Radioactive Reactor makes damaging sounds when heat level is critical")
+            .comment("Whether the Radioactive Reactor makes damaging sounds when heat level is critical, among other heat-related sounds and effects")
             .define("radioactive_reactor_makes_damage_sounds",true);
+
+    public static final ModConfigSpec.BooleanValue RADIOACTIVE_REACTOR_MAKES_AMBIENT_SOUNDS = BUILDER
+            .comment("Whether the Radioactive Reactor makes ambient sounds")
+            .define("radioactive_reactor_makes_ambient_sounds",true);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 }

@@ -136,15 +136,24 @@ public class Language extends LanguageProvider{
         this.add(CmatdBlock.DEEPSLATE_COMPOUNDITE_ORE.get(),"Deepslate Compoundite Ore");
         this.add(CmatdBlock.LODEALITE_ORE.get(),"Lodealite Ore");
         this.add(CmatdBlock.DEEPSLATE_LODEALITE_ORE.get(),"Deepslate Lodealite Ore");
+
+        this.add(CmatdBlock.VITIATIUM_ORE.get(),"Vitiatium Ore");
+        this.add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get(),"Deepslate Vitiatium Ore");
+
         this.add(CmatdItem.RAW_COMPOUNDITE.get(),"Raw Compoundite");
         this.add(CmatdItem.RAW_LODEALITE.get(),"Raw Lodealite");
         this.add(CmatdItem.COMPOUNDITE_INGOT.get(),"Compoundite Ingot");
         this.add(CmatdItem.LODEALITE_INGOT.get(),"Lodealite Ingot");
+        this.add(CmatdItem.RAW_VITIATIUM.get(),"Raw Vitiatium");
+        this.add(CmatdItem.VITIATIUM_INGOT.get(),"Vitiatium Ingot");
 
         this.add(CmatdBlock.RAW_COMPOUNDITE_BLOCK.get(),"Raw Compoundite Block");
         this.add(CmatdBlock.RAW_LODEALITE_BLOCK.get(),"Raw Lodealite Block");
         this.add(CmatdBlock.COMPOUNDITE_BLOCK.get(),"Compoundite Block");
         this.add(CmatdBlock.LODEALITE_BLOCK.get(),"Lodealite Block");
+
+        this.add(CmatdBlock.RAW_VITIATIUM_BLOCK.get(),"Raw Vitiatium Block");
+        this.add(CmatdBlock.VITIATIUM_BLOCK.get(),"Vitiatium Block");
 
         // blocks
         this.add(CmatdBlock.LESSER_MACHINE_FRAME.get(),"Lesser Machine Frame");
@@ -257,6 +266,7 @@ public class Language extends LanguageProvider{
         this.add(Tag.VALID_FOOD_REACTOR_COOLANTS,"Valid Food Reactor Coolants");
         this.add(Tag.VALID_FOOD_REACTOR_FUELS,"Valid Food Reactor Fuels");
         this.add(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS,"Valid Radioactive Reactor Casings");
+        this.add(Tag.VALID_RADIOACTIVE_FUELS,"Valid Radioactive Fuels");
 
         // gas tags
         this.add(Tag.BURNABLE_GASES,"Burnable");
@@ -264,7 +274,7 @@ public class Language extends LanguageProvider{
         this.add(Tag.RADIOACTIVE,"Radioactive");
 
         // recipe translations
-        this.add("emi.category.cmatd..presser_category","Pressing");
+        this.add("emi.category.cmatd..presser_category","Pressing"); // we have to dupe some category names here as periods were added in certain versions (with no reason provided, meaning probably a bug or oversight in those versions)
         this.add("emi.category.cmatd.presser_category","Pressing");
         this.add("emi.presser.needs_sun","Needs sun");
         this.add("emi.category.cmatd..jam_making_category","Jam Making");
