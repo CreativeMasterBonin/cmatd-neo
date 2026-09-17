@@ -328,6 +328,10 @@ public class CmatdItem{
             ITEMS.register("heat_dispersion_module",
                     () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,4)));
 
+    public static final DeferredItem<Item> SILENCING_MODULE =
+            ITEMS.register("silencing_module",
+                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,5)));
+
     // tier upgrades
     public static final DeferredItem<Item> BASIC_TIER_DOWNGRADE =
             ITEMS.register("basic_tier_downgrade",

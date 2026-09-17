@@ -48,6 +48,12 @@ public class Gases {
                             Utility.hexToInt("0x5D6D42"))
             ));
 
+    public static final DeferredHolder<GasType,GasType> VITIATIUM =
+            GASES.register("vitiatium",() -> new GasType(
+                    new GasType.Properties(Rarity.COMMON,3,true,0.5f,16,
+                            Utility.hexToInt("0xA7D93A"))
+            ));
+
     public static void register(IEventBus eventBus) {
         GASES.register(eventBus);
     }

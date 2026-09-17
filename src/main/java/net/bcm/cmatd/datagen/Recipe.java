@@ -770,6 +770,25 @@ public class Recipe extends RecipeProvider{
                 .pattern("rfr")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BLANK_MODULE))
                 .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.SILENCING_MODULE)
+                .define('b',CmatdItem.BLANK_MODULE)
+                .define('w',ItemTags.WOOL)
+                .define('n',Items.NOTE_BLOCK)
+                .pattern("wnw")
+                .pattern("wbw")
+                .pattern("wnw")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BLANK_MODULE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.BASIC_COOLANT_PACKAGE)
+                .define('b',CmatdItem.SEALED_STRONG_PLATE)
+                .define('i',Tag.COOLANT_CRAFTING_COMPONENTS)
+                .pattern("iii")
+                .pattern("ibi")
+                .pattern("iii")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
     }
 
     public static RecipeBuilder stonecutterAny(Item requiredItem, Ingredient inputItem, Item result, int amt){

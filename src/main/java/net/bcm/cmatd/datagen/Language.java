@@ -43,6 +43,11 @@ public class Language extends LanguageProvider{
         this.add("title.liquid_amt_with_max","%s Mb / %s Mb");
         this.add("title.solar_status.always_active","Always Active");
         this.add("title.radioactive_reactor","Radioactive Reactor");
+        this.add("title.status.operating","Operating");
+        this.add("title.status.not_operating","Not operating");
+        this.add("title.status.operational_from_to","Operational from %s to %s");
+        this.add("title.status.operational_at","Operational at %s");
+        this.add("title.status.operational_in","Operational in %s");
 
         // data and integration
         this.add("integration.data.gas","Gas: %s");
@@ -70,6 +75,7 @@ public class Language extends LanguageProvider{
         this.add("tooltip.module.tripled", "Chance to triple output, some machines guarantee tripled output");
         this.add("tooltip.module.blank_module", "Needs to be turned into a usable module");
         this.add("tooltip.module.heat_dispersion", "Disperses heat evenly in heat producing machines, reducing gradual buildup to nothing");
+        this.add("tooltip.module.silencing","Silences machines, turning off alarms and changing ambiance");
         this.add("tooltip.tier_upgrade.desc", "Upgrades machines up to tier: ");
         this.add("tooltip.tier_upgrade.downgrade.desc", "Downgrades machines to tier: ");
         this.add("tooltip.tier_upgrade.unknown", "%s");
@@ -201,6 +207,7 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.DOUBLER_MODULE.get(),"Module: Doubler");
         this.add(CmatdItem.TRIPLED_MODULE.get(),"Module: Tripled");
         this.add(CmatdItem.HEAT_DISPERSION_MODULE.get(),"Module: Heat Dispersion");
+        this.add(CmatdItem.SILENCING_MODULE.get(),"Module: Silencing");
 
         // tier items
         this.add(CmatdItem.BASIC_TIER_DOWNGRADE.get(),"Tier Downgrade: Basic");
@@ -230,6 +237,9 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.INFUSED_INGOT.get(),"Infused Ingot");
         this.add(CmatdItem.SEALED_STRONG_PLATE.get(),"Sealed Strong Plate");
         this.add(CmatdItem.BLAST_PROOF_INGOT.get(),"Blast Proof Ingot");
+
+        // packages
+        this.add(CmatdItem.BASIC_COOLANT_PACKAGE.get(),"Basic Coolant Package");
 
         // machine assembler parts
         this.add(CmatdItem.COPPER_PCB_BASE.get(),"Copper PCB Base");
@@ -261,12 +271,15 @@ public class Language extends LanguageProvider{
         this.add(Tag.ORES_COMPOUNDITE_ITEM,"Compoundite Ore Items");
         this.add(Tag.ORES_LODEALITE,"Lodealite Ores");
         this.add(Tag.ORES_LODEALITE_ITEM,"Lodealite Ore Items");
+        this.add(Tag.ORES_VITIATIUM,"Vitiatium Ores");
+        this.add(Tag.ORES_VITIATIUM_ITEM,"Vitiatium Ore Items");
         this.add(Tag.VALID_FOOD_REACTOR_CASINGS,"Valid Food Reactor Casings");
         this.add(Tag.VALID_FOOD_REACTOR_CASINGS_ITEM,"Valid Food Reactor Casings (Item)");
         this.add(Tag.VALID_FOOD_REACTOR_COOLANTS,"Valid Food Reactor Coolants");
         this.add(Tag.VALID_FOOD_REACTOR_FUELS,"Valid Food Reactor Fuels");
         this.add(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS,"Valid Radioactive Reactor Casings");
         this.add(Tag.VALID_RADIOACTIVE_FUELS,"Valid Radioactive Fuels");
+        this.add(Tag.COOLANT_CRAFTING_COMPONENTS,"Coolant Crafting Components");
 
         // gas tags
         this.add(Tag.BURNABLE_GASES,"Burnable");
@@ -291,6 +304,7 @@ public class Language extends LanguageProvider{
         this.addGas(Gases.STEAM,"Steam");
         this.addGas(Gases.COMPOUNDITE,"Gaseous Compoundite");
         this.addGas(Gases.LODEALITE,"Gaseous Lodealite");
+        this.addGas(Gases.VITIATIUM,"Gaseous Vitiatium");
         this.addGas(Gases.RADIOACTIVE_WASTE,"Gaseous Radioactive Waste");
         this.add("gas.cmatd.empty","Empty");
         this.add("message.dumping_attempt.gas_is_radioactive","Cannot dump radioactive gases!");
@@ -318,6 +332,12 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.lightning_gen_capacity.tooltip","The total capacity of the battery in the Lightning Generator");
         this.add("cmatd.configuration.lightning_gen_rate","Lightning Gen Energy Rate");
         this.add("cmatd.configuration.lightning_gen_rate.tooltip","How much energy per lightning strike is generated");
+        this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds","Reactor Shows Effects And Sounds");
+        this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot","Reactor Explodes When Too Hot");
+        this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds","Reactor Makes Ambient Noises");
+        this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds.tooltip","Whether the Radioactive Reactor makes damaging sounds and particles when heat level is critical (disables alarm, makes machine look and sound like a classic machine)");
+        this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot.tooltip","Whether the Radioactive Reactor blows up if too hot (it will reset values and will re-form if this is disabled, and no explosion will occur, an easy mode basically)");
+        this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip","Whether the Radioactive Reactor makes ambient sounds (not the same as 'active sounds', like hissing when too hot)");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");

@@ -17,10 +17,12 @@ public class EMCProvider extends CustomConversionProvider {
     @Override
     protected void addCustomConversions(HolderLookup.Provider provider) {
         createConversionBuilder(ResourceLocation.parse("cmatd:emc_conversions"))
-                .before(CmatdItem.LODEALITE_INGOT,256)
-                .before(CmatdItem.COMPOUNDITE_INGOT,128)
-                .before(CmatdItem.LODEALITE_BLOCK,2304)
-                .before(CmatdItem.COMPOUNDITE_BLOCK,1152)
+                .before(CmatdItem.VITIATIUM_INGOT,384) // the cooking/blasting result of ore form
+                .before(CmatdItem.LODEALITE_INGOT,256) // the cooking/blasting result of ore form
+                .before(CmatdItem.COMPOUNDITE_INGOT,128) // the cooking/blasting result of ore form
+                .before(CmatdItem.VITIATIUM_BLOCK,3456) // 384 * 9
+                .before(CmatdItem.LODEALITE_BLOCK,2304) /// 256 * 9
+                .before(CmatdItem.COMPOUNDITE_BLOCK,1152) // 128 * 9
                 .before(CmatdItem.PCB,1292)
                 .before(CmatdItem.PLATE,626)
                 .before(CmatdItem.SWEET_BERRY_JAM,44)

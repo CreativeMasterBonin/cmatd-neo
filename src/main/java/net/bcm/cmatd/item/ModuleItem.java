@@ -57,6 +57,11 @@ public class ModuleItem extends Item{
                             .withStyle(ChatFormatting.GRAY));
                     break;
                 }
+                case 5 -> {
+                    tooltipComponents.add(Component.translatable("tooltip.module.silencing")
+                            .withStyle(ChatFormatting.GRAY));
+                    break;
+                }
                 case null -> {
                     Cmatd.getLogger().error("{}: Illegal MODULE_TYPE specified, type is null", stack.toString());
                     break;

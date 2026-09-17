@@ -46,6 +46,7 @@ public class Utility{
     public static final int MODULE_TYPE_DOUBLING= 2;
     public static final int MODULE_TYPE_TRIPLING = 3;
     public static final int MODULE_TYPE_HEAT_DISPERSING = 4;
+    public static final int MODULE_TYPE_SILENCING = 5;
 
     public static float nextFloatBetweenInclusive(float min, float max) {
         Random random = new Random();

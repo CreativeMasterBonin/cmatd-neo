@@ -15,17 +15,14 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -330,6 +327,7 @@ public class RadioactiveReactor extends TieredMachine{
                                     (double)position.getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -1.25 : 1.25),
                                     1,0,0,0,0.04);
                         }
+                        // this sound is for accessibility, so do not silence it
                         serverLevel.playSound(null,getBlockPos(),
                                 SoundEvents.END_PORTAL_FRAME_FILL,SoundSource.BLOCKS);
                     }
@@ -348,6 +346,7 @@ public class RadioactiveReactor extends TieredMachine{
                 int speedModules = 0; // affects heat output
                 int efficiencyModules = 0; // makes coolant more effective
                 int heatDispersionModules = 0; // heat is negated entirely
+                boolean shouldBeSilenced = false; // makes the reactor quiet, silencing sound effects, including alarms
                 // isolate the modules
                 List<ItemStack> moduleStacks = List.of(
                         itemStackHandler.getStackInSlot(25),
@@ -370,6 +369,9 @@ public class RadioactiveReactor extends TieredMachine{
                             else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_HEAT_DISPERSING){
                                 heatDispersionModules++;
                             }
+                            else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SILENCING){
+                                shouldBeSilenced = true;
+                            }
                         }
                     }
                 }
@@ -380,10 +382,13 @@ public class RadioactiveReactor extends TieredMachine{
                     if(isProcessing){
                         // make a sound if processing and active, no matter what occasion (other than a config option)
                         if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_AMBIENT_SOUNDS.getAsBoolean()){
-                            if(level instanceof ServerLevel serverLevel){
-                                if(serverLevel.getGameTime() % 100 == 0){
-                                    serverLevel.playSound(null,getBlockPos(),
-                                            SoundEvents.BEACON_AMBIENT,SoundSource.BLOCKS,1.0f,0.7f);
+                            // if the server allows sounds but the block itself is silenced by a module, skip playing a sound
+                            if(!shouldBeSilenced){
+                                if(level instanceof ServerLevel serverLevel){
+                                    if(serverLevel.getGameTime() % 100 == 0){
+                                        serverLevel.playSound(null,getBlockPos(),
+                                                SoundEvents.BEACON_AMBIENT,SoundSource.BLOCKS,1.0f,0.7f);
+                                    }
                                 }
                             }
                         }
@@ -422,18 +427,24 @@ public class RadioactiveReactor extends TieredMachine{
                     }
                     // show some flair for when off but full of things
                     if(getEnergyStorage().getEnergyStored() >= getEnergyStorage().getCapacity() || getWasteGasTank().getGasAmount() >= getWasteGasTank().getCapacity()){
+                        // silencing module will stop sounds trying to play here
                         if(level instanceof ServerLevel serverLevel){
-                            if(serverLevel.getRandom().nextIntBetweenInclusive(0,1200) <= 2){
-                                serverLevel.playSound(null,
-                                        getBlockPos(),
-                                        SoundEvents.BREEZE_WHIRL,
-                                        SoundSource.BLOCKS,1.0f,2.0f);
+                            if(!shouldBeSilenced){
+                                if(serverLevel.getRandom().nextIntBetweenInclusive(0,1200) <= 2){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.BREEZE_WHIRL,
+                                            SoundSource.BLOCKS,1.0f,2.0f);
+                                }
                             }
+
                             if(serverLevel.getRandom().nextIntBetweenInclusive(0,72) <= 1){
-                                serverLevel.playSound(null,
-                                        getBlockPos(),
-                                        SoundEvents.FIRE_EXTINGUISH,
-                                        SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(0.3f,0.4f));
+                                if(!shouldBeSilenced){
+                                    serverLevel.playSound(null,
+                                            getBlockPos(),
+                                            SoundEvents.FIRE_EXTINGUISH,
+                                            SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(0.3f,0.4f));
+                                }
                                 serverLevel.sendParticles(ParticleTypes.CLOUD,
                                         (double)getBlockPos().getX() + 0.5 +
                                                 serverLevel.getRandom().nextDouble() / 2.0 *
@@ -467,33 +478,40 @@ public class RadioactiveReactor extends TieredMachine{
                     if(level != null){
                         if(level instanceof ServerLevel serverLevel){
                             if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_DAMAGE_SOUNDS.getAsBoolean()){
+                                float randomFloatFromServer = serverLevel.getRandom().nextFloat();
                                 // if the reactor is going to explode at some point, warn players around
                                 if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(),37,76) == 0){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.HEAVY_CORE_BREAK,
-                                            SoundSource.BLOCKS);
+                                    if(!shouldBeSilenced){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.HEAVY_CORE_BREAK,
+                                                SoundSource.BLOCKS);
+                                    }
 
                                     serverLevel.sendParticles(ParticleTypes.TRIAL_SPAWNER_DETECTED_PLAYER,
                                             (double)getBlockPos().getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
                                             (double)getBlockPos().getY() + 0.45D,
                                             (double)getBlockPos().getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
-                                            7,0,0,0,serverLevel.getRandom().nextFloat() * 0.3f);
+                                            7,0,0,0,randomFloatFromServer * 0.3f);
                                 }
                                 // sizzle, sizzle
-                                if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(), 25,91) == 0){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.FIRE_EXTINGUISH,
-                                            SoundSource.BLOCKS,serverLevel.getRandom().nextFloat() * 0.5f,serverLevel.getRandom().nextFloat() * 0.91f);
+                                if(!shouldBeSilenced){
+                                    if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(), 25,91) == 0){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.FIRE_EXTINGUISH,
+                                                SoundSource.BLOCKS,randomFloatFromServer * 0.5f,randomFloatFromServer * 0.91f);
+                                    }
                                 }
 
-                                if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(),15,50) == 0 && heatAmount > 12000){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.ANVIL_LAND,
-                                            SoundSource.BLOCKS,
-                                            0.12f,Utility.nextFloatBetweenInclusive(0.25f,0.61f));
+                                if(serverLevel.getGameTime() % Mth.randomBetweenInclusive(serverLevel.getRandom(),15,50) == 0 && heatAmount > 12501){
+                                    if(!shouldBeSilenced){
+                                        serverLevel.playSound(null,
+                                                getBlockPos(),
+                                                SoundEvents.ANVIL_LAND,
+                                                SoundSource.BLOCKS,
+                                                0.1f,Utility.nextFloatBetweenInclusive(0.25f,0.61f));
+                                    }
 
                                     BlockPos randomPosForParticles = neighborPositions.get(serverLevel.getRandom().nextIntBetweenInclusive(0,neighborPositions.size() - 1));
 
@@ -503,34 +521,34 @@ public class RadioactiveReactor extends TieredMachine{
                                                 (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
                                                 (double)randomPosForParticles.getY() + 0.45D,
                                                 (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
-                                                4,0,0,0,serverLevel.getRandom().nextFloat() * 0.2f);
+                                                3,0,0,0,randomFloatFromServer * 0.2f);
                                     }
                                     else if(selectedParticle == 1){
-                                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
-                                                (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
+                                        serverLevel.sendParticles(ParticleTypes.LARGE_SMOKE,
+                                                (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.54 : 1.54),
                                                 (double)randomPosForParticles.getY() + 0.45D,
-                                                (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
-                                                2,0,0,0,0);
+                                                (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.54 : 1.54),
+                                                1,0,0,0,0);
                                     }
                                     else if(selectedParticle == 2){
                                         serverLevel.sendParticles(ParticleTypes.SNEEZE,
                                                 (double)randomPosForParticles.getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
                                                 (double)randomPosForParticles.getY() + 0.45D,
                                                 (double)randomPosForParticles.getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
-                                                2,0,0,0,serverLevel.getRandom().nextFloat() * 0.02f);
+                                                1,0,0,0,randomFloatFromServer * 0.02f);
                                     }
                                 }
 
-                                if(heatAmount > 14000){
+                                if(heatAmount > 13500){
                                     if(serverLevel.getGameTime() % 2==0){
                                         serverLevel.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
                                                 (double)getBlockPos().getX() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
                                                 (double)getBlockPos().getY() + 0.75D,
                                                 (double)getBlockPos().getZ() + 0.5 + serverLevel.getRandom().nextDouble() / 2.0 * (serverLevel.getRandom().nextBoolean() ? -1.25 : 1.25),
-                                                1,0,0,0,serverLevel.getRandom().nextFloat() * 0.01f);
+                                                1,0,0,0,randomFloatFromServer * 0.01f);
                                     }
                                 }
-                                if(heatAmount > 14500){
+                                if(heatAmount > 13975){
                                     if (serverLevel.getGameTime() % 5 == 0) {
                                         double d0 = (double)getBlockPos().getX() + serverLevel.getRandom().nextDouble();
                                         double d1 = (double)getBlockPos().getY() + 1.0;
@@ -539,45 +557,47 @@ public class RadioactiveReactor extends TieredMachine{
                                     }
                                 }
 
-                                // the alarms will start sounding
-                                if(serverLevel.getGameTime() % 20 == 0 && heatAmount < 14000){
-                                    // consider resupplying the reactor with coolant
-                                    if(heatAmount < 12000 && heatAmount >= 11000){
+                                if(!shouldBeSilenced){
+                                    // the alarms will start sounding
+                                    if(serverLevel.getGameTime() % 20 == 0 && heatAmount < 14000){
+                                        // consider resupplying the reactor with coolant
+                                        if(heatAmount < 12000 && heatAmount >= 11000){
+                                            serverLevel.playSound(null,
+                                                    getBlockPos(),
+                                                    SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                    SoundSource.BLOCKS,0.4f,0.77f);
+                                        } // heat level excessive
+                                        else if(heatAmount < 13000 && heatAmount >= 12000){
+                                            serverLevel.playSound(null,
+                                                    getBlockPos(),
+                                                    SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                    SoundSource.BLOCKS,0.4f,0.86f);
+                                        } // heat levels are too high
+                                        else if(heatAmount < 14000 && heatAmount >= 13000){
+                                            serverLevel.playSound(null,
+                                                    getBlockPos(),
+                                                    SoundEvents.NOTE_BLOCK_PLING.value(),
+                                                    SoundSource.BLOCKS,0.5f,0.91f);
+                                        }
+                                    } // the heat level is reaching a critical stage
+                                    else if(serverLevel.getGameTime() % 10 == 0 && heatAmount > 14000 && heatAmount < 14500){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
-                                                SoundSource.BLOCKS,0.4f,0.77f);
-                                    } // heat level excessive
-                                    else if(heatAmount < 13000 && heatAmount >= 12000){
+                                                SoundSource.BLOCKS,0.7f,1.25f);
+                                    } // better do something now
+                                    else if(serverLevel.getGameTime() % 4 == 0 && heatAmount > 14500 && heatAmount < 14900){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
-                                                SoundSource.BLOCKS,0.4f,0.86f);
-                                    } // heat levels are too high
-                                    else if(heatAmount < 14000 && heatAmount >= 13000){
+                                                SoundSource.BLOCKS,1.0f,1.5f);
+                                    } // it's over
+                                    else if(serverLevel.getGameTime() % 2 == 0 && heatAmount >= 14900){
                                         serverLevel.playSound(null,
                                                 getBlockPos(),
                                                 SoundEvents.NOTE_BLOCK_PLING.value(),
-                                                SoundSource.BLOCKS,0.5f,0.91f);
+                                                SoundSource.BLOCKS,1.0f,2.0f);
                                     }
-                                } // the heat level is reaching a critical stage
-                                else if(serverLevel.getGameTime() % 10 == 0 && heatAmount > 14000 && heatAmount < 14500){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.NOTE_BLOCK_PLING.value(),
-                                            SoundSource.BLOCKS,0.7f,1.25f);
-                                } // better do something now
-                                else if(serverLevel.getGameTime() % 4 == 0 && heatAmount > 14500 && heatAmount < 14900){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.NOTE_BLOCK_PLING.value(),
-                                            SoundSource.BLOCKS,1.0f,1.5f);
-                                } // it's over
-                                else if(serverLevel.getGameTime() % 2 == 0 && heatAmount >= 14900){
-                                    serverLevel.playSound(null,
-                                            getBlockPos(),
-                                            SoundEvents.NOTE_BLOCK_PLING.value(),
-                                            SoundSource.BLOCKS,1.0f,2.0f);
                                 }
                             }
                         }

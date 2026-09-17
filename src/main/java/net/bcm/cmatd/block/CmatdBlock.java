@@ -4,6 +4,7 @@ import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.block.custom.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -168,23 +169,22 @@ public class CmatdBlock{
                     .mapColor(MapColor.COLOR_ORANGE).sound(SoundType.GILDED_BLACKSTONE)
                     .strength(3.5f,3.5f)));
 
+
+    // radioactive blocks (for fuel and storage)
     public static final DeferredBlock<Block> VITIATIUM_ORE = BLOCKS.register("vitiatium_ore",
-            () -> new CustomOreBlock(3,5,3.15f,5.5f,
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.STONE).sound(SoundType.STONE)));
-
+            () -> new RadioactiveOreBlock(UniformInt.of(3,5),0.35f,BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.STONE).sound(SoundType.STONE)
+                            .strength(3.15f,5.5f)));
     public static final DeferredBlock<Block> DEEPSLATE_VITIATIUM_ORE = BLOCKS.register("deepslate_vitiatium_ore",
-            () -> new CustomOreBlock(3,5,3.35f,5.75f,
-                    BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE)));
-
+            () -> new RadioactiveOreBlock(UniformInt.of(3,5),0.47f,BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE)
+                    .strength(3.35f,5.75f)));
     public static final DeferredBlock<Block> RAW_VITIATIUM_BLOCK = BLOCKS.register("raw_vitiatium_block",
-            () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
+            () -> new RadioactiveBlock(0.5f,BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.DRIPSTONE_BLOCK)
                     .strength(3.5f,3.5f)));
-
     public static final DeferredBlock<Block> VITIATIUM_BLOCK = BLOCKS.register("vitiatium_block",
-            () -> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
+            () -> new RadioactiveBlock(2.75f,BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.METAL)
                     .strength(3.71f,5.92f)));
 

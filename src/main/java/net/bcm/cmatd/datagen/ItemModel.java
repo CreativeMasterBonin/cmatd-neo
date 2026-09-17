@@ -11,6 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ItemModel extends ItemModelProvider{
@@ -27,6 +29,7 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.DOUBLER_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.TRIPLED_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.HEAT_DISPERSION_MODULE.get());
+        defaultCustomSimpleItem(CmatdItem.SILENCING_MODULE.get());
         // tier upgrades
         defaultCustomSimpleItem(CmatdItem.BASIC_TIER_DOWNGRADE.asItem());
         defaultCustomSimpleItem(CmatdItem.ADVANCED_TIER_UPGRADE.asItem());
@@ -52,6 +55,9 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.COMPOUNDITE_INGOT.asItem());
         defaultCustomSimpleItem(CmatdItem.LODEALITE_INGOT.asItem());
         defaultCustomSimpleItem(CmatdItem.VITIATIUM_INGOT.asItem());
+
+        // packages
+        defaultCustomSimpleItem(CmatdItem.BASIC_COOLANT_PACKAGE.get());
 
         defaultCustomSimpleItem(CmatdItem.COPPER_PCB_BASE.asItem());
         defaultCustomSimpleItem(CmatdItem.UNPRESSED_PCB.asItem());

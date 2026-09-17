@@ -153,7 +153,26 @@ public class FoodReactorMultiblock extends BlockEntity {
             FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
 
             if(ticks % 108 == 0 && foodReactorFuels != null && coolant.is(Tag.VALID_FOOD_REACTOR_COOLANTS) && !(itemStackHandler.getStackInSlot(2).getCount() >= itemStackHandler.getStackInSlot(2).getMaxStackSize()) && !(this.getFluidTank().getFluidAmount() >= this.getFluidTank().getCapacity())){
-                getLevel().playSound(null,getBlockPos(), CmatdSound.REACTOR_LOOP.value(),SoundSource.BLOCKS,0.2f,1.0f);
+                // silence the food reactor if the silencing module is installed at all
+                int amountOfSilencingModules = 0;
+                if(module1.has(Components.MODULE_TYPE)){
+                    if(module1.get(Components.MODULE_TYPE).intValue() == 5){
+                        amountOfSilencingModules++;
+                    }
+                }
+                if(module2.has(Components.MODULE_TYPE)){
+                    if(module2.get(Components.MODULE_TYPE).intValue() == 5){
+                        amountOfSilencingModules++;
+                    }
+                }
+                if(module3.has(Components.MODULE_TYPE)){
+                    if(module3.get(Components.MODULE_TYPE).intValue() == 5){
+                        amountOfSilencingModules++;
+                    }
+                }
+                if(amountOfSilencingModules <= 0){
+                    getLevel().playSound(null,getBlockPos(), CmatdSound.REACTOR_LOOP.value(),SoundSource.BLOCKS,0.2f,1.0f);
+                }
             }
             doStuff(module1,module2,module3);
         }
@@ -210,6 +229,7 @@ public class FoodReactorMultiblock extends BlockEntity {
             boolean tripleOutput = false;
 
             int efficiency_modules = 0;
+            boolean shouldBeSilenced = false;
 
             Holder<Item> itemHolder = fuel.getItemHolder();
             FoodReactorFuels foodReactorFuels = itemHolder.getData(FOOD_REACTOR_FUELS);
@@ -240,6 +260,9 @@ public class FoodReactorMultiblock extends BlockEntity {
                     else if(module1.get(Components.MODULE_TYPE) == 3){
                         tripleOutput = true;
                     }
+                    else if(module1.get(Components.MODULE_TYPE) == 5){
+                        shouldBeSilenced = true;
+                    }
                 }
             }
             if(!module2.isEmpty()){
@@ -253,6 +276,9 @@ public class FoodReactorMultiblock extends BlockEntity {
                     else if(module2.get(Components.MODULE_TYPE) == 3){
                         tripleOutput = true;
                     }
+                    else if(module2.get(Components.MODULE_TYPE) == 5){
+                        shouldBeSilenced = true;
+                    }
                 }
             }
             if(!module3.isEmpty()){
@@ -265,6 +291,9 @@ public class FoodReactorMultiblock extends BlockEntity {
                     }
                     else if(module3.get(Components.MODULE_TYPE) == 3){
                         tripleOutput = true;
+                    }
+                    else if(module3.get(Components.MODULE_TYPE) == 5){
+                        shouldBeSilenced = true;
                     }
                 }
             }
@@ -357,8 +386,10 @@ public class FoodReactorMultiblock extends BlockEntity {
                     coolant.shrink(1);
                     fuel.shrink(1);
                     itemStackHandler.setStackInSlot(2,new ItemStack(CmatdItem.JAM_JAR.asItem()));
-                    level.playSound(null,getBlockPos(),
+                    if(!shouldBeSilenced)
+                        level.playSound(null,getBlockPos(),
                             SoundEvents.BOAT_PADDLE_WATER, SoundSource.BLOCKS,0.75f,1.0f);
+
                     energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
                 }
                 else{
@@ -366,8 +397,10 @@ public class FoodReactorMultiblock extends BlockEntity {
                         coolant.shrink(1);
                         fuel.shrink(1);
                         waste.grow(1);
-                        level.playSound(null,getBlockPos(),
+                        if(!shouldBeSilenced)
+                            level.playSound(null,getBlockPos(),
                                 SoundEvents.BOAT_PADDLE_WATER, SoundSource.BLOCKS,0.75f,1.0f);
+
                         energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
                     }
                 }
@@ -416,6 +449,7 @@ public class FoodReactorMultiblock extends BlockEntity {
             if(validBlockCount == 47 && blocksToBeReplaced == 0) {
                 if(!multiblockFormed){
                     multiblockFormed = true;
+                    // this sound is for accessibility, so do not silence it at all
                     getLevel().playSound(null,getBlockPos(),SoundEvents.IRON_GOLEM_DEATH,SoundSource.BLOCKS,1.0f,0.95f);
                     for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
                         for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){

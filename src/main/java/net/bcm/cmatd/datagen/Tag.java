@@ -21,6 +21,7 @@ public class Tag{
     public static final TagKey<Item> PRESSER_PATTERNS = itemTag("presser_patterns");
     public static final TagKey<Item> IRON_DUSTS = commonItemTag("dusts/iron");
     public static final TagKey<Item> GOLD_DUSTS = commonItemTag("dusts/gold");
+    public static final TagKey<Item> COOLANT_CRAFTING_COMPONENTS = itemTag("coolant_crafting_components");
 
     public static final TagKey<Block> STORAGE_BLOCKS_COMPOUNDITE = commonBlockTag("storage_blocks/compoundite");
     public static final TagKey<Block> STORAGE_BLOCKS_LODEALITE = commonBlockTag("storage_blocks/lodealite");

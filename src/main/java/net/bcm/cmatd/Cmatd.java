@@ -98,6 +98,7 @@ public class Cmatd {
                         output.accept(CmatdItem.DOUBLER_MODULE.asItem());
                         output.accept(CmatdItem.TRIPLED_MODULE.asItem());
                         output.accept(CmatdItem.HEAT_DISPERSION_MODULE.asItem());
+                        output.accept(CmatdItem.SILENCING_MODULE.asItem());
 
                         output.accept(CmatdItem.BASIC_TIER_DOWNGRADE.asItem());
                         output.accept(CmatdItem.ADVANCED_TIER_UPGRADE.asItem());

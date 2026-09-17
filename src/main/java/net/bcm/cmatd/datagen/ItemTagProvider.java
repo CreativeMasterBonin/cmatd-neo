@@ -8,6 +8,7 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -32,6 +33,8 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.EFFICIENCY_MODULE.asItem())
                 .add(CmatdItem.DOUBLER_MODULE.asItem())
                 .add(CmatdItem.TRIPLED_MODULE.asItem())
+                .add(CmatdItem.HEAT_DISPERSION_MODULE.asItem())
+                .add(CmatdItem.SILENCING_MODULE.asItem())
         ;
         this.tag(Tag.TIER_UPGRADES)
                 .add(CmatdItem.BASIC_TIER_DOWNGRADE.asItem())
@@ -125,12 +128,18 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.LODEALITE_BLOCK.asItem())
         ;
         this.tag(Tag.VALID_RADIOACTIVE_FUELS)
-                /*.addOptional(ResourceLocation.parse("projecte:collector_fuel"))
-                .addTag(ItemTags.COALS)*/
+                // raw items are not processed but still radioactive, they are weak fuels
+                .add(CmatdItem.VITIATIUM_ORE.asItem())
+                .add(CmatdItem.DEEPSLATE_VITIATIUM_ORE.asItem())
                 .add(CmatdItem.RAW_VITIATIUM.asItem())
-                .add(CmatdItem.VITIATIUM_INGOT.asItem())
                 .add(CmatdItem.RAW_VITIATIUM_BLOCK.asItem())
+                .add(CmatdItem.VITIATIUM_INGOT.asItem())
                 .add(CmatdItem.VITIATIUM_BLOCK.asItem())
+        ;
+        this.tag(Tag.COOLANT_CRAFTING_COMPONENTS)
+                .add(Items.ICE)
+                .add(Items.PACKED_ICE)
+                .add(Items.BLUE_ICE)
         ;
     }
 
