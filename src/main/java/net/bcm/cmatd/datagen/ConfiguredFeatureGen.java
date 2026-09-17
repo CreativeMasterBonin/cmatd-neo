@@ -33,6 +33,7 @@ import java.util.List;
 public class ConfiguredFeatureGen {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_COMPOUNDITE = registerKey("ore_compoundite");
     public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_LODEALITE = registerKey("ore_lodealite");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_VITIATIUM = registerKey("ore_vitiatium");
 
     public static final ResourceKey<ConfiguredFeature<?,?>> METHANE_GAS_VENT = registerKey("methane_gas_vent");
     public static final ResourceKey<ConfiguredFeature<?,?>> STEAM_GAS_VENT = registerKey("steam_gas_vent");
@@ -41,28 +42,40 @@ public class ConfiguredFeatureGen {
         RuleTest stone_ore_replaces = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest deepslate_ore_replaces = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
 
+        // compoundite
         List<OreConfiguration.TargetBlockState> compounditeOreList = List.of(
                 OreConfiguration.target(stone_ore_replaces,CmatdBlock.COMPOUNDITE_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslate_ore_replaces,CmatdBlock.DEEPSLATE_COMPOUNDITE_ORE.get().defaultBlockState())
         );
 
+        // lodealite
         List<OreConfiguration.TargetBlockState> lodealiteOreList = List.of(
                 OreConfiguration.target(stone_ore_replaces,CmatdBlock.LODEALITE_ORE.get().defaultBlockState()),
                 OreConfiguration.target(deepslate_ore_replaces,CmatdBlock.DEEPSLATE_LODEALITE_ORE.get().defaultBlockState())
         );
 
+        // vitiatium
+        List<OreConfiguration.TargetBlockState> vitiatiumOreList = List.of(
+                OreConfiguration.target(stone_ore_replaces,CmatdBlock.VITIATIUM_ORE.get().defaultBlockState()),
+                OreConfiguration.target(deepslate_ore_replaces,CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get().defaultBlockState())
+        );
+
+        // methane gas vents
         List<OreConfiguration.TargetBlockState> methaneGasVents = List.of(
                 OreConfiguration.target(stone_ore_replaces,CmatdBlock.METHANE_GAS_VENT.get().defaultBlockState()),
                 OreConfiguration.target(deepslate_ore_replaces,CmatdBlock.DEEPSLATE_METHANE_GAS_VENT.get().defaultBlockState())
         );
 
+        // steam gas vents
         List<OreConfiguration.TargetBlockState> steamGasVents = List.of(
                 OreConfiguration.target(stone_ore_replaces,CmatdBlock.STEAM_GAS_VENT.get().defaultBlockState()),
                 OreConfiguration.target(deepslate_ore_replaces,CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get().defaultBlockState())
         );
 
+        // registry section
         register(context,ORE_COMPOUNDITE,Feature.ORE, new OreConfiguration(compounditeOreList,7));
         register(context,ORE_LODEALITE,Feature.ORE, new OreConfiguration(lodealiteOreList,5));
+        register(context,ORE_VITIATIUM,Feature.ORE, new OreConfiguration(vitiatiumOreList,3));
 
         register(context,METHANE_GAS_VENT,Feature.SCATTERED_ORE, new OreConfiguration(methaneGasVents,18));
         register(context,STEAM_GAS_VENT,Feature.SCATTERED_ORE, new OreConfiguration(steamGasVents,17));

@@ -280,6 +280,9 @@ public class Language extends LanguageProvider{
         this.add(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS,"Valid Radioactive Reactor Casings");
         this.add(Tag.VALID_RADIOACTIVE_FUELS,"Valid Radioactive Fuels");
         this.add(Tag.COOLANT_CRAFTING_COMPONENTS,"Coolant Crafting Components");
+        this.add(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS,"Valid Radioactive Reactor Sealants");
+        this.add(Tag.GENERATES_STEAM_VENTS,"Generates Steam Vents");
+        this.add(Tag.GENERATES_VITIATIUM_ORE,"Generates Vitiatium Ore");
 
         // gas tags
         this.add(Tag.BURNABLE_GASES,"Burnable");

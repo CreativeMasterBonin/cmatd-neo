@@ -315,6 +315,10 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.GAS_TANK.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
         ;
+        tag(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS)
+                .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
+                .addTag(Tags.Blocks.CONCRETES)
+        ;
     }
 
     @Override

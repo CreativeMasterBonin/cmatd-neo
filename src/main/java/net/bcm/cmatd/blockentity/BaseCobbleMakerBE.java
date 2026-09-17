@@ -234,6 +234,7 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
     public void serverTick(){
         ticks++;
         int efficiency_modules = 0;
+        boolean shouldBeSilenced = false;
         effGlobal = 0;
         ItemStack moduleSlot1 = this.getItemHandler().getStackInSlot(7);
         ItemStack moduleSlot2 = this.getItemHandler().getStackInSlot(8);
@@ -243,6 +244,9 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                 if(moduleSlot1.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot1.getCount());
                 }
+                else if(moduleSlot1.get(Components.MODULE_TYPE).intValue() == 5){
+                    shouldBeSilenced = true;
+                }
             }
         }
         if(!moduleSlot2.isEmpty()){
@@ -250,12 +254,18 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                 if(moduleSlot2.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot2.getCount());
                 }
+                else if(moduleSlot2.get(Components.MODULE_TYPE).intValue() == 5){
+                    shouldBeSilenced = true;
+                }
             }
         }
         if(!moduleSlot3.isEmpty()){
             if(moduleSlot3.has(Components.MODULE_TYPE)){
                 if(moduleSlot3.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot3.getCount());
+                }
+                else if(moduleSlot3.get(Components.MODULE_TYPE).intValue() == 5){
+                    shouldBeSilenced = true;
                 }
             }
         }
@@ -282,10 +292,12 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
             setChanged();
         }
 
-        if(operating && getBlockEntity().getLevel() != null){
-            if(getBlockEntity().getLevel().getGameTime() % 80L == 0L){
-                getBlockEntity().getLevel().playSound(null,this.getBlockPos(),
-                        CmatdSound.PROCESSOR_LOOP.value(), SoundSource.BLOCKS,0.25f,1.0f);
+        if(!shouldBeSilenced){
+            if(operating && getBlockEntity().getLevel() != null){
+                if(getBlockEntity().getLevel().getGameTime() % 80L == 0L){
+                    getBlockEntity().getLevel().playSound(null,this.getBlockPos(),
+                            CmatdSound.PROCESSOR_LOOP.value(), SoundSource.BLOCKS,0.25f,1.0f);
+                }
             }
         }
         //

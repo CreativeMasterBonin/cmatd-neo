@@ -23,6 +23,7 @@ import java.util.List;
 public class PlacementGen {
     public static final ResourceKey<PlacedFeature> ORE_COMPOUNDITE = createKey("ore_compoundite");
     public static final ResourceKey<PlacedFeature> ORE_LODEALITE = createKey("ore_lodealite");
+    public static final ResourceKey<PlacedFeature> ORE_VITIATIUM = createKey("ore_vitiatium");
     public static final ResourceKey<PlacedFeature> METHANE_GAS_VENT = createKey("methane_gas_vent");
     public static final ResourceKey<PlacedFeature> STEAM_GAS_VENT = createKey("steam_gas_vent");
 
@@ -32,15 +33,23 @@ public class PlacementGen {
 
         Holder<ConfiguredFeature<?, ?>> compounditeFeatureHolder = holdGetCombo.getOrThrow(ConfiguredFeatureGen.ORE_COMPOUNDITE);
         Holder<ConfiguredFeature<?, ?>> lodealiteFeatureHolder = holdGetCombo.getOrThrow(ConfiguredFeatureGen.ORE_LODEALITE);
+        Holder<ConfiguredFeature<?, ?>> vitiatiumFeatureHolder = holdGetCombo.getOrThrow(ConfiguredFeatureGen.ORE_VITIATIUM);
         Holder<ConfiguredFeature<?, ?>> methaneGasVentNormal = holdGetCombo.getOrThrow(ConfiguredFeatureGen.METHANE_GAS_VENT);
         Holder<ConfiguredFeature<?, ?>> steamGasVentNormal = holdGetCombo.getOrThrow(ConfiguredFeatureGen.STEAM_GAS_VENT);
 
+        // commonly found closer to stone area
         register(context,ORE_COMPOUNDITE,compounditeFeatureHolder,
                 commonOrePlacement(25, HeightRangePlacement.uniform(VerticalAnchor.absolute(-20), VerticalAnchor.top())));
 
+        // spawns relatively close to transition zone
         register(context,ORE_LODEALITE,lodealiteFeatureHolder,
                 commonOrePlacement(15, HeightRangePlacement.uniform(VerticalAnchor.absolute(-32), VerticalAnchor.top())));
 
+        // found deep underground, almost hidden, but can be spotted if being looked for excessively
+        register(context,ORE_VITIATIUM,vitiatiumFeatureHolder,
+                commonOrePlacement(9, HeightRangePlacement.uniform(VerticalAnchor.absolute(-42),VerticalAnchor.absolute(-33))));
+
+        // spawns mostly hidden, but vents do show up touching air
         PlacementUtils.register(
                 context,
                 METHANE_GAS_VENT,
@@ -53,6 +62,7 @@ public class PlacementGen {
                 RandomOffsetPlacement.vertical(ConstantInt.of(2)),
                 BiomeFilter.biome()
         );
+        // spawns relatively hidden, but vents can show up touching air
         PlacementUtils.register(
                 context,
                 STEAM_GAS_VENT,

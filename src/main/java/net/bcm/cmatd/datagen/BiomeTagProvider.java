@@ -26,5 +26,13 @@ public class BiomeTagProvider extends BiomeTagsProvider {
                 .add(Biomes.DEEP_LUKEWARM_OCEAN)
                 .add(Biomes.PLAINS)
         ;
+        tag(Tag.GENERATES_VITIATIUM_ORE)
+                .addTag(Tags.Biomes.IS_BADLANDS)
+                .addTag(Tags.Biomes.IS_DESERT)
+                .add(Biomes.JUNGLE)
+                .add(Biomes.BAMBOO_JUNGLE)
+                .add(Biomes.FROZEN_OCEAN)
+                .add(Biomes.DEEP_FROZEN_OCEAN)
+        ;
     }
 }

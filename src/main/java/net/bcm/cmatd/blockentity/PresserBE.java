@@ -168,6 +168,8 @@ public class PresserBE extends BlockEntity{
             }
         }
 
+        boolean shouldBeSilenced = false; // machine will make no sounds if this is true
+
         if(level.isDay() || nightUpgrade){
             solar = 1;
             // machine tier affects how quickly the machine processes
@@ -227,6 +229,10 @@ public class PresserBE extends BlockEntity{
                             efficiency_modules += (moduleSlot1.getCount());
                         }
 
+                        if(moduleSlot1.is(CmatdItem.SILENCING_MODULE) || moduleSlot2.is(CmatdItem.SILENCING_MODULE) || moduleSlot3.is(CmatdItem.SILENCING_MODULE)){
+                            shouldBeSilenced = true;
+                        }
+
                         if(!getItemHandler().getStackInSlot(1).is(printInputItem)){
                             process_bits = 0;
                             return;
@@ -253,83 +259,7 @@ public class PresserBE extends BlockEntity{
                                                     1,0,0,0,0.02);
                                         }
                                     }
-                                    if(level.getRandom().nextIntBetweenInclusive(0,100) <= 1){
-                                        switch (level.getRandom().nextIntBetweenInclusive(0,3)){
-                                            case 0 -> {
-                                                level.playSound(null,getBlockPos(),
-                                                        SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS,0.5f,Utility.nextFloatBetweenInclusive(0.95f,1.0f));
-                                                break;
-                                            }
-                                            case 1 -> {
-                                                level.playSound(null,getBlockPos(),
-                                                        SoundEvents.ANVIL_LAND, SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(1.2f,1.5f));
-                                                break;
-                                            }
-                                            case 2 -> {
-                                                level.playSound(null,getBlockPos(),
-                                                        SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.BLOCKS,0.25f,1.0f);
-                                                break;
-                                            }
-                                            case 3 -> {
-                                                level.playSound(null,getBlockPos(),
-                                                        SoundEvents.VILLAGER_WORK_ARMORER, SoundSource.BLOCKS,0.25f,1.0f);
-                                                break;
-                                            }
-                                            default -> {
-                                                level.playSound(null,getBlockPos(),
-                                                        SoundEvents.METAL_HIT, SoundSource.BLOCKS,1.0f,1.0f);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                else{
-                                    switch (level.getRandom().nextIntBetweenInclusive(0,3)){
-                                        case 0 -> {
-                                            level.playSound(null,getBlockPos(),
-                                                    SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS,0.5f,Utility.nextFloatBetweenInclusive(0.95f,1.0f));
-                                            break;
-                                        }
-                                        case 1 -> {
-                                            level.playSound(null,getBlockPos(),
-                                                    SoundEvents.ANVIL_LAND, SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(1.2f,1.5f));
-                                            break;
-                                        }
-                                        case 2 -> {
-                                            level.playSound(null,getBlockPos(),
-                                                    SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.BLOCKS,0.25f,1.0f);
-                                            break;
-                                        }
-                                        case 3 -> {
-                                            level.playSound(null,getBlockPos(),
-                                                    SoundEvents.VILLAGER_WORK_ARMORER, SoundSource.BLOCKS,0.25f,1.0f);
-                                            break;
-                                        }
-                                        default -> {
-                                            level.playSound(null,getBlockPos(),
-                                                    SoundEvents.METAL_HIT, SoundSource.BLOCKS,1.0f,1.0f);
-                                            break;
-                                        }
-                                    }
-                                }
-                                if(efficiency_modules < silenceSoundsAsTooFast && speedModules < silenceSoundsAsTooFast){
-                                    if(level instanceof ServerLevel serverLevel){
-                                        serverLevel.sendParticles(ParticleTypes.SCRAPE,
-                                                (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                                (double)getBlockPos().getY() + 0.45D,
-                                                (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                                1,0,0,0,0);
-                                    }
-                                }
-                                setChanged();
-                            }
-                            else{
-                                if(getItemHandler().getStackInSlot(2).isEmpty()){
-                                    //getItemHandler().getStackInSlot(0).shrink(1);
-                                    getItemHandler().getStackInSlot(1).shrink(1);
-                                    getItemHandler().setStackInSlot(2,new ItemStack(printOutputItem,1));
-                                    process_bits = 0;
-                                    if(efficiency_modules >= silenceSoundsAsTooFast || speedModules >= silenceSoundsAsTooFast){
+                                    if(!shouldBeSilenced){
                                         if(level.getRandom().nextIntBetweenInclusive(0,100) <= 1){
                                             switch (level.getRandom().nextIntBetweenInclusive(0,3)){
                                                 case 0 -> {
@@ -360,7 +290,9 @@ public class PresserBE extends BlockEntity{
                                             }
                                         }
                                     }
-                                    else{
+                                }
+                                else{
+                                    if(!shouldBeSilenced){
                                         switch (level.getRandom().nextIntBetweenInclusive(0,3)){
                                             case 0 -> {
                                                 level.playSound(null,getBlockPos(),
@@ -389,6 +321,87 @@ public class PresserBE extends BlockEntity{
                                             }
                                         }
                                     }
+                                }
+                                if(efficiency_modules < silenceSoundsAsTooFast && speedModules < silenceSoundsAsTooFast){
+                                    if(level instanceof ServerLevel serverLevel){
+                                        serverLevel.sendParticles(ParticleTypes.SCRAPE,
+                                                (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                (double)getBlockPos().getY() + 0.45D,
+                                                (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                1,0,0,0,0);
+                                    }
+                                }
+                                setChanged();
+                            }
+                            else{
+                                if(getItemHandler().getStackInSlot(2).isEmpty()){
+                                    //getItemHandler().getStackInSlot(0).shrink(1);
+                                    getItemHandler().getStackInSlot(1).shrink(1);
+                                    getItemHandler().setStackInSlot(2,new ItemStack(printOutputItem,1));
+                                    process_bits = 0;
+                                    if(!shouldBeSilenced){
+                                        if(efficiency_modules >= silenceSoundsAsTooFast || speedModules >= silenceSoundsAsTooFast){
+                                            if(level.getRandom().nextIntBetweenInclusive(0,100) <= 1){
+                                                switch (level.getRandom().nextIntBetweenInclusive(0,3)){
+                                                    case 0 -> {
+                                                        level.playSound(null,getBlockPos(),
+                                                                SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS,0.5f,Utility.nextFloatBetweenInclusive(0.95f,1.0f));
+                                                        break;
+                                                    }
+                                                    case 1 -> {
+                                                        level.playSound(null,getBlockPos(),
+                                                                SoundEvents.ANVIL_LAND, SoundSource.BLOCKS,0.1f,Utility.nextFloatBetweenInclusive(1.2f,1.5f));
+                                                        break;
+                                                    }
+                                                    case 2 -> {
+                                                        level.playSound(null,getBlockPos(),
+                                                                SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.BLOCKS,0.25f,1.0f);
+                                                        break;
+                                                    }
+                                                    case 3 -> {
+                                                        level.playSound(null,getBlockPos(),
+                                                                SoundEvents.VILLAGER_WORK_ARMORER, SoundSource.BLOCKS,0.25f,1.0f);
+                                                        break;
+                                                    }
+                                                    default -> {
+                                                        level.playSound(null,getBlockPos(),
+                                                                SoundEvents.METAL_HIT, SoundSource.BLOCKS,1.0f,1.0f);
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else{
+                                            switch (level.getRandom().nextIntBetweenInclusive(0, 3)) {
+                                                case 0 -> {
+                                                    level.playSound(null, getBlockPos(),
+                                                            SoundEvents.HEAVY_CORE_HIT, SoundSource.BLOCKS, 0.5f, Utility.nextFloatBetweenInclusive(0.95f, 1.0f));
+                                                    break;
+                                                }
+                                                case 1 -> {
+                                                    level.playSound(null, getBlockPos(),
+                                                            SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 0.1f, Utility.nextFloatBetweenInclusive(1.2f, 1.5f));
+                                                    break;
+                                                }
+                                                case 2 -> {
+                                                    level.playSound(null, getBlockPos(),
+                                                            SoundEvents.VILLAGER_WORK_TOOLSMITH, SoundSource.BLOCKS, 0.25f, 1.0f);
+                                                    break;
+                                                }
+                                                case 3 -> {
+                                                    level.playSound(null, getBlockPos(),
+                                                            SoundEvents.VILLAGER_WORK_ARMORER, SoundSource.BLOCKS, 0.25f, 1.0f);
+                                                    break;
+                                                }
+                                                default -> {
+                                                    level.playSound(null, getBlockPos(),
+                                                            SoundEvents.METAL_HIT, SoundSource.BLOCKS, 1.0f, 1.0f);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // particles for pressing things
                                     if(efficiency_modules < silenceSoundsAsTooFast && speedModules < silenceSoundsAsTooFast){
                                         if(level instanceof ServerLevel serverLevel){
                                             serverLevel.sendParticles(ParticleTypes.SCRAPE,

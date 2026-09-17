@@ -26,6 +26,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -101,6 +102,99 @@ public class RadioactiveReactor extends TieredMachine{
                     this.getBlockPos().west().below().below().getZ())
     );
 
+    // these are used to prevent radiation from affecting anything to allow standing right next to the reactor without a suit on
+    public final List<BlockPos> neighborSealingPositions = List.of(
+            // top layer
+            new BlockPos(
+                    this.getBlockPos().north().east().getX(),
+                    this.getBlockPos().north().east().getY(),
+                    this.getBlockPos().north().east().getZ()),
+            new BlockPos(
+                    this.getBlockPos().north().west().getX(),
+                    this.getBlockPos().north().west().getY(),
+                    this.getBlockPos().north().west().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().east().getX(),
+                    this.getBlockPos().south().east().getY(),
+                    this.getBlockPos().south().east().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().west().getX(),
+                    this.getBlockPos().south().west().getY(),
+                    this.getBlockPos().south().west().getZ()),
+            // middle layer
+            new BlockPos(
+                    this.getBlockPos().north().east().below().getX(),
+                    this.getBlockPos().north().east().below().getY(),
+                    this.getBlockPos().north().east().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().north().west().below().getX(),
+                    this.getBlockPos().north().west().below().getY(),
+                    this.getBlockPos().north().west().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().east().below().getX(),
+                    this.getBlockPos().south().east().below().getY(),
+                    this.getBlockPos().south().east().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().west().below().getX(),
+                    this.getBlockPos().south().west().below().getY(),
+                    this.getBlockPos().south().west().below().getZ()),
+            // lowest layer
+            new BlockPos(
+                    this.getBlockPos().north().east().below().below().getX(),
+                    this.getBlockPos().north().east().below().below().getY(),
+                    this.getBlockPos().north().east().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().north().west().below().below().getX(),
+                    this.getBlockPos().north().west().below().below().getY(),
+                    this.getBlockPos().north().west().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().east().below().below().getX(),
+                    this.getBlockPos().south().east().below().below().getY(),
+                    this.getBlockPos().south().east().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().west().below().below().getX(),
+                    this.getBlockPos().south().west().below().below().getY(),
+                    this.getBlockPos().south().west().below().below().getZ()),
+            // base
+            new BlockPos(
+                    this.getBlockPos().north().east().below().below().below().getX(),
+                    this.getBlockPos().north().east().below().below().below().getY(),
+                    this.getBlockPos().north().east().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().north().west().below().below().below().getX(),
+                    this.getBlockPos().north().west().below().below().below().getY(),
+                    this.getBlockPos().north().west().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().east().below().below().below().getX(),
+                    this.getBlockPos().south().east().below().below().below().getY(),
+                    this.getBlockPos().south().east().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().west().below().below().below().getX(),
+                    this.getBlockPos().south().west().below().below().below().getY(),
+                    this.getBlockPos().south().west().below().below().below().getZ()),
+            // cardinal base directions
+            new BlockPos(
+                    this.getBlockPos().below().below().below().below().getX(),
+                    this.getBlockPos().below().below().below().below().getY(),
+                    this.getBlockPos().below().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().north().below().below().below().getX(),
+                    this.getBlockPos().north().below().below().below().getY(),
+                    this.getBlockPos().north().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().south().below().below().below().getX(),
+                    this.getBlockPos().south().below().below().below().getY(),
+                    this.getBlockPos().south().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().east().below().below().below().getX(),
+                    this.getBlockPos().east().below().below().below().getY(),
+                    this.getBlockPos().east().below().below().below().getZ()),
+            new BlockPos(
+                    this.getBlockPos().west().below().below().below().getX(),
+                    this.getBlockPos().west().below().below().below().getY(),
+                    this.getBlockPos().west().below().below().below().getZ())
+    );
+
     public final ItemStackHandler itemStackHandler = new ItemStackHandler(30){
         public NonNullList<ItemStack> getStacks(){
             return stacks; // completely useless as the method is inaccessible outside the object itself
@@ -125,6 +219,7 @@ public class RadioactiveReactor extends TieredMachine{
     public boolean isActive = false;
     public int maxHeatWhenCooling = 5500; // affects how much heat output is maintained when using coolant
     public float radioactivityOfFuelAccumulative = 0.0f;
+    public boolean sealedCore = false;
 
     public float getRadioactivity(){
         return radioactivityOfFuelAccumulative;
@@ -174,6 +269,37 @@ public class RadioactiveReactor extends TieredMachine{
         return foundNeededBlocks >= neededBlocksToForm;
     }
 
+    public void checkIfShouldBeSealed(){
+        int neededBlocksToBeSealed = neighborSealingPositions.size();
+        int foundNeededSealingBlocks = 0;
+        if(level != null){
+            for(BlockPos position : neighborSealingPositions){
+                // check if the state can seal up reactors
+                if(level.getBlockState(position).is(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS)){
+                    foundNeededSealingBlocks++;
+                }
+            }
+        }
+
+        boolean hasWaterChamber = false;
+        // chamber for coolant exchange must exist in reactor (the gap below the initial block under the core)
+        if(level.getBlockState(new BlockPos(
+                this.getBlockPos().below().below().below().getX(),
+                this.getBlockPos().below().below().below().getY(),
+                this.getBlockPos().below().below().below().getZ())).is(Blocks.WATER)){
+            hasWaterChamber = true;
+        }
+
+        if(foundNeededSealingBlocks >= neededBlocksToBeSealed && hasWaterChamber){
+            sealedCore = true;
+            setChanged();
+        }
+        else{
+            sealedCore = false;
+            setChanged();
+        }
+    }
+
     @Override
     public int getFirstTimeMaxMachineTier() {
         return 0;
@@ -221,6 +347,9 @@ public class RadioactiveReactor extends TieredMachine{
         if(tag.contains("radioactivity")){
             radioactivityOfFuelAccumulative = tag.getFloat("radioactivity");
         }
+        if(tag.contains("sealed_core")){
+            sealedCore = tag.getBoolean("sealed_core");
+        }
     }
 
     @Override
@@ -243,6 +372,7 @@ public class RadioactiveReactor extends TieredMachine{
         tag.putBoolean("active",isActive);
         tag.putInt("max_heat_when_cooling",Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000));
         tag.putFloat("radioactivity",radioactivityOfFuelAccumulative);
+        tag.putBoolean("sealed_core",sealedCore);
     }
 
     @Override
@@ -272,8 +402,8 @@ public class RadioactiveReactor extends TieredMachine{
                     setChanged();
                 }
             }
-            // check if radioactivity is higher than normal
-            if(getRadioactivity() > 0.0f){
+            // check if radioactivity is higher than normal (if sealed this does nothing)
+            if(getRadioactivity() > 0.0f && !sealedCore){
                 if(level instanceof ServerLevel serverLevel){
                     List<LivingEntity> entities = serverLevel.getNearbyEntities(
                             LivingEntity.class, TargetingConditions.forNonCombat(),null,new AABB(
@@ -355,6 +485,9 @@ public class RadioactiveReactor extends TieredMachine{
                         itemStackHandler.getStackInSlot(28),
                         itemStackHandler.getStackInSlot(29)
                 );
+
+                checkIfShouldBeSealed();
+
                 // iterate over the modules and see if they really are modules and what type they are
                 for(ItemStack module : moduleStacks){
                     if(!module.isEmpty()){
@@ -709,6 +842,33 @@ public class RadioactiveReactor extends TieredMachine{
     // should the reactor even be active?
     public void checkIfShouldBeActive(){
         boolean fuelDetected = false;
+        boolean heatIsSuppressed = false;
+
+        List<ItemStack> moduleStacks = List.of(
+                itemStackHandler.getStackInSlot(25),
+                itemStackHandler.getStackInSlot(26),
+                itemStackHandler.getStackInSlot(27),
+                itemStackHandler.getStackInSlot(28),
+                itemStackHandler.getStackInSlot(29)
+        );
+
+        int heatModuleCount = 0;
+
+        // check over modules
+        for(ItemStack module : moduleStacks){
+            if(module.has(Components.MODULE_TYPE)){
+                if(module.get(Components.MODULE_TYPE).intValue() == 5){
+                    heatModuleCount++;
+                    setChanged();
+                }
+            }
+        }
+
+        if(heatModuleCount > 0){
+            heatIsSuppressed = true;
+            setChanged();
+        }
+
         // iterate over the slots and what item they have
         for(int index = 0; index < 30; index++){
             if(index >= 30){
@@ -718,15 +878,17 @@ public class RadioactiveReactor extends TieredMachine{
             if(stack.is(Tag.VALID_RADIOACTIVE_FUELS)){
                 fuelDetected = true;
             }
+
+            // coolant does not need
             if(level instanceof ServerLevel serverLevel){
                 // every 15 ticks, check if a coolant is in the reactor
                 // if so, apply the coolant dependent on the type of coolant it is; the colder, the better
-                if(serverLevel.getGameTime() % 15 == 0){
-                    if(stack.is(Items.ICE) || stack.is(Items.PACKED_ICE) || stack.is(Items.BLUE_ICE)){
+                if(serverLevel.getGameTime() % 15 == 0 && !heatIsSuppressed){
+                    /*if(stack.is(Items.ICE) || stack.is(Items.PACKED_ICE) || stack.is(Items.BLUE_ICE)){
                         coolantAmount += (5 + stack.getCount());
                         stack.setCount(0);
                         setChanged();
-                    }
+                    }*/
                     // water buckets turn into buckets when used, so do that here
                     if(stack.is(Items.WATER_BUCKET)){
                         coolantAmount += 3;
@@ -734,20 +896,12 @@ public class RadioactiveReactor extends TieredMachine{
                         setChanged();
                     }
                     // durable items should be considered special as they can repair or be damaged at the same time
-                    if(stack.has(DataComponents.DAMAGE) && stack.has(Components.COOLANT) && serverLevel.getRandom().nextIntBetweenInclusive(0,100) <= 2){
+                    if(stack.has(DataComponents.DAMAGE) && stack.has(Components.COOLANT)){
                         coolantAmount++;
-                        // don't modify item stacks directly, make a copy
-                        ItemStack copiedStack = stack.copy();
-                        int damage = stack.getDamageValue();
-                        int maxDamage = stack.getMaxDamage();
-                        // clamp this value as otherwise the machine cannot save, as damage must be greater than or equal to 0
-                        copiedStack.set(DataComponents.DAMAGE,Mth.clamp(damage - 1,0,maxDamage));
-                        if(copiedStack.getDamageValue() <= 0){
-                            itemStackHandler.setStackInSlot(index,ItemStack.EMPTY);
-                        }
-                        else{
-                            itemStackHandler.setStackInSlot(index,copiedStack);
-                        }
+                        // damage the stack
+                        stack.hurtAndBreak(1,serverLevel,null,item -> {
+
+                        });
                         setChanged();
                     }
                 }
