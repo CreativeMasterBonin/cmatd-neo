@@ -117,7 +117,7 @@ public class CmatdItem{
                     () -> new BlockItem(CmatdBlock.DIMENSIONAL_TRANSPORTER.get(),new Item.Properties()));
 
 
-    // mutliblocks
+    // multiblocks
     public static final DeferredItem<BlockItem> FOOD_REACTOR_MULTIBLOCK =
             ITEMS.register("food_reactor",
                     () -> new BlockItem(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get(),new Item.Properties()));
