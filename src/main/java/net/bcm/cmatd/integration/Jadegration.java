@@ -13,6 +13,7 @@ public class Jadegration implements IWailaPlugin {
     public static final ResourceLocation GAS_TYPE_UID = ResourceLocation.parse("cmatd:gas_type_provider");
     public static final ResourceLocation ROTATIONAL_OBJECT_TYPE_UID = ResourceLocation.parse("cmatd:rotational_object_type_provider");
     public static final ResourceLocation MACHINE_TIER_TYPE_UID = ResourceLocation.parse("cmatd:machine_tier_type_provider");
+    public static final ResourceLocation REACTOR_TYPE_UID = ResourceLocation.parse("cmatd:reactor_type_provider");
 
     @Override
     public void register(IWailaCommonRegistration registration) {
@@ -21,6 +22,8 @@ public class Jadegration implements IWailaPlugin {
         registration.registerBlockDataProvider(RotationalValueComponentProvider.INSTANCE,RotationalInductionGenerator.class);
         registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, JamMakerBE.class);
         registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, PresserBE.class);
+        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE,FoodReactorMultiblock.class);
+        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE,RadioactiveReactor.class);
     }
 
     @Override
@@ -30,5 +33,7 @@ public class Jadegration implements IWailaPlugin {
         registration.registerBlockComponent(RotationalValueComponentProvider.INSTANCE, RotationalInductionGeneratorBlock.class);
         registration.registerBlockComponent(MachineComponentProvider.INSTANCE, JamMaker.class);
         registration.registerBlockComponent(MachineComponentProvider.INSTANCE, Presser.class);
+        registration.registerBlockComponent(ReactorComponentProvider.INSTANCE, FoodReactorBlock.class);
+        registration.registerBlockComponent(ReactorComponentProvider.INSTANCE, RadioactiveReactorBlock.class);
     }
 }

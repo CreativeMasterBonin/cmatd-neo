@@ -47,6 +47,9 @@ public class Tag{
     public static final TagKey<Item> VALID_RADIOACTIVE_FUELS = itemTag("valid_radioactive_fuels");
     public static final TagKey<Block> VALID_RADIOACTIVE_REACTOR_SEALANTS = blockTag("valid_radioactive_reactor_sealants");
 
+    // environmental customization
+    public static final TagKey<Block> RADIOACTIVE_WASTE_SUPPORTED = blockTag("radioactive_waste_supported");
+
     // biome tags
     public static final TagKey<Biome> GENERATES_STEAM_VENTS = biomeTag("generates_steam_vents");
     public static final TagKey<Biome> GENERATES_VITIATIUM_ORE = biomeTag("generates_vitiatium_ore");

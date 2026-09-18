@@ -11,6 +11,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,7 +25,7 @@ public class RotationalInductionGeneratorBlock extends BaseEntityBlock {
             simpleCodec(RotationalInductionGeneratorBlock::new);
 
     public RotationalInductionGeneratorBlock(Properties properties) {
-        super(properties);
+        super(properties.sound(SoundType.NETHERITE_BLOCK));
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.CmatdClientActionHandler;
 import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.GasTankBE;
 import net.bcm.cmatd.blockentity.WindGeneratorBE;
 import net.bcm.cmatd.gui.GasTankMenu;
@@ -39,7 +40,7 @@ public class GasTank extends BaseEntityBlock {
             simpleCodec(GasTank::new);
 
     public GasTank(Properties properties) {
-        super(properties);
+        super(properties.requiresCorrectToolForDrops());
     }
 
     @Override
@@ -50,7 +51,7 @@ public class GasTank extends BaseEntityBlock {
         else{
             if(level.getBlockEntity(pos) instanceof GasTankBE gasTankBE){
                 if(gasTankBE.getGasTank().gas.getGas().isRadioactive()){
-                    level.setBlock(pos, Blocks.WATER.defaultBlockState(),3);
+                    level.setBlock(pos, CmatdBlock.RADIOACTIVE_WASTE.get().defaultBlockState(),3);
                 }
             }
         }

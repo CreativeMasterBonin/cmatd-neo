@@ -127,6 +127,7 @@ public class Cmatd {
                         output.accept(CmatdItem.DEEPSLATE_VITIATIUM_ORE.asItem());
                         output.accept(CmatdItem.RAW_VITIATIUM.asItem());
                         output.accept(CmatdItem.RAW_VITIATIUM_BLOCK.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_WASTE_BUCKET.asItem());
 
                         output.accept(CmatdItem.IRON_DUST.asItem());
                         output.accept(CmatdItem.GOLD_DUST.asItem());

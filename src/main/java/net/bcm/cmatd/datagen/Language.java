@@ -63,6 +63,7 @@ public class Language extends LanguageProvider{
         this.add("config.jade.plugin_cmatd.gas_type_provider","Gas Type Provider");
         this.add("config.jade.plugin_cmatd.rotational_object_type_provider","Rotational Type Provider");
         this.add("config.jade.plugin_cmatd.machine_tier_type_provider","Machine Data");
+        this.add("config.jade.plugin_cmatd.reactor_type_provider","Reactor Data");
         this.add("integration.data.gas.is_empty","Tank Empty");
 
         // subtitles
@@ -126,6 +127,8 @@ public class Language extends LanguageProvider{
         this.add("desc.item.food_reactor.requirements","Needs a coolant, food and no waste items to function; waste tank must be empty as well");
         this.add("desc.item.food_reactor.tip","Pro Tip: Some foods may have significant output!");
         this.add("desc.item.machine_needs_upgrade_to_work_constantly","Machine only works at day, but can be upgraded to work at night as well");
+        this.add("desc.item.radioactive_reactor","A multiblock that processes vitiatium into energy, but at a cost of heat buildup and radioactive waste. Can be sealed with concrete to remove the need to wear hazmat suits nearby it.");
+        this.add("desc.item.radioactive_reactor_casing","This casing is used to build the base multiblock form of the Radioactive Reactor, and can be used to seal it entirely");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
@@ -139,6 +142,16 @@ public class Language extends LanguageProvider{
         this.add("integration.data.day","Day");
         this.add("integration.data.night","Night");
         this.add("integration.data.day_and_night","Day And Night");
+        this.add("integration.data.multiblock_formed","Multiblock Formed: %s");
+        this.add("integration.data.reactor_active","Reactor Active");
+        this.add("integration.data.reactor_inactive","Reactor Inactive");
+        this.add("integration.data.reactor_heat","Reactor Heat: %s");
+        this.add("integration.data.reactor_heat_with_max","Reactor Heat: %s / %s");
+        this.add("integration.data.reactor_coolant","Reactor Coolant: %s");
+        this.add("integration.data.reactor_coolant_with_max","Reactor Coolant: %s / %s");
+        this.add("integration.data.reactor_sealed","Reactor Is Sealed");
+        this.add("integration.data.reactor_unsealed","Reactor Is Not Sealed");
+        this.add("integration.data.progress","Progress: %s");
 
         // key mappings
         this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");
@@ -340,21 +353,29 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.silence_masher.tooltip","Whether to silence masher sounds");
         // server config
         this.add("cmatd.configuration.lightning_gen_timer_scale", "Lightning Gen Timer Scale");
-        this.add("cmatd.configuration.lightning_gen_timer_scale.tooltip", "How often the timer ticks");
+        this.add("cmatd.configuration.lightning_gen_timer_scale.tooltip", "Lightning Gen Timer Scale");
         this.add("cmatd.configuration.lightning_gen_max_receive_send", "Lightning Gen Max Send/Receive");
-        this.add("cmatd.configuration.lightning_gen_max_receive_send.tooltip", "The maximum amount of energy that can be sent or received at a time");
+        this.add("cmatd.configuration.lightning_gen_max_receive_send.tooltip", "Lightning Gen Max Send/Receive");
         this.add("cmatd.configuration.lightning_gen_cooldown_time","Lightning Gen Cooldown");
-        this.add("cmatd.configuration.lightning_gen_cooldown_time.tooltip","The time until lightning can strike the generator to produce energy again");
+        this.add("cmatd.configuration.lightning_gen_cooldown_time.tooltip","Lightning Gen Cooldown");
         this.add("cmatd.configuration.lightning_gen_capacity","Lightning Gen Energy Capacity");
-        this.add("cmatd.configuration.lightning_gen_capacity.tooltip","The total capacity of the battery in the Lightning Generator");
+        this.add("cmatd.configuration.lightning_gen_capacity.tooltip","TLightning Gen Energy Capacity");
         this.add("cmatd.configuration.lightning_gen_rate","Lightning Gen Energy Rate");
-        this.add("cmatd.configuration.lightning_gen_rate.tooltip","How much energy per lightning strike is generated");
+        this.add("cmatd.configuration.lightning_gen_rate.tooltip","Lightning Gen Energy Rate");
         this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds","Reactor Shows Effects And Sounds");
         this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot","Reactor Explodes When Too Hot");
         this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds","Reactor Makes Ambient Noises");
-        this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds.tooltip","Whether the Radioactive Reactor makes damaging sounds and particles when heat level is critical (disables alarm, makes machine look and sound like a classic machine)");
-        this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot.tooltip","Whether the Radioactive Reactor blows up if too hot (it will reset values and will re-form if this is disabled, and no explosion will occur, an easy mode basically)");
-        this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip","Whether the Radioactive Reactor makes ambient sounds (not the same as 'active sounds', like hissing when too hot)");
+        this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds.tooltip","Reactor Shows Effects And Sounds");
+        this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot.tooltip","Reactor Explodes When Too Hot");
+        this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip","Reactor Makes Ambient Noises");
+        this.add("cmatd.configuration.lightning_gen_cooldown_time.tooltip.tooltip", "The cooldown in ticks for the Lightning gen");
+        this.add("cmatd.configuration.radioactive_reactor_makes_damage_sounds.tooltip.tooltip","Whether the Radioactive Reactor makes damaging sounds");
+        this.add("cmatd.configuration.lightning_gen_timer_scale.tooltip.tooltip","The time scale of the Lightning Gen cooldown");
+        this.add("cmatd.configuration.lightning_gen_rate.tooltip.tooltip","The amount of FE generated per lightning strike in the Lightning Gen");
+        this.add("cmatd.configuration.lightning_gen_capacity.tooltip.tooltip","The total FE that can be stored in the Lightning Gen");
+        this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot.tooltip.tooltip","Whether the Radioactive Reactor blows up when too hot");
+        this.add("cmatd.configuration.lightning_gen_max_receive_send.tooltip.tooltip","The max FE that can be inserted and extracted at a time");
+        this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip.tooltip","Whether the Radioactive Reactor makes ambient sounds");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");

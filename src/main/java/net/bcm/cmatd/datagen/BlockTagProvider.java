@@ -322,6 +322,9 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get())
                 .addTag(Tags.Blocks.CONCRETES)
         ;
+        tag(Tag.RADIOACTIVE_WASTE_SUPPORTED)
+                .add(Blocks.LILY_PAD)
+        ;
     }
 
     @Override

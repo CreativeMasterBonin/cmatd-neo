@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class Masher extends Block {
     public Masher(Properties properties) {
-        super(properties.sound(SoundType.NETHERITE_BLOCK).noOcclusion().mapColor(MapColor.COLOR_BLACK));
+        super(properties.sound(SoundType.NETHERITE_BLOCK).noOcclusion().mapColor(MapColor.COLOR_BLACK).requiresCorrectToolForDrops());
     }
 
     @Override

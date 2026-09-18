@@ -28,7 +28,13 @@ public class CmatdItem{
                     () -> new BlockItem(CmatdBlock.LESSER_MACHINE_FRAME.get(),new Item.Properties()));
     public static final DeferredItem<BlockItem> RADIOACTIVE_REACTOR_MULTIBLOCK_CASING =
             ITEMS.register("radioactive_reactor_casing",
-                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),new Item.Properties()));
+                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),new Item.Properties()){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(Component.translatable("desc.item.radioactive_reactor_casing")
+                                    .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
 
 
     public static final DeferredItem<BlockItem> BASE_ENERGY_MAKER =
@@ -117,7 +123,13 @@ public class CmatdItem{
                     () -> new BlockItem(CmatdBlock.FOOD_REACTOR_MULTIBLOCK.get(),new Item.Properties()));
     public static final DeferredItem<BlockItem> RADIOACTIVE_REACTOR_MULTIBLOCK =
             ITEMS.register("radioactive_reactor",
-                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),new Item.Properties()));
+                    () -> new BlockItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get(),new Item.Properties()){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(Component.translatable("desc.item.radioactive_reactor")
+                                    .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
 
 
     // gas supporting blockitems

@@ -2,6 +2,7 @@ package net.bcm.cmatd.fluid.custom;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.Utility;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -30,7 +31,7 @@ public class RadioactiveWasteFluidType extends CustomFluidType {
         consumer.accept(new IClientFluidTypeExtensions() {
             public final ResourceLocation stillTexture = ResourceLocation.parse("cmatd:block/radioactive_waste_still");
             public final ResourceLocation flowingTexture = ResourceLocation.parse("cmatd:block/radioactive_waste_flow");
-            public final ResourceLocation overlay = ResourceLocation.parse("cmatd:misc/radioactive_waste_overlay");
+            public final ResourceLocation overlay = ResourceLocation.parse("cmatd:textures/misc/radioactive_waste_overlay");
             @Override
             public ResourceLocation getFlowingTexture() {
                 return flowingTexture;
@@ -43,17 +44,17 @@ public class RadioactiveWasteFluidType extends CustomFluidType {
 
             @Override
             public @Nullable ResourceLocation getRenderOverlayTexture(Minecraft mc) {
-                return overlay;
+                return ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"textures/block/radioactive_waste_particle.png");
             }
 
             @Override
             public @Nullable ResourceLocation getOverlayTexture() {
-                return overlay;
+                return ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"textures/block/radioactive_waste_particle.png");
             }
 
             @Override
             public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
-                return new Vector3f(93f,109f,66f);
+                return new Vector3f(0.2f,0.22f,0.11f);
             }
 
             @Override
@@ -63,7 +64,7 @@ public class RadioactiveWasteFluidType extends CustomFluidType {
                 int blue = FastColor.ARGB32.blue(Integer.decode("0x5D6D42dd"));
                 int alpha = FastColor.ARGB32.alpha(Integer.decode("0x5D6D42dd"));*/
                 RenderSystem.setShaderFogStart(1F);
-                RenderSystem.setShaderFogEnd(12F); // fog starts at this distance
+                RenderSystem.setShaderFogEnd(10F); // fog starts at this distance
             }
 
             @Override

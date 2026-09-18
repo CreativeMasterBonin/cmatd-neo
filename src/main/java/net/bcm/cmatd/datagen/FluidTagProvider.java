@@ -20,7 +20,6 @@ public class FluidTagProvider extends FluidTagsProvider {
     public void addTags(HolderLookup.Provider provider) {
         tag(Tags.Fluids.HIDDEN_FROM_RECIPE_VIEWERS)
                 .add(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get())
-                .add(CmatdFluid.RADIOACTIVE_WASTE_FLUID_FLOWING.get())
         ;
     }
 
