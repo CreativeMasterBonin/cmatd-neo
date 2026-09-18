@@ -754,7 +754,7 @@ public class Recipe extends RecipeProvider{
                 .define('i',Items.BUCKET)
                 .define('g',CmatdItem.GAS_TANK)
                 .define('e',CmatdItem.POWER_BOARD)
-                .define('r',Items.ROTTEN_FLESH)
+                .define('r',CmatdItem.VITIATIUM_BLOCK)
                 .pattern("ppp")
                 .pattern("irg")
                 .pattern("pep")
