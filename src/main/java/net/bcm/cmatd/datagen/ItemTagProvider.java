@@ -144,6 +144,7 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(Items.PACKED_ICE)
                 .add(Items.BLUE_ICE)
         ;
+        // special tagged items that may or may not exist for hazmat suit pieces
         this.tag(Tag.HAZMAT_SUIT_PIECES)
                 .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_mask")))
                 .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_gown")))
@@ -154,6 +155,12 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_bodyarmor")))
                 .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_pants")))
                 .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_boots")))
+        ;
+        // standalone 'temp' hazmat pieces
+        this.tag(Tag.HAZMAT_SUIT_PIECES)
+                .add(Items.SKELETON_SKULL,Items.PLAYER_HEAD,Items.ZOMBIE_HEAD,Items.CREEPER_HEAD)
+                .add(Items.CHAINMAIL_HELMET,Items.CHAINMAIL_CHESTPLATE,Items.CHAINMAIL_LEGGINGS,Items.CHAINMAIL_BOOTS)
+                .add(Items.NETHERITE_HELMET,Items.NETHERITE_CHESTPLATE,Items.NETHERITE_LEGGINGS,Items.NETHERITE_BOOTS)
         ;
     }
 

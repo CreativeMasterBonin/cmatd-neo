@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,6 +34,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockPredicate;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -277,6 +279,51 @@ public class RadioactiveReactor extends TieredMachine{
             }
         }
         return foundNeededBlocks >= neededBlocksToForm;
+    }
+
+    public void showNumBlockPosCorrect(){
+        if(!level.isClientSide()){
+           if(level instanceof ServerLevel serverLevel){
+               for(BlockPos position : neighborPositions){
+                   // check if the state is the required kind of block we need to form the multiblock
+                   if(!serverLevel.getBlockState(position).is(Tag.VALID_RADIOACTIVE_REACTOR_CASINGS)){
+                       serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER,
+                               (double)position.getX() + 0.5,
+                               (double)position.getY() + 0.5D,
+                               (double)position.getZ() + 0.5,
+                               1,0D,0D,0D,0D);
+                   }
+               }
+           }
+        }
+    }
+
+    public void showNumSealingBlockPosCorrect(){
+        if(!level.isClientSide()){
+            if(level instanceof ServerLevel serverLevel){
+                BlockPos waterPos = new BlockPos(
+                        this.getBlockPos().below().below().getX(),
+                        this.getBlockPos().below().below().getY(),
+                        this.getBlockPos().below().below().getZ());
+                for(BlockPos position : neighborSealingPositions){
+                    // check if the state is the required kind of block we need to seal the multiblock
+                    if(!serverLevel.getBlockState(position).is(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS)){
+                        serverLevel.sendParticles(ParticleTypes.END_ROD,
+                                (double)position.getX() + 0.5,
+                                (double)position.getY() + 0.5D,
+                                (double)position.getZ() + 0.5,
+                                1,0D,0D,0D,0D);
+                    }
+                }
+                if(!serverLevel.getBlockState(waterPos).is(Blocks.WATER)){
+                    serverLevel.sendParticles(ParticleTypes.EXPLOSION,
+                            (double)waterPos.getX() + 0.5,
+                            (double)waterPos.getY() + 0.5D,
+                            (double)waterPos.getZ() + 0.5,
+                            1,0D,0D,0D,0D);
+                }
+            }
+        }
     }
 
     public void checkIfShouldBeSealed(){

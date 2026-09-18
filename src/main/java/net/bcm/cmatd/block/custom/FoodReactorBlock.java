@@ -6,7 +6,7 @@ import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.CmatdClientActionHandler;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.gui.FoodReactorMenu;
-import net.bcm.cmatd.network.FoodReactorWrenchUpdate;
+import net.bcm.cmatd.network.ReactorWrenchUpdate;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -110,7 +110,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
             //
             if(stack.is(Tags.Items.TOOLS_WRENCH)){
                 try{
-                    PacketDistributor.sendToServer(new FoodReactorWrenchUpdate(pos));
+                    PacketDistributor.sendToServer(new ReactorWrenchUpdate(pos));
                     return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
                 }
                 catch (Exception e){

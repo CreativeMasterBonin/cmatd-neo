@@ -129,6 +129,7 @@ public class Language extends LanguageProvider{
         this.add("desc.item.machine_needs_upgrade_to_work_constantly","Machine only works at day, but can be upgraded to work at night as well");
         this.add("desc.item.radioactive_reactor","A multiblock that processes vitiatium into energy, but at a cost of heat buildup and radioactive waste. Can be sealed with concrete to remove the need to wear hazmat suits nearby it.");
         this.add("desc.item.radioactive_reactor_casing","This casing is used to build the base multiblock form of the Radioactive Reactor, and can be used to seal it entirely");
+        this.add("desc.item.cmatd_wrench","Shift-right click or right click unfinished multiblock reactors to see how to build them (make sure particles are on to see), otherwise its just a regular wrench");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");

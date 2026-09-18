@@ -485,10 +485,7 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> CMATD_WRENCH =
             ITEMS.register("cmatd_wrench",
-                    () -> new Item(new Item.Properties()
-                            .stacksTo(1)
-                            .rarity(Rarity.UNCOMMON)
-                            .fireResistant()));
+                    () -> new CmatdWrench(new Item.Properties()));
 
     public static final DeferredItem<Item> BLAST_PROOF_INGOT =
             ITEMS.register("blast_proof_ingot",

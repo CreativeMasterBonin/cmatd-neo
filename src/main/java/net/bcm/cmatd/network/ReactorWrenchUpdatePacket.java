@@ -1,19 +1,20 @@
 package net.bcm.cmatd.network;
 
 import net.bcm.cmatd.blockentity.FoodReactorMultiblock;
+import net.bcm.cmatd.blockentity.RadioactiveReactor;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public class FoodReactorWrenchUpdatePacket{
-    public static final FoodReactorWrenchUpdatePacket INSTANCE = new FoodReactorWrenchUpdatePacket();
+public class ReactorWrenchUpdatePacket {
+    public static final ReactorWrenchUpdatePacket INSTANCE = new ReactorWrenchUpdatePacket();
 
-    public static FoodReactorWrenchUpdatePacket get(){
+    public static ReactorWrenchUpdatePacket get(){
         return INSTANCE;
     }
 
-    public void handle(FoodReactorWrenchUpdate message, IPayloadContext ctx) {
+    public void handle(ReactorWrenchUpdate message, IPayloadContext ctx) {
         var level = ctx.player().level();
         Player player = ctx.player();
 
@@ -33,6 +34,16 @@ public class FoodReactorWrenchUpdatePacket{
                                     .translatable("message.multiblock.formed_successfully",
                                             message.pos().toShortString()),
                             true);
+                }
+            }
+            else if(level.getBlockEntity(message.pos()) instanceof RadioactiveReactor reactor){
+                if(reactor.isFormed){ // reactor is formed
+                    if(!reactor.sealedCore){ // must be formed in order to seal it
+                        reactor.showNumSealingBlockPosCorrect(); // show the needed sealant positions
+                    }
+                }
+                else{
+                    reactor.showNumBlockPosCorrect(); // show the needed forming positions
                 }
             }
         }
