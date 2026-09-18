@@ -4,9 +4,11 @@ import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.api.GasType;
 import net.bcm.cmatd.api.Gases;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.fluid.CmatdFluid;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.function.Supplier;
 
@@ -17,6 +19,10 @@ public class Language extends LanguageProvider{
 
     public void addGas(Supplier<? extends GasType> key, String name) {
         add(key.get().getDescriptionId(), name);
+    }
+
+    public void addFluidType(FluidType fluidType, String name) {
+        add(fluidType.getDescriptionId(), name);
     }
 
     @Override
@@ -301,6 +307,9 @@ public class Language extends LanguageProvider{
         this.add("emi.category.cmatd.block_to_gas","Block To Gas");
         this.add("emi.block_to_gas.cmatd.produces","Produces: %s - %s GU");
         this.add("emi.desc.cmatd.every_this_ticks","Every %s ticks");
+
+        // Fluids
+        this.addFluidType(CmatdFluid.RADIOACTIVE_WASTE_TYPE.get(),"Radioactive Waste");
 
         // Gases (CMATD API)
         this.addGas(Gases.METHANE,"Methane");

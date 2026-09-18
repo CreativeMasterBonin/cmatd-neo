@@ -53,10 +53,10 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
         // bilt the background first
         guiGraphics.blit(BG, leftPos, topPos, 0, 0, this.imageWidth, this.imageHeight);
 
-        int energyWidth = 32;
-        int energyHeight = 3;
-        int energyLeft = 64;
-        int energyTop = 16;
+        int energyWidth = 96;
+        int energyHeight = 4;
+        int energyLeft = 42;
+        int energyTop = 24;
 
         int powerWidth = menu.energy == Integer.MAX_VALUE ? energyWidth - 2 : Math.max(1,(int)((double)(energyWidth - 2) *
                 Utility.divisionDoubleSplit(menu.energy,menu.energyCapacity)));
@@ -164,6 +164,14 @@ public class RadioactiveReactorScreen extends AbstractContainerScreen<Radioactiv
                             menu.wasteCapacity)
             );
             guiGraphics.renderComponentTooltip(this.font,components2,mouseX,mouseY);
+        }
+        if(mouseX >= leftPos + 42 && mouseX < leftPos + 42 + 96 && mouseY >= topPos + 24 && mouseY < topPos + 24 + 4){
+            int energy = menu.energy;
+            List<Component> energyComponents = List.of(
+                    Component.translatable("title.energy_fe_with_max",energy,
+                            menu.energyCapacity)
+            );
+            guiGraphics.renderComponentTooltip(this.font,energyComponents,mouseX,mouseY);
         }
         else{
             this.renderTooltip(guiGraphics, mouseX, mouseY);

@@ -80,6 +80,7 @@ public class CmatdBlock{
     // multiblock part blocks
     public static final DeferredBlock<Block> RADIOACTIVE_REACTOR_MULTIBLOCK_CASING = BLOCKS.register("radioactive_reactor_casing",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.of()
+                    .strength(1.15f,50f)
                     .sound(SoundType.NETHERITE_BLOCK).requiresCorrectToolForDrops()
                     .mapColor(MapColor.TERRACOTTA_GRAY).pushReaction(PushReaction.BLOCK)
                     .instrument(NoteBlockInstrument.BANJO)));
@@ -113,7 +114,8 @@ public class CmatdBlock{
             () -> new DieselEngine(BlockBehaviour.Properties.of().strength(1f,24f))); // has recipe
 
     public static final DeferredBlock<Block> ROTATIONAL_INDUCTION_GENERATOR = BLOCKS.register("rotational_induction_generator",
-            () -> new RotationalInductionGeneratorBlock(BlockBehaviour.Properties.of().strength(1.25f,50f))); // has recipe
+            () -> new RotationalInductionGeneratorBlock(BlockBehaviour.Properties.of()
+                    .strength(1.25f,50f).requiresCorrectToolForDrops())); // has recipe
 
     // gas vents
     public static final DeferredBlock<Block> METHANE_GAS_VENT = BLOCKS.register("methane_gas_vent",
@@ -174,19 +176,19 @@ public class CmatdBlock{
     public static final DeferredBlock<Block> VITIATIUM_ORE = BLOCKS.register("vitiatium_ore",
             () -> new RadioactiveOreBlock(UniformInt.of(3,5),0.35f,BlockBehaviour.Properties.of()
                             .mapColor(MapColor.STONE).sound(SoundType.STONE)
-                            .strength(3.15f,5.5f)));
+                            .strength(3.15f,5.5f).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> DEEPSLATE_VITIATIUM_ORE = BLOCKS.register("deepslate_vitiatium_ore",
             () -> new RadioactiveOreBlock(UniformInt.of(3,5),0.47f,BlockBehaviour.Properties.of()
                             .mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE)
-                    .strength(3.35f,5.75f)));
+                    .strength(3.35f,5.75f).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> RAW_VITIATIUM_BLOCK = BLOCKS.register("raw_vitiatium_block",
             () -> new RadioactiveBlock(0.5f,BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.DRIPSTONE_BLOCK)
-                    .strength(3.5f,3.5f)));
+                    .strength(3.5f,3.5f).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> VITIATIUM_BLOCK = BLOCKS.register("vitiatium_block",
             () -> new RadioactiveBlock(2.75f,BlockBehaviour.Properties.of().requiresCorrectToolForDrops()
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.METAL)
-                    .strength(3.71f,5.92f)));
+                    .strength(3.71f,5.92f).requiresCorrectToolForDrops()));
 
     // state predicates
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {

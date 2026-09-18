@@ -2,6 +2,7 @@ package net.bcm.cmatd.item;
 
 import net.bcm.cmatd.*;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.fluid.CmatdFluid;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -488,6 +489,11 @@ public class CmatdItem{
     public static final DeferredItem<Item> BASIC_COOLANT_PACKAGE =
             ITEMS.register("basic_coolant_package",
                     () -> new CoolantItem(new Item.Properties().durability(1000)));
+
+    public static final DeferredItem<Item> RADIOACTIVE_FLUID_BUCKET =
+            ITEMS.register("radioactive_fluid_bucket",
+                    () -> new BucketItem(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),
+                            new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 
     // debug items
 }

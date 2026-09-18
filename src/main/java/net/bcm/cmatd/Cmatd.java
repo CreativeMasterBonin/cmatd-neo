@@ -10,6 +10,7 @@ import net.bcm.cmatd.blockentity.RadioactiveReactor;
 import net.bcm.cmatd.datagen.FoodReactorFuels;
 import net.bcm.cmatd.datagen.Jammables;
 import net.bcm.cmatd.datagen.Mashables;
+import net.bcm.cmatd.fluid.CmatdFluid;
 import net.bcm.cmatd.gui.*;
 import net.bcm.cmatd.item.CmatdItem;
 import net.bcm.cmatd.network.Handler;
@@ -223,6 +224,8 @@ public class Cmatd {
         CmatdMenu.MENUS.register(modEventBus);
         CmatdBlock.BLOCKS.register(modEventBus);
         CmatdItem.ITEMS.register(modEventBus);
+        CmatdFluid.FLUID_TYPES.register(modEventBus);
+        CmatdFluid.FLUIDS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         CmatdBE.register(modEventBus);
 

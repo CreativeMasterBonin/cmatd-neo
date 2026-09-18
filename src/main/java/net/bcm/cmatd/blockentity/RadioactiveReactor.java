@@ -26,7 +26,6 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
@@ -43,6 +42,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import java.util.List;
 
 public class RadioactiveReactor extends TieredMachine{
+    public float tick = 0;
     public boolean isFormed = false;
     public final List<BlockPos> neighborPositions = List.of(
             // below once, then separately the same level, four directions from master block
@@ -242,10 +242,21 @@ public class RadioactiveReactor extends TieredMachine{
     };
     public GasTank getWasteGasTank(){return this.wasteGasTank;}
     public FluidTank getWasteConvertedToFluidTank(){return this.wasteConversionToFluidTank;}
+    // this tank is not actually used, but is updated anyway
     public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000){
         @Override
         protected void onContentsChanged() {
+            setChanged(); // only here to update in-case the blockentity forgot to (this class, in all currently known scenarios, is updating the blockentity)
+        }
 
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            return super.fill(resource, FluidAction.SIMULATE); // simulate as this tank technically should not allow insertion
+        }
+
+        @Override
+        public FluidStack drain(int maxDrain, FluidAction action) {
+            return super.drain(maxDrain, FluidAction.SIMULATE); // simulate as this tank technically should not allow extraction
         }
     };
 
@@ -270,33 +281,56 @@ public class RadioactiveReactor extends TieredMachine{
     }
 
     public void checkIfShouldBeSealed(){
-        int neededBlocksToBeSealed = neighborSealingPositions.size();
+        int neededBlocksToBeSealed = 19;
         int foundNeededSealingBlocks = 0;
+        boolean hasWaterChamber = false;
+        BlockPos waterPos = new BlockPos(
+                this.getBlockPos().below().below().getX(),
+                this.getBlockPos().below().below().getY(),
+                this.getBlockPos().below().below().getZ());
+
         if(level != null){
-            for(BlockPos position : neighborSealingPositions){
-                // check if the state can seal up reactors
-                if(level.getBlockState(position).is(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS)){
-                    foundNeededSealingBlocks++;
+            if(level instanceof ServerLevel serverLevel){
+                for(BlockPos pos : neighborSealingPositions){
+                    // check if the state can seal up reactors
+                    if(level.getBlockState(pos).is(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS)){
+                        foundNeededSealingBlocks++;
+                    }
+                    /*else{
+                        serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
+                                (double)getBlockPos().getX() + 0.5D,
+                                (double)getBlockPos().getY() + 0.5D,
+                                (double)getBlockPos().getZ() + 0.5D,
+                                3,0,0,0,0D);
+                    }*/
+                }
+                /*if(serverLevel.getGameTime() % 100 == 0){
+                    System.out.println("need: " + neededBlocksToBeSealed + " have: " + foundNeededSealingBlocks);
+                }*/
+
+                // chamber for coolant exchange must exist in reactor (the gap below the initial block under the core)
+                if(level.getBlockState(waterPos).is(Blocks.WATER)){
+                    hasWaterChamber = true;
+                }
+
+                if(foundNeededSealingBlocks >= neededBlocksToBeSealed){
+                    if(hasWaterChamber){
+                        if(!sealedCore){
+
+                        }
+                        sealedCore = true;
+                        setChanged();
+                    }
+                    else{
+                        sealedCore = false;
+                        setChanged();
+                    }
+                }
+                else{
+                    sealedCore = false;
+                    setChanged();
                 }
             }
-        }
-
-        boolean hasWaterChamber = false;
-        // chamber for coolant exchange must exist in reactor (the gap below the initial block under the core)
-        if(level.getBlockState(new BlockPos(
-                this.getBlockPos().below().below().below().getX(),
-                this.getBlockPos().below().below().below().getY(),
-                this.getBlockPos().below().below().below().getZ())).is(Blocks.WATER)){
-            hasWaterChamber = true;
-        }
-
-        if(foundNeededSealingBlocks >= neededBlocksToBeSealed && hasWaterChamber){
-            sealedCore = true;
-            setChanged();
-        }
-        else{
-            sealedCore = false;
-            setChanged();
         }
     }
 
@@ -350,6 +384,9 @@ public class RadioactiveReactor extends TieredMachine{
         if(tag.contains("sealed_core")){
             sealedCore = tag.getBoolean("sealed_core");
         }
+        if(tag.contains("tick")){
+            tick = tag.getFloat("tick");
+        }
     }
 
     @Override
@@ -373,33 +410,40 @@ public class RadioactiveReactor extends TieredMachine{
         tag.putInt("max_heat_when_cooling",Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000));
         tag.putFloat("radioactivity",radioactivityOfFuelAccumulative);
         tag.putBoolean("sealed_core",sealedCore);
+        tag.putFloat("tick",tick);
     }
 
     @Override
     public void extraServerTick() {
+        tick++;
+        if(tick >= 20.0f){
+            tick = 0.0f;
+        }
         if(level != null){
             // enforce chunks needing to be loaded within a range of block positions
             if(!level.hasChunksAt(getBlockPos().south().below(),getBlockPos().north().above())){
                 return;
             }
-            // iterate over the items (without the module slots)
-            for(int index = 0; index < 25; index++){
-                // this index is not used and is invalid in this case
-                if(index >= 25){
-                    break;
-                }
-                if(itemStackHandler.getStackInSlot(index).is(Tag.VALID_RADIOACTIVE_FUELS)){
-                    ItemStack copiedFuelStack = itemStackHandler.getStackInSlot(index);
-                    // accumulate radioactivity for each piece of fuel, since radioactive material radioactivity sticks around for a while
-                    if(copiedFuelStack.has(Components.RADIOACTIVE)){
-                        if(getRadioactivity() < 1000.0f){
-                            radioactivityOfFuelAccumulative += copiedFuelStack.get(Components.RADIOACTIVE).radioactivity();
-                            updateBlock();
-                        }
+            if(isActive && isProcessing && isFormed){
+                // iterate over the items (without the module slots)
+                for(int index = 0; index < 25; index++){
+                    // this index is not used and is invalid in this case
+                    if(index >= 25){
+                        break;
                     }
-                    copiedFuelStack.shrink(1);
-                    itemStackHandler.setStackInSlot(index,copiedFuelStack);
-                    setChanged();
+                    if(itemStackHandler.getStackInSlot(index).is(Tag.VALID_RADIOACTIVE_FUELS)){
+                        ItemStack copiedFuelStack = itemStackHandler.getStackInSlot(index);
+                        // accumulate radioactivity for each piece of fuel, since radioactive material radioactivity sticks around for a while
+                        if(copiedFuelStack.has(Components.RADIOACTIVE)){
+                            if(getRadioactivity() < 1000.0f){
+                                radioactivityOfFuelAccumulative += copiedFuelStack.get(Components.RADIOACTIVE).radioactivity();
+                                updateBlock();
+                            }
+                        }
+                        copiedFuelStack.shrink(1);
+                        itemStackHandler.setStackInSlot(index,copiedFuelStack);
+                        setChanged();
+                    }
                 }
             }
             // check if radioactivity is higher than normal (if sealed this does nothing)
@@ -469,6 +513,7 @@ public class RadioactiveReactor extends TieredMachine{
                 // check if multiblock should disassemble
                 if(!canForm()){
                     isFormed = false;
+                    isActive = false;
                     updateBlock();
                     return;
                 }
@@ -494,13 +539,13 @@ public class RadioactiveReactor extends TieredMachine{
                         if(module.has(Components.MODULE_TYPE)){
                             // now apply their effects
                             if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SPEED){
-                                speedModules++;
+                                speedModules += module.getCount();
                             }
                             else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_EFFICIENCY){
-                                efficiencyModules++;
+                                efficiencyModules += module.getCount();
                             }
                             else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_HEAT_DISPERSING){
-                                heatDispersionModules++;
+                                heatDispersionModules += module.getCount();
                             }
                             else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SILENCING){
                                 shouldBeSilenced = true;
@@ -508,6 +553,15 @@ public class RadioactiveReactor extends TieredMachine{
                         }
                     }
                 }
+
+                if(level instanceof ServerLevel serverLevel){
+                    // the max heat is determined by the minimum activity heat multiplied by the heat module count
+                    maxHeatWhenCooling = Mth.clamp((int)Utility.normalizeIntToFloatValue(heatDispersionModules,
+                            1,4,500.0f,9990.0f),
+                            1,15000);
+                    setChanged();
+                }
+
                 // if active, do all actions with modules applied
                 if(isActive){
                     produceWaste();
@@ -595,7 +649,9 @@ public class RadioactiveReactor extends TieredMachine{
                 // if heat dispersion is active, then when the heat is at the ideal temperature, keep it at that temperature
                 if(heatAmount > maxHeatWhenCooling){
                     if(heatDispersionModules > 0){
-                        heatAmount = (maxHeatWhenCooling + heatDispersionModules);
+                        // smooth out the heat process when the modules are removed, thus no instant heat fixes from swapping out modules completely or partially
+                        heatAmount = Mth.clamp(Mth.lerpInt(tick / 720.0f,heatAmount,(maxHeatWhenCooling + heatDispersionModules) - 50),
+                                1,heatAmountToGoBoomAt - 1000);
                         setChanged();
                     }
                 }
@@ -960,18 +1016,32 @@ public class RadioactiveReactor extends TieredMachine{
                     }
                 }
             }
+
+            int producedOutputNumber = 1000 + (int)getRadioactivity();
+
+            if(heatAmount <= 500){
+                producedOutputNumber = 250;
+            }
+            else if(heatAmount <= 1000 && heatAmount > 500){
+                producedOutputNumber = 500;
+            }
+            else{
+                producedOutputNumber = 1000 + (int)(getRadioactivity() *
+                    Utility.normalizeIntToFloatValue(heatAmount,1,heatAmountToGoBoomAt,1.0f,7.5f));
+            }
+
             // divide by the amount of efficiency modules to speed up production of power, at a cost
             if(processBits >= (int)(processBitsToProduceAt / Mth.clamp(efficiencyModules,1,20))){
                 if(!getEnergyStorage().isSaturatedEnergy() && getWasteGasTank().getGasAmount() < getWasteGasTank().getCapacity()){
                     // we do not want energy to be multiplied by zero with no modules installed, so add 1
-                    getEnergyStorage().receiveEnergy(1000 * (1 + (doubleOutputModules + tripleOutputModules)),false);
+                    getEnergyStorage().receiveEnergy(producedOutputNumber * (1 + (doubleOutputModules + tripleOutputModules)),false);
                     if(!wasteGasTank.getGasStack().isEmpty()){
-                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (1000 / (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
+                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (producedOutputNumber / (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
                         wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }
                     else{
-                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,1000 / (1 + efficiencyModules)),true);
+                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,producedOutputNumber / (1 + efficiencyModules)),true);
                         wasteConversionToFluidTank.setFluid(new FluidStack(Fluids.WATER,wasteGasTank.getGasAmount()));
                         wasteGasTank.update();
                     }

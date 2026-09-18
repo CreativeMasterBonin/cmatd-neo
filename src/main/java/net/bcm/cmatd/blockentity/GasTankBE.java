@@ -128,12 +128,14 @@ public class GasTankBE extends AbstractGasContainingBE{
             if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % 77 == 0){
                 gasTank.gas.setAmount(gasTank.getGasAmount() - Mth.randomBetweenInclusive(serverLevel.getRandom(),34,327));
                 setChanged();
-                serverLevel.playSound(null,getBlockPos(),
-                        SoundEvents.LAVA_EXTINGUISH,SoundSource.BLOCKS,
-                        0.13f,Mth.nextFloat(level.getRandom(),0.87f,0.96f));
-                serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-                        getBlockPos().getX() + 0.5D,getBlockPos().getY() + 0.75D, getBlockPos().getZ() + 0.5D,
-                        7,0,0,0,0.02);
+                if(serverLevel.getRandom().nextBoolean()){
+                    serverLevel.playSound(null,getBlockPos(),
+                            SoundEvents.LAVA_EXTINGUISH,SoundSource.BLOCKS,
+                            0.1f,Mth.nextFloat(level.getRandom(),0.87f,0.96f));
+                    serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE,
+                            getBlockPos().getX() + 0.5D,getBlockPos().getY() + 0.75D, getBlockPos().getZ() + 0.5D,
+                            7,0,0,0,0.02);
+                }
             }
         }
     }
