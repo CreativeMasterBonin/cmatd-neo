@@ -490,10 +490,11 @@ public class CmatdItem{
             ITEMS.register("basic_coolant_package",
                     () -> new CoolantItem(new Item.Properties().durability(1000)));
 
-    public static final DeferredItem<Item> RADIOACTIVE_FLUID_BUCKET =
-            ITEMS.register("radioactive_fluid_bucket",
-                    () -> new BucketItem(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),
-                            new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
-
+    public static final DeferredItem<Item> RADIOACTIVE_WASTE_BUCKET =
+            ITEMS.register("radioactive_waste_bucket",
+                    () -> new RadioactiveBucketItem(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),
+                            new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)
+                                    .component(Components.RADIOACTIVE,
+                                            new RadioactiveComponent(1.0f,40,true))));
     // debug items
 }

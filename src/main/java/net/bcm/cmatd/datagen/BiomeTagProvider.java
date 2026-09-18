@@ -35,4 +35,9 @@ public class BiomeTagProvider extends BiomeTagsProvider {
                 .add(Biomes.DEEP_FROZEN_OCEAN)
         ;
     }
+
+    @Override
+    public String getName() {
+        return "CMATD Biome Tags";
+    }
 }

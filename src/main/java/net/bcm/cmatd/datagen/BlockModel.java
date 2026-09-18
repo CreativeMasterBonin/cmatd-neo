@@ -2,7 +2,6 @@ package net.bcm.cmatd.datagen;
 
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.block.CmatdBlock;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
@@ -20,5 +19,10 @@ public class BlockModel extends BlockModelProvider {
                 ResourceLocation.parse("cmatd:block/blast_casing_bottom"),
                 ResourceLocation.parse("cmatd:block/blast_casing_top"))
                 .ao(true);
+    }
+
+    @Override
+    public String getName() {
+        return "CMATD Block Models";
     }
 }

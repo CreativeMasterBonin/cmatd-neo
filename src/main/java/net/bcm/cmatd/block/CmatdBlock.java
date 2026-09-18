@@ -190,6 +190,10 @@ public class CmatdBlock{
                     .mapColor(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.METAL)
                     .strength(3.71f,5.92f).requiresCorrectToolForDrops()));
 
+    // liquids
+    public static final DeferredBlock<Block> RADIOACTIVE_WASTE = BLOCKS.register("radioactive_waste",
+            () -> new RadioactiveWasteLiquidBlock(BlockBehaviour.Properties.of()));
+
     // state predicates
     private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
         return false;

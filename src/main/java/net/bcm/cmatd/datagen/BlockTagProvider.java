@@ -188,6 +188,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.FACADE_CONDUIT.get())
                 .add(CmatdBlock.DIMENSIONAL_TRANSPORTER.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+                .add(CmatdBlock.RADIOACTIVE_WASTE.get())
         ;
         tag(JustDireBlockTags.TICK_SPEED_DENY)
                 .add(CmatdBlock.WIND_GENERATOR.get())
@@ -206,6 +207,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.DEEPSLATE_VITIATIUM_ORE.get())
                 .add(CmatdBlock.VITIATIUM_BLOCK.get())
                 .add(CmatdBlock.RAW_VITIATIUM_BLOCK.get())
+                .add(CmatdBlock.RADIOACTIVE_WASTE.get())
         ;
         tag(Tags.Blocks.ORES)
                 .addTag(Tag.ORES_COMPOUNDITE)
@@ -292,6 +294,7 @@ public class BlockTagProvider extends BlockTagsProvider {
                 .add(CmatdBlock.STEAM_GAS_VENT.get())
                 .add(CmatdBlock.DEEPSLATE_STEAM_GAS_VENT.get())
                 .add(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK.get())
+                .add(CmatdBlock.RADIOACTIVE_WASTE.get())
         ;
         tag(Tag.HEAT_PRODUCERS)
                 .addTag(Tag.LOW_HEAT_PRODUCERS)

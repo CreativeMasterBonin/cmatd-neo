@@ -8,6 +8,7 @@ import net.bcm.cmatd.fluid.CmatdFluid;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.function.Supplier;
@@ -289,6 +290,7 @@ public class Language extends LanguageProvider{
         this.add(Tag.VALID_RADIOACTIVE_REACTOR_SEALANTS,"Valid Radioactive Reactor Sealants");
         this.add(Tag.GENERATES_STEAM_VENTS,"Generates Steam Vents");
         this.add(Tag.GENERATES_VITIATIUM_ORE,"Generates Vitiatium Ore");
+        this.add(Tag.HAZMAT_SUIT_PIECES,"Hazmat Suit Pieces");
 
         // gas tags
         this.add(Tag.BURNABLE_GASES,"Burnable");
@@ -310,6 +312,9 @@ public class Language extends LanguageProvider{
 
         // Fluids
         this.addFluidType(CmatdFluid.RADIOACTIVE_WASTE_TYPE.get(),"Radioactive Waste");
+        this.add("cmatd.fluid.radioactive_waste","Radioactive Waste");
+        this.add(CmatdBlock.RADIOACTIVE_WASTE.get(),"Radioactive Waste");
+        this.add(CmatdItem.RADIOACTIVE_WASTE_BUCKET.get(),"Radioactive Waste Bucket");
 
         // Gases (CMATD API)
         this.addGas(Gases.METHANE,"Methane");

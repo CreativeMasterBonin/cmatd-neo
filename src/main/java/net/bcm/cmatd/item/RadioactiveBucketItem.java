@@ -7,15 +7,14 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
-public class RadioactiveBlockItem extends BlockItem {
-    public RadioactiveBlockItem(Block block, Properties properties) {
-        super(block, properties.rarity(Rarity.UNCOMMON).fireResistant());
+public class RadioactiveBucketItem extends BucketItem {
+    public RadioactiveBucketItem(Fluid fluid, Properties properties) {
+        super(fluid,properties);
     }
 
     @Override

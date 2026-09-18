@@ -2,17 +2,14 @@ package net.bcm.cmatd.datagen;
 
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.block.CmatdBlock;
+import net.bcm.cmatd.fluid.CmatdFluid;
+import net.bcm.cmatd.fluid.custom.CustomFluidType;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.models.model.ModelLocationUtils;
-import net.minecraft.data.models.model.ModelTemplate;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ItemModel extends ItemModelProvider{
@@ -92,6 +89,22 @@ public class ItemModel extends ItemModelProvider{
         simpleBlockItem(CmatdBlock.LODEALITE_BLOCK.get());
         simpleBlockItem(CmatdBlock.RAW_VITIATIUM_BLOCK.get());
         simpleBlockItem(CmatdBlock.VITIATIUM_BLOCK.get());
+
+        defaultCustomHeldItem(CmatdItem.RADIOACTIVE_WASTE_BUCKET.asItem());
+    }
+
+    private ItemModelBuilder bucketDrip(Item item, ResourceLocation fluidTexture){
+        return withExistingParent(item.asItem().toString(),
+                ResourceLocation.fromNamespaceAndPath("neoforge","item/bucket_drip"))
+                .texture("fluid",
+                        fluidTexture);
+    }
+
+    private ItemModelBuilder bucketDripFromCustomFluidType(Item item, CustomFluidType fluid){
+        return withExistingParent(item.asItem().toString(),
+                ResourceLocation.fromNamespaceAndPath("neoforge","item/bucket_drip"))
+                .texture("fluid",
+                fluid.getStillTexture() + ".png");
     }
 
     private ItemModelBuilder defaultCustomSimpleItem(Item item){
@@ -104,5 +117,10 @@ public class ItemModel extends ItemModelProvider{
         return withExistingParent(item.asItem().toString(),
                 ResourceLocation.withDefaultNamespace("item/handheld")).texture("layer0",
                 ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,"item/" + String.format(item.asItem().toString()).replaceAll("cmatd:","")));
+    }
+
+    @Override
+    public String getName() {
+        return "CMATD Item Models";
     }
 }

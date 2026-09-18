@@ -42,4 +42,9 @@ public class BlockEntityTagProvider extends TagsProvider<BlockEntityType<?>> {
                 .add(CmatdBE.DIMENSIONAL_TRANSPORTER.get().builtInRegistryHolder().getKey())
         ;
     }
+
+    @Override
+    public String getName() {
+        return "CMATD BlockEntity Tags";
+    }
 }

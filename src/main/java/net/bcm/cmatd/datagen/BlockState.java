@@ -39,5 +39,8 @@ public class BlockState extends BlockStateProvider {
         simpleBlockWithItem(CmatdBlock.RADIOACTIVE_REACTOR_MULTIBLOCK_CASING.get(),new ModelFile.UncheckedModelFile(
                 ResourceLocation.parse("cmatd:block/radioactive_reactor_casing")
         ));
+        simpleBlock(CmatdBlock.RADIOACTIVE_WASTE.get(), new ModelFile.UncheckedModelFile(
+                ResourceLocation.parse("cmatd:block/radioactive_waste")
+        ));
     }
 }

@@ -36,6 +36,11 @@ public class CmatdFluid {
                             .adjacentPathType(PathType.WATER)
                             .canConvertToSource(false)
                             .motionScale(0.007D)
+                            .supportsBoating(true)
+                            .canExtinguish(false)
+                            .canHydrate(false)
+                            .canSwim(true)
+                            .canDrown(true)
             ));
 
     public static final DeferredHolder<Fluid,Fluid> RADIOACTIVE_WASTE_FLUID_FLOWING =

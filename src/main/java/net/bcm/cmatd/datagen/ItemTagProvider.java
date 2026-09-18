@@ -3,8 +3,11 @@ package net.bcm.cmatd.datagen;
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
@@ -140,6 +143,17 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(Items.ICE)
                 .add(Items.PACKED_ICE)
                 .add(Items.BLUE_ICE)
+        ;
+        this.tag(Tag.HAZMAT_SUIT_PIECES)
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_mask")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_gown")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_pants")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_boots")))
+
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_helmet")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_bodyarmor")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_pants")))
+                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_boots")))
         ;
     }
 

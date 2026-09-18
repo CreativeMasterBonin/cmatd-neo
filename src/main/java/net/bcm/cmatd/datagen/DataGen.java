@@ -54,5 +54,8 @@ public class DataGen{
         generator.addProvider(event.includeServer(),new Recipe(packOutput,lookupProvider));
 
         generator.addProvider(event.includeServer(),new DatamapGen(packOutput,lookupProvider));
+
+        generator.addProvider(event.includeServer(),new BlockEntityTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(),new FluidTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
     }
 }
