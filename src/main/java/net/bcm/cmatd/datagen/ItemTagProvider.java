@@ -144,23 +144,28 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(Items.PACKED_ICE)
                 .add(Items.BLUE_ICE)
         ;
-        // special tagged items that may or may not exist for hazmat suit pieces
+        // hazmat pieces protect from radiation (some items do not have to exist but are added for compatibility)
         this.tag(Tag.HAZMAT_SUIT_PIECES)
-                /*.add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_mask")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_gown")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_pants")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:hazmat_boots")))
-
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_helmet")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_bodyarmor")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_pants")))
-                .add(ResourceKey.create(Registries.ITEM,ResourceLocation.parse("mekanism:mekasuit_boots")))*/
+                .add(Items.PLAYER_HEAD)
+                .add(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
+                .addOptional(ResourceLocation.parse("mekanism:hazmat_mask"))
+                .addOptional(ResourceLocation.parse("mekanism:hazmat_gown"))
+                .addOptional(ResourceLocation.parse("mekanism:hazmat_pants"))
+                .addOptional(ResourceLocation.parse("mekanism:hazmat_boots"))
+                .addOptional(ResourceLocation.parse("mekanism:mekasuit_helmet"))
+                .addOptional(ResourceLocation.parse("mekanism:mekasuit_bodyarmor"))
+                .addOptional(ResourceLocation.parse("mekanism:mekasuit_pants"))
+                .addOptional(ResourceLocation.parse("mekanism:mekasuit_boots"))
+                .replace(false)
         ;
-        // standalone 'temp' hazmat pieces
-        this.tag(Tag.HAZMAT_SUIT_PIECES)
-                .add(Items.SKELETON_SKULL,Items.PLAYER_HEAD,Items.ZOMBIE_HEAD,Items.CREEPER_HEAD)
-                .add(Items.CHAINMAIL_HELMET,Items.CHAINMAIL_CHESTPLATE,Items.CHAINMAIL_LEGGINGS,Items.CHAINMAIL_BOOTS)
-                .add(Items.NETHERITE_HELMET,Items.NETHERITE_CHESTPLATE,Items.NETHERITE_LEGGINGS,Items.NETHERITE_BOOTS)
+        this.tag(ItemTags.TRIMMABLE_ARMOR)
+                .add(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())
+                .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
         ;
     }
 

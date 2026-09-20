@@ -505,5 +505,24 @@ public class CmatdItem{
                             new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)
                                     .component(Components.RADIOACTIVE,
                                             new RadioactiveComponent(1.0f,40,true))));
+
+    // armors
+    public static final DeferredItem<ArmorItem> RADIOACTIVE_SUIT_HEADGEAR =
+            ITEMS.register("radioactive_suit_headgear",
+                    () -> new RadioactiveSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL,ArmorItem.Type.HELMET,
+                            (new Item.Properties()).durability(ArmorItem.Type.HELMET.getDurability(15))));
+    public static final DeferredItem<ArmorItem> RADIOACTIVE_SUIT_BODYWEAR =
+            ITEMS.register("radioactive_suit_bodywear",
+            () -> new RadioactiveSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, ArmorItem.Type.CHESTPLATE,
+                    new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(15))));
+    public static final DeferredItem<ArmorItem> RADIOACTIVE_SUIT_PANTS =
+            ITEMS.register("radioactive_suit_pants",
+            () -> new RadioactiveSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, ArmorItem.Type.LEGGINGS,
+                    new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(15))));
+    public static final DeferredItem<ArmorItem> RADIOACTIVE_SUIT_BOOTS =
+            ITEMS.register("radioactive_suit_boots",
+            () -> new RadioactiveSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, ArmorItem.Type.BOOTS,
+                    new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
+
     // debug items
 }
