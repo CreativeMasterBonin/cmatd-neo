@@ -129,6 +129,13 @@ public class Cmatd {
                         output.accept(CmatdItem.RAW_VITIATIUM_BLOCK.asItem());
                         output.accept(CmatdItem.RADIOACTIVE_WASTE_BUCKET.asItem());
 
+                        output.accept(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem());
+
                         output.accept(CmatdItem.IRON_DUST.asItem());
                         output.accept(CmatdItem.GOLD_DUST.asItem());
 

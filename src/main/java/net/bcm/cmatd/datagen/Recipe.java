@@ -789,6 +789,58 @@ public class Recipe extends RecipeProvider{
                 .pattern("iii")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
                 .save(rc);
+
+
+        // radiation protection items
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_SUIT_HEADGEAR)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .pattern("pcp")
+                .pattern("p p")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_SUIT_BODYWEAR)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .pattern("p p")
+                .pattern("pcp")
+                .pattern("pcp")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_SUIT_PANTS)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .pattern("ppp")
+                .pattern("c c")
+                .pattern("p p")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_SUIT_BOOTS)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .pattern("p p")
+                .pattern("c c")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
+        // animal radiation protection items
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_HORSE_SUIT)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .define('h',Items.LEATHER_HORSE_ARMOR)
+                .pattern("pcp")
+                .pattern("php")
+                .pattern("cpc")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_WOLF_SUIT)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .define('w',Items.WOLF_ARMOR)
+                .pattern("pcp")
+                .pattern("pwp")
+                .pattern("cpc")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
     }
 
     public static RecipeBuilder stonecutterAny(Item requiredItem, Ingredient inputItem, Item result, int amt){

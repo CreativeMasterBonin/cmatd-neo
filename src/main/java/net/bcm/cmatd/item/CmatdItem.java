@@ -523,6 +523,23 @@ public class CmatdItem{
             ITEMS.register("radioactive_suit_boots",
             () -> new RadioactiveSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, ArmorItem.Type.BOOTS,
                     new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
-
+    public static final DeferredItem<Item> RADIOACTIVE_HORSE_SUIT = ITEMS.register("radioactive_horse_suit",
+            () -> new RadioactiveAnimalSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN,
+                    false, new Item.Properties()){
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                    tooltipComponents.add(Component.translatable("desc.item.radioactive_horse_suit")
+                            .withStyle(ChatFormatting.GRAY));
+                }
+            });
+    public static final DeferredItem<Item> RADIOACTIVE_WOLF_SUIT = ITEMS.register("radioactive_wolf_suit",
+            () -> new RadioactiveAnimalSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, AnimalArmorItem.BodyType.CANINE,
+                    false, new Item.Properties()){
+                @Override
+                public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                    tooltipComponents.add(Component.translatable("desc.item.radioactive_wolf_suit")
+                            .withStyle(ChatFormatting.GRAY));
+                }
+            });
     // debug items
 }

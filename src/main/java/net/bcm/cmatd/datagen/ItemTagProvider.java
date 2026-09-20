@@ -151,6 +151,8 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())
                 .add(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())
                 .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
+                .add(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem())
+                .add(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem())
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_mask"))
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_gown"))
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_pants"))
@@ -166,6 +168,22 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())
                 .add(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())
                 .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
+        ;
+        this.tag(ItemTags.HEAD_ARMOR)
+                .add(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.asItem())
+        ;
+        this.tag(ItemTags.CHEST_ARMOR)
+                .add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())
+        ;
+        this.tag(ItemTags.LEG_ARMOR)
+                .add(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())
+        ;
+        this.tag(ItemTags.FOOT_ARMOR)
+                .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
+        ;
+        this.tag(ItemTags.ARMOR_ENCHANTABLE)
+                .add(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem())
+                .add(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem())
         ;
     }
 

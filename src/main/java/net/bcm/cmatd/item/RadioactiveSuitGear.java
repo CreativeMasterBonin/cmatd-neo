@@ -1,50 +1,35 @@
 package net.bcm.cmatd.item;
 
+import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.core.Holder;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
 
 public class RadioactiveSuitGear extends ArmorItem {
     public RadioactiveSuitGear(Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super(material, type, properties);
+        super(material, type, properties.stacksTo(1).rarity(Rarity.UNCOMMON)
+                .fireResistant());
     }
 
     @Override
     public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        if(stack.is(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR)) {
-            return enchantment.is(Enchantments.MENDING) ||
-                    enchantment.is(Enchantments.AQUA_AFFINITY) || enchantment.is(Tags.Enchantments.ENTITY_DEFENSE_ENHANCEMENTS)
-                    || enchantment.is(Enchantments.UNBREAKING) || enchantment.is(Enchantments.THORNS);
+        if(stack.is(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.asItem())){
+            return enchantment.is(Tag.SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR) || enchantment.is(EnchantmentTags.ARMOR_EXCLUSIVE);
         }
-        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR)){
-            return enchantment.is(Enchantments.MENDING) || enchantment.is(Enchantments.PROJECTILE_PROTECTION)
-                    || enchantment.is(Enchantments.BLAST_PROTECTION) || enchantment.is(Enchantments.FIRE_PROTECTION) ||
-                    enchantment.is(Enchantments.UNBREAKING) || enchantment.is(Enchantments.THORNS);
+        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.asItem())){
+            return enchantment.is(Tag.SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR) || enchantment.is(EnchantmentTags.ARMOR_EXCLUSIVE);
         }
-        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_PANTS)){
-            return enchantment.is(Enchantments.MENDING) || enchantment.is(Enchantments.PROTECTION)
-                    || enchantment.is(Enchantments.UNBREAKING) || enchantment.is(Enchantments.FIRE_PROTECTION)
-                    || enchantment.is(Enchantments.BLAST_PROTECTION) || enchantment.is(Enchantments.PROJECTILE_PROTECTION)
-                    || enchantment.is(Enchantments.SWIFT_SNEAK) || enchantment.is(Enchantments.THORNS);
+        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_PANTS.asItem())){
+            return enchantment.is(Tag.SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR) || enchantment.is(EnchantmentTags.ARMOR_EXCLUSIVE);
         }
-        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_BOOTS)){
-            return enchantment.is(Enchantments.MENDING) || enchantment.is(Enchantments.UNBREAKING) ||
-                    enchantment.is(Enchantments.PROTECTION) || enchantment.is(Enchantments.FIRE_PROTECTION)
-                    || enchantment.is(Enchantments.BLAST_PROTECTION) || enchantment.is(Enchantments.PROJECTILE_PROTECTION)
-                    || enchantment.is(Enchantments.DEPTH_STRIDER) || enchantment.is(Enchantments.FROST_WALKER)
-                    || enchantment.is(Enchantments.THORNS) || enchantment.is(Enchantments.FEATHER_FALLING);
+        else if(stack.is(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())){
+            return enchantment.is(Tag.SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR) || enchantment.is(EnchantmentTags.ARMOR_EXCLUSIVE) || enchantment.is(EnchantmentTags.BOOTS_EXCLUSIVE);
         }
-        return false;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-
+        return enchantment.is(Tag.SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR);
     }
 }

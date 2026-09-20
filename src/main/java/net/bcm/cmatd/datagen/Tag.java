@@ -6,6 +6,7 @@ import net.bcm.cmatd.api.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -50,6 +51,11 @@ public class Tag{
     // environmental customization
     public static final TagKey<Block> RADIOACTIVE_WASTE_SUPPORTED = blockTag("radioactive_waste_supported");
 
+    // custom enchantment tags
+    public static final TagKey<Enchantment> SUPPORTED_BY_RADIOACTIVE_HUMANOID_ARMOR = enchantmentTag("supported_by_radioactive_humanoid_armor_enchantment");
+    public static final TagKey<Enchantment> SUPPORTED_BY_RADIOACTIVE_HORSE_ARMOR = enchantmentTag("supported_by_radioactive_horse_armor_enchantment");
+    public static final TagKey<Enchantment> SUPPORTED_BY_RADIOACTIVE_WOLF_ARMOR = enchantmentTag("supported_by_radioactive_wolf_armor_enchantment");
+
     // biome tags
     public static final TagKey<Biome> GENERATES_STEAM_VENTS = biomeTag("generates_steam_vents");
     public static final TagKey<Biome> GENERATES_VITIATIUM_ORE = biomeTag("generates_vitiatium_ore");
@@ -91,6 +97,10 @@ public class Tag{
 
     private static TagKey<DimensionType> dimensionTypeTag(String name){
         return TagKey.create(net.minecraft.core.registries.Registries.DIMENSION_TYPE,ResourceLocation.fromNamespaceAndPath(Cmatd.MODID, name));
+    }
+
+    private static TagKey<Enchantment> enchantmentTag(String name){
+        return TagKey.create(net.minecraft.core.registries.Registries.ENCHANTMENT,ResourceLocation.fromNamespaceAndPath(Cmatd.MODID,name));
     }
 
     private static TagKey<Biome> biomeTag(String name){

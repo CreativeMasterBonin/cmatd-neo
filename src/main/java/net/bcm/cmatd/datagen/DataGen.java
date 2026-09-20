@@ -57,5 +57,6 @@ public class DataGen{
 
         generator.addProvider(event.includeServer(),new BlockEntityTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(),new FluidTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
+        generator.addProvider(event.includeServer(),new EnchantmentTagProvider(packOutput,lookupProvider,event.getExistingFileHelper()));
     }
 }

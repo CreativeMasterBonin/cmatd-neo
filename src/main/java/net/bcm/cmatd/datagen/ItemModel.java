@@ -105,6 +105,9 @@ public class ItemModel extends ItemModelProvider{
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR);
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_PANTS);
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_BOOTS);
+        // horse armors
+        defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem());
+        defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem());
     }
 
     // no credit nor license may override this variable's license, it is still: MIT

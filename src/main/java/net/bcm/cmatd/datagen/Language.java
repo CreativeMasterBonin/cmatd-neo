@@ -130,6 +130,9 @@ public class Language extends LanguageProvider{
         this.add("desc.item.radioactive_reactor","A multiblock that processes vitiatium into energy, but at a cost of heat buildup and radioactive waste. Can be sealed with concrete to remove the need to wear hazmat suits nearby it.");
         this.add("desc.item.radioactive_reactor_casing","This casing is used to build the base multiblock form of the Radioactive Reactor, and can be used to seal it entirely");
         this.add("desc.item.cmatd_wrench","Shift-right click or right click unfinished multiblock reactors to see how to build them (make sure particles are on to see), otherwise its just a regular wrench");
+        this.add("desc.item.radioactive_horse_suit","Not very strong, but protects from radiation");
+        this.add("desc.item.radioactive_wolf_suit","Although very small, it protects from radiation");
+
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
@@ -244,6 +247,14 @@ public class Language extends LanguageProvider{
         this.add((CmatdItem.SWEET_BERRY_JAM.get()),"Sweet Berry Jam");
         this.add((CmatdItem.GLOW_BERRY_JAM.get()),"Glow Berry Jam");
         this.add(CmatdItem.CMATD_WRENCH.get(), "CMATD Wrench");
+
+        // armors
+        this.add(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.get(), "Radioactive Suit Headgear");
+        this.add(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR.get(), "Radioactive Suit Bodywear");
+        this.add(CmatdItem.RADIOACTIVE_SUIT_PANTS.get(), "Radioactive Suit Pants");
+        this.add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.get(), "Radioactive Suit Boots");
+        this.add(CmatdItem.RADIOACTIVE_HORSE_SUIT.get(), "Radioactive Horse Suit");
+        this.add(CmatdItem.RADIOACTIVE_WOLF_SUIT.get(), "Radioactive Wolf Suit");
 
         // electronic devices
         this.add(CmatdItem.RESISTOR.get(),"Resistor");
