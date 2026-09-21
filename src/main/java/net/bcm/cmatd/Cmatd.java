@@ -213,7 +213,6 @@ public class Cmatd {
             .synced(FoodReactorFuels.CODEC,false)
             .build();
 
-
     public Cmatd(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::registerRegistries);
         modEventBus.addListener(this::registerListeners);

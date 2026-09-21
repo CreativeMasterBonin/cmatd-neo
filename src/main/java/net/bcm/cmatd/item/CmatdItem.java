@@ -525,7 +525,7 @@ public class CmatdItem{
                     new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(15))));
     public static final DeferredItem<Item> RADIOACTIVE_HORSE_SUIT = ITEMS.register("radioactive_horse_suit",
             () -> new RadioactiveAnimalSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, AnimalArmorItem.BodyType.EQUESTRIAN,
-                    false, new Item.Properties()){
+                    false, "translucent", new Item.Properties()){
                 @Override
                 public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
                     tooltipComponents.add(Component.translatable("desc.item.radioactive_horse_suit")
@@ -534,13 +534,11 @@ public class CmatdItem{
             });
     public static final DeferredItem<Item> RADIOACTIVE_WOLF_SUIT = ITEMS.register("radioactive_wolf_suit",
             () -> new RadioactiveAnimalSuitGear(CmatdArmorMaterials.RADIOACTIVE_SUIT_MATERIAL, AnimalArmorItem.BodyType.CANINE,
-                    false, new Item.Properties()){
+                    false, "translucent", new Item.Properties()){
                 @Override
                 public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
                     tooltipComponents.add(Component.translatable("desc.item.radioactive_wolf_suit")
                             .withStyle(ChatFormatting.GRAY));
-                    tooltipComponents.add(Component.translatable("desc.item.custom_wolf_armor.unusable")
-                            .withStyle(ChatFormatting.YELLOW));
                 }
             });
     // debug items

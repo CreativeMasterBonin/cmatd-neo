@@ -8,8 +8,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class RadioactiveAnimalSuitGear extends AnimalArmorItem {
-    public RadioactiveAnimalSuitGear(Holder<ArmorMaterial> armorMaterial, BodyType bodyType, boolean hasOverlay, Properties properties) {
+    public final String renderTypeName;
+
+    public RadioactiveAnimalSuitGear(Holder<ArmorMaterial> armorMaterial, BodyType bodyType, boolean hasOverlay, String renderType, Properties properties) {
         super(armorMaterial, bodyType, hasOverlay, properties.stacksTo(1).fireResistant());
+        renderTypeName = renderType;
     }
 
     @Override

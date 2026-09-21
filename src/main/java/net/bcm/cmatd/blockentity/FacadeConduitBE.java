@@ -26,7 +26,6 @@ public class FacadeConduitBE extends ConduitBE {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         super.onDataPacket(net, pkt, lookupProvider);
-
         if(level.isClientSide){
             level.sendBlockUpdated(worldPosition,getBlockState(),getBlockState(),3);
         }

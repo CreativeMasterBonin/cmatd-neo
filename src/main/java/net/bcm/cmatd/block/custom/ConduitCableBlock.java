@@ -167,7 +167,7 @@ public class ConduitCableBlock extends Block implements SimpleWaterloggedBlock, 
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof ConduitBE conduit) {
-            conduit.notUpdatedRefresh();
+            conduit.update();
         }
     }
 
@@ -175,7 +175,7 @@ public class ConduitCableBlock extends Block implements SimpleWaterloggedBlock, 
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof ConduitBE conduit) {
-            conduit.notUpdatedRefresh();
+            conduit.update();
         }
         BlockState blockState = calculateState(level, pos, state);
         if (state != blockState) {

@@ -1,9 +1,9 @@
-This mod is licensed under a custom license. Ver 4A.
+This mod is licensed under a custom license. Ver 4B.
 Any license with an appended 'A-Z' character means most content falls under this license plus content that is not under this license, which means the content not under this license will have its own license stated.
 As such, the following section describes and lists content not under this license.
 
 Section A:
-    In all cases, the program methods Utility.oscillateFloatBetween, Utility.normalizeDoubleToFloatValue, and Utility.normalizeIntToFloatValue do not fall under this license, and fall under their own explicitly specified licenses, as required.
+    In all cases, the program methods Utility.oscillateFloatBetween, Utility.normalizeDoubleToFloatValue, Utility.normalizeIntToFloatValue, ItemModel.trimmedArmorItem, and the variable ItemModel.trimMaterials do not fall under this license, and fall under their own explicitly specified licenses, as required.
 
 License:
 The license terms are as follows, and ARE NOT LEGAL ADVICE, just guidelines:

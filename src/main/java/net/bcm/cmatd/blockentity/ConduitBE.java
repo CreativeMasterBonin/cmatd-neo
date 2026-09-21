@@ -21,8 +21,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 public class ConduitBE extends BlockEntity {
-    //public static final String ENERGY_TAG = "energy";
-    private Set<BlockPos> positions = null;
     public int ticks = 0;
 
     private final BaseEnergyStorage energyStorage = new BaseEnergyStorage(Utility.MAX_CONDUIT_ENERGY_CAPACITY,
@@ -45,52 +43,6 @@ public class ConduitBE extends BlockEntity {
         }
     };
 
-    // position checks for outputs (adds refreshed positions to set for an entire network)
-    // mcjty
-    private void traverse(BlockPos pos, Consumer<ConduitBE> consumer) {
-        Set<BlockPos> traversed = new HashSet<>();
-        traversed.add(pos);
-        consumer.accept(this);
-        traverse(pos, traversed, consumer);
-    }
-
-    private void traverse(BlockPos pos, Set<BlockPos> traversed, Consumer<ConduitBE> consumer) {
-        for (Direction direction : Direction.values()) {
-            BlockPos p = pos.relative(direction);
-            if (!traversed.contains(p)) {
-                traversed.add(p);
-                if (level.getBlockEntity(p) instanceof ConduitBE cable) {
-                    consumer.accept(cable);
-                    cable.traverse(p, traversed, consumer);
-                }
-            }
-        }
-    }
-
-    private void refreshOutputs(){
-        if(positions == null){
-            positions = new HashSet<>();
-            traverse(worldPosition, cable -> {
-                // check for energy storage compats but not conduits! then add them to our positions
-                for (Direction direction : Direction.values()) {
-                    BlockPos p = cable.getBlockPos().relative(direction);
-                    BlockEntity te = level.getBlockEntity(p);
-                    if (te != null) {
-                        if(te.getBlockState().getBlock() != CmatdBlock.CONDUIT.get() && te.getBlockState().getBlock() != CmatdBlock.FACADE_CONDUIT.get()){
-                            IEnergyStorage handler = level.getCapability(Capabilities.EnergyStorage.BLOCK, p, null);
-                            if (handler != null) {
-                                if (handler.canReceive()) {
-                                    positions.add(p);
-                                    setChanged();
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
-
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
@@ -103,9 +55,11 @@ public class ConduitBE extends BlockEntity {
         this.loadAdditional(tag,lookupProvider);
     }
 
-    public void notUpdatedRefresh(){
-        traverse(worldPosition,conduitBE -> conduitBE.positions = null);
+    public void update() {
         setChanged();
+        if(!level.isClientSide()){
+            level.sendBlockUpdated(getBlockPos(),getBlockState(),getBlockState(),3);
+        }
     }
 
     public BaseEnergyStorage getEnergyStorage() {
@@ -135,15 +89,13 @@ public class ConduitBE extends BlockEntity {
         }
     }
 
-    // TODO: fix the entire thing, as energy doesn't distribute right no matter what
     public void serverTick(){
         ticks++;
         if(ticks >= 32767){
             ticks = 0;
         }
         if (energyStorage.getEnergyStored() > 0) {
-            // energy needed to traverse with it!
-            refreshOutputs();
+
             distributeEnergy();
         }
     }
