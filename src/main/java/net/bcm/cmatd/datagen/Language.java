@@ -132,6 +132,7 @@ public class Language extends LanguageProvider{
         this.add("desc.item.cmatd_wrench","Shift-right click or right click unfinished multiblock reactors to see how to build them (make sure particles are on to see), otherwise its just a regular wrench");
         this.add("desc.item.radioactive_horse_suit","Not very strong, but protects from radiation");
         this.add("desc.item.radioactive_wolf_suit","Although very small, it protects from radiation");
+        this.add("desc.item.custom_wolf_armor.unusable","Currently un-equippable by normal means");
 
 
         // others

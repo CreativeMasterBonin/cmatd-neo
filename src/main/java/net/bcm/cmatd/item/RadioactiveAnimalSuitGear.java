@@ -23,6 +23,33 @@ public class RadioactiveAnimalSuitGear extends AnimalArmorItem {
         return false;
     }
 
+    /*@Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
+        if(player.level().isClientSide()){
+            if(stack.is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
+                if(interactionTarget instanceof Wolf wolf){
+                    if(!wolf.isWearingBodyArmor()){
+                        player.playSound(SoundEvents.ARMOR_EQUIP_WOLF.value(),1.0f, Utility.nextFloatBetweenInclusive(0.95f,1.1f));
+                        return InteractionResult.CONSUME;
+                    }
+                }
+            }
+        }
+        else if(!player.level().isClientSide()){
+            if(player.level() instanceof ServerLevel serverLevel){
+                if(stack.is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
+                    if(interactionTarget instanceof Wolf wolf){
+                        if(!wolf.isWearingBodyArmor()){
+                            wolf.setBodyArmorItem(new ItemStack(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem(),1));
+                            return InteractionResult.CONSUME;
+                        }
+                    }
+                }
+            }
+        }
+        return InteractionResult.PASS;
+    }*/
+
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return true;

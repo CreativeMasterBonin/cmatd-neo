@@ -539,6 +539,8 @@ public class CmatdItem{
                 public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
                     tooltipComponents.add(Component.translatable("desc.item.radioactive_wolf_suit")
                             .withStyle(ChatFormatting.GRAY));
+                    tooltipComponents.add(Component.translatable("desc.item.custom_wolf_armor.unusable")
+                            .withStyle(ChatFormatting.YELLOW));
                 }
             });
     // debug items

@@ -3,6 +3,8 @@ package net.bcm.cmatd.block.custom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.bcm.cmatd.datagen.Tag;
+import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -11,6 +13,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -59,11 +63,42 @@ public class RadioactiveOreBlock extends Block {
             ));
             for(LivingEntity entity : livingEntities){
                 if(entity instanceof LivingEntity livingEntity){
-                    if(!livingEntity.hasEffect(MobEffects.HUNGER)){
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2 + (int)radioactivityOfOre,true,false));
+                    // wolves can wear the armor, but currently it can't be applied nor is visible
+                    if(livingEntity instanceof Wolf wolf){
+                        if(!wolf.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
+                            if(!wolf.hasEffect(MobEffects.WEAKNESS)){
+                                wolf.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1,true,false));
+                            }
+                            if(!wolf.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
+                                wolf.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
+                            }
+                        }
+                    } // horse armor
+                    else if(livingEntity instanceof AbstractHorse abstractHorse){
+                        if(!abstractHorse.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
+                            if(!abstractHorse.hasEffect(MobEffects.WEAKNESS)){
+                                abstractHorse.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1,true,false));
+                            }
+                            if(!abstractHorse.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
+                                abstractHorse.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
+                            }
+                        }
                     }
-                    if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
-                        livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1 + (int)radioactivityOfOre,true,false));
+                    else{ // every thing and every one else
+                        livingEntity.getArmorSlots().iterator().forEachRemaining(armorStack -> {
+                            // wear a full suit to be safe from this
+                            if(!armorStack.is(Tag.HAZMAT_SUIT_PIECES)){
+                                if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                }
+                                if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1,true,false));
+                                }
+                                if(!livingEntity.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
+                                }
+                            }
+                        });
                     }
                 }
             }
