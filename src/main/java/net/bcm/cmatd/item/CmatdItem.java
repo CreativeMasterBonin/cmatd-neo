@@ -650,6 +650,7 @@ public class CmatdItem{
                         }
                     });
 
+
     public static final DeferredItem<Item> KELP_JAM =
             ITEMS.register("kelp_jam",
                     () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
