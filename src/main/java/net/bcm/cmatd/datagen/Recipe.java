@@ -625,41 +625,6 @@ public class Recipe extends RecipeProvider{
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.REDSTONE_ENERGY_COLUMN))
                 .save(rc,"straight_wrench");
 
-        // other mod integrations
-
-        /*
-        PressurizedReactionRecipeBuilder.reaction(
-                IngredientCreatorAccess.item().from(CmatdItem.LODEALITE_BLOCK),
-                IngredientCreatorAccess.fluid().from(FluidTags.WATER,1_000),
-                IngredientCreatorAccess.chemicalStack().fromHolder(MekanismChemicals.NUCLEAR_WASTE, 1_000),
-                700,
-                new ItemStack(Items.STONE),
-                MekanismChemicals.POLONIUM.asStack(350L)
-        ).build(rc, ResourceLocation.parse("cmatd:nuclear_waste_to_polonium"));
-
-        PressurizedReactionRecipeBuilder.reaction(
-                IngredientCreatorAccess.item().from(CmatdItem.COMPOUNDITE_BLOCK),
-                IngredientCreatorAccess.fluid().from(MekanismTags.Fluids.NUTRITIONAL_PASTE,2_000),
-                IngredientCreatorAccess.chemicalStack().fromHolder(MekanismChemicals.NUCLEAR_WASTE, 1_000),
-                200,
-                new ItemStack(Items.STONE),
-                MekanismChemicals.PLUTONIUM.asStack(150L)
-        ).build(rc, ResourceLocation.parse("cmatd:nuclear_waste_to_plutonium"));
-        */
-        LaserDrillOreRecipe.createTagRecipe(rc, "ores/compoundite", DyeColor.ORANGE.getId(),
-                new LaserDrillRarity(
-                        new LaserDrillRarity.BiomeRarity(List.of(), List.of()),
-                        new LaserDrillRarity.DimensionRarity(List.of(),
-                                List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
-                        -28, 64, 5));
-
-        LaserDrillOreRecipe.createTagRecipe(rc, "ores/lodealite", DyeColor.PURPLE.getId(),
-                new LaserDrillRarity(
-                        new LaserDrillRarity.BiomeRarity(List.of(), List.of()),
-                        new LaserDrillRarity.DimensionRarity(List.of(),
-                                List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
-                        -32, 64, 6));
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.HEAT_GENERATOR)
                 .define('p',CmatdItem.POWER_BOARD)
                 .define('i',CmatdItem.INFUSED_INGOT)
@@ -841,6 +806,50 @@ public class Recipe extends RecipeProvider{
                 .pattern("cpc")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
                 .save(rc);
+        createIntegratedRecipes(rc);
+    }
+
+    public static void createIntegratedRecipes(RecipeOutput rc){
+        // other mod integrations
+        /*
+        PressurizedReactionRecipeBuilder.reaction(
+                IngredientCreatorAccess.item().from(CmatdItem.LODEALITE_BLOCK),
+                IngredientCreatorAccess.fluid().from(FluidTags.WATER,1_000),
+                IngredientCreatorAccess.chemicalStack().fromHolder(MekanismChemicals.NUCLEAR_WASTE, 1_000),
+                700,
+                new ItemStack(Items.STONE),
+                MekanismChemicals.POLONIUM.asStack(350L)
+        ).build(rc, ResourceLocation.parse("cmatd:nuclear_waste_to_polonium"));
+
+        PressurizedReactionRecipeBuilder.reaction(
+                IngredientCreatorAccess.item().from(CmatdItem.COMPOUNDITE_BLOCK),
+                IngredientCreatorAccess.fluid().from(MekanismTags.Fluids.NUTRITIONAL_PASTE,2_000),
+                IngredientCreatorAccess.chemicalStack().fromHolder(MekanismChemicals.NUCLEAR_WASTE, 1_000),
+                200,
+                new ItemStack(Items.STONE),
+                MekanismChemicals.PLUTONIUM.asStack(150L)
+        ).build(rc, ResourceLocation.parse("cmatd:nuclear_waste_to_plutonium"));
+        */
+        LaserDrillOreRecipe.createTagRecipe(rc, "ores/compoundite", DyeColor.ORANGE.getId(),
+                new LaserDrillRarity(
+                        new LaserDrillRarity.BiomeRarity(List.of(), List.of()),
+                        new LaserDrillRarity.DimensionRarity(List.of(),
+                                List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
+                        -28, 64, 5));
+
+        LaserDrillOreRecipe.createTagRecipe(rc, "ores/lodealite", DyeColor.PURPLE.getId(),
+                new LaserDrillRarity(
+                        new LaserDrillRarity.BiomeRarity(List.of(), List.of()),
+                        new LaserDrillRarity.DimensionRarity(List.of(),
+                                List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
+                        -32, 64, 6));
+
+        LaserDrillOreRecipe.createTagRecipe(rc, "ores/vitiatium", DyeColor.LIME.getId(),
+                new LaserDrillRarity(
+                        new LaserDrillRarity.BiomeRarity(List.of(), List.of()),
+                        new LaserDrillRarity.DimensionRarity(List.of(),
+                                List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
+                        -44, -33, 3));
     }
 
     public static RecipeBuilder stonecutterAny(Item requiredItem, Ingredient inputItem, Item result, int amt){

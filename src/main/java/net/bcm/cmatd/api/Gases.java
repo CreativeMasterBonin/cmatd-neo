@@ -50,7 +50,7 @@ public class Gases {
 
     public static final DeferredHolder<GasType,GasType> VITIATIUM =
             GASES.register("vitiatium",() -> new GasType(
-                    new GasType.Properties(Rarity.COMMON,3,true,0.5f,16,
+                    new GasType.Properties(Rarity.UNCOMMON,3,true,0.5f,16,
                             Utility.hexToInt("0xA7D93A"))
             ));
 

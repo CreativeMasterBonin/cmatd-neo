@@ -8,11 +8,16 @@ import net.bcm.cmatd.item.CmatdItem;
 import net.bcm.cmatd.render.*;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +38,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import org.jetbrains.annotations.Nullable;
 
 @Mod(value = Cmatd.MODID,dist = Dist.CLIENT)
 public class CmatdClient {
@@ -103,10 +109,6 @@ public class CmatdClient {
                 },
                 CmatdBlock.BASE_COBBLE_MAKER.asItem(),CmatdItem.BASE_COBBLE_MAKER.asItem()
         );
-        /*event.register((itemStack,i) -> {
-            return 4159204; // default water color
-        },CmatdBlock.BASE_COBBLE_MAKER.asItem(),
-                CmatdItem.BASE_COBBLE_MAKER.asItem());*/
     }
 
     public void clientExtensions(RegisterClientExtensionsEvent event) {
