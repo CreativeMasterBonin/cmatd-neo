@@ -16,6 +16,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.item.crafting.SmithingTrimRecipe;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.neoforged.neoforge.common.Tags;
 
@@ -171,51 +172,6 @@ public class Recipe extends RecipeProvider{
                 .pattern("yby")
                 .pattern("rlr")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.DOUBLER_MODULE))
-                .save(rc);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.BASIC_TIER_DOWNGRADE)
-                .define('f',CmatdItem.PLATE)
-                .define('d',ItemTags.DIRT)
-                .pattern(" d ")
-                .pattern("dfd")
-                .pattern(" d ")
-                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.PLATE))
-                .save(rc);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.ADVANCED_TIER_UPGRADE)
-                .define('b',CmatdItem.BASIC_TIER_DOWNGRADE)
-                .define('d',Items.REDSTONE)
-                .pattern(" d ")
-                .pattern("dbd")
-                .pattern(" d ")
-                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BASIC_TIER_DOWNGRADE))
-                .save(rc);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE)
-                .define('b',CmatdItem.ADVANCED_TIER_UPGRADE)
-                .define('d',Items.DIAMOND)
-                .pattern(" d ")
-                .pattern("dbd")
-                .pattern(" d ")
-                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.ADVANCED_TIER_UPGRADE))
-                .save(rc);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.SUPERB_TIER_UPGRADE)
-                .define('b',CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE)
-                .define('n',Items.NETHERITE_INGOT)
-                .pattern(" n ")
-                .pattern("nbn")
-                .pattern(" n ")
-                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE))
-                .save(rc);
-
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.MAXIMUM_TIER_UPGRADE)
-                .define('b',CmatdItem.SUPERB_TIER_UPGRADE)
-                .define('m',Items.ECHO_SHARD)
-                .pattern(" m ")
-                .pattern("mbm")
-                .pattern(" m ")
-                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SUPERB_TIER_UPGRADE))
                 .save(rc);
 
 
@@ -807,6 +763,7 @@ public class Recipe extends RecipeProvider{
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
                 .save(rc);
         createIntegratedRecipes(rc);
+        createTierUpgradeRecipes(rc);
     }
 
     public static void createIntegratedRecipes(RecipeOutput rc){
@@ -850,6 +807,85 @@ public class Recipe extends RecipeProvider{
                         new LaserDrillRarity.DimensionRarity(List.of(),
                                 List.of(BuiltinDimensionTypes.NETHER,BuiltinDimensionTypes.END)),
                         -44, -33, 3));
+    }
+
+    public static void createTierUpgradeRecipes(RecipeOutput rc){
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.BASIC_TIER_DOWNGRADE)
+                .define('f',CmatdItem.PLATE)
+                .define('d',ItemTags.DIRT)
+                .pattern(" d ")
+                .pattern("dfd")
+                .pattern(" d ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.PLATE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.ADVANCED_TIER_UPGRADE)
+                .define('b',CmatdItem.BASIC_TIER_DOWNGRADE)
+                .define('d',Items.LAPIS_LAZULI)
+                .pattern(" d ")
+                .pattern("dbd")
+                .pattern(" d ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BASIC_TIER_DOWNGRADE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE)
+                .define('b',CmatdItem.ADVANCED_TIER_UPGRADE)
+                .define('d',Items.REDSTONE)
+                .pattern(" d ")
+                .pattern("dbd")
+                .pattern(" d ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.ADVANCED_TIER_UPGRADE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.SUPERB_TIER_UPGRADE)
+                .define('b',CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE)
+                .define('n',Items.DIAMOND)
+                .pattern(" n ")
+                .pattern("nbn")
+                .pattern(" n ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.MAXIMUM_TIER_UPGRADE)
+                .define('b',CmatdItem.SUPERB_TIER_UPGRADE)
+                .define('m',Items.NETHERITE_INGOT)
+                .pattern(" m ")
+                .pattern("mbm")
+                .pattern(" m ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SUPERB_TIER_UPGRADE))
+                .save(rc);
+
+        tierUpgrade(
+                CmatdItem.MAXIMUM_TIER_UPGRADE.asItem(),
+                Items.ECHO_SHARD,
+                CmatdItem.SIXTH_TIER_UPGRADE.asItem(),rc);
+        tierUpgrade(
+                CmatdItem.SIXTH_TIER_UPGRADE.asItem(),
+                Items.BREEZE_ROD,
+                CmatdItem.SEVENTH_TIER_UPGRADE.asItem(),rc);
+        tierUpgrade(
+                CmatdItem.SEVENTH_TIER_UPGRADE.asItem(),
+                Items.ENDER_EYE,
+                CmatdItem.EIGHTH_TIER_UPGRADE.asItem(),rc);
+        tierUpgrade(
+                CmatdItem.EIGHTH_TIER_UPGRADE.asItem(),
+                Items.PURPUR_BLOCK,
+                CmatdItem.NINTH_TIER_UPGRADE.asItem(),rc);
+        tierUpgrade(
+                CmatdItem.NINTH_TIER_UPGRADE.asItem(),
+                Items.DRAGON_HEAD,
+                CmatdItem.SUPERFLUOUS_TIER_UPGRADE.asItem(),rc);
+    }
+
+    public static void tierUpgrade(ItemLike inputUpgradeOrOther, ItemLike catalyst, ItemLike outputUpgrade, RecipeOutput rc){
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,outputUpgrade)
+                .define('m',inputUpgradeOrOther)
+                .define('k',catalyst)
+                .pattern(" m ")
+                .pattern("mkm")
+                .pattern(" m ")
+                .unlockedBy(Utility.HAS_ITEM,has(inputUpgradeOrOther))
+                .save(rc);
     }
 
     public static RecipeBuilder stonecutterAny(Item requiredItem, Ingredient inputItem, Item result, int amt){

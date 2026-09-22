@@ -41,6 +41,11 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE.asItem());
         defaultCustomSimpleItem(CmatdItem.SUPERB_TIER_UPGRADE.asItem());
         defaultCustomSimpleItem(CmatdItem.MAXIMUM_TIER_UPGRADE.asItem());
+        defaultCustomSimpleItem(CmatdItem.SIXTH_TIER_UPGRADE.asItem());
+        defaultCustomSimpleItem(CmatdItem.SEVENTH_TIER_UPGRADE.asItem());
+        defaultCustomSimpleItem(CmatdItem.EIGHTH_TIER_UPGRADE.asItem());
+        defaultCustomSimpleItem(CmatdItem.NINTH_TIER_UPGRADE.asItem());
+        defaultCustomSimpleItem(CmatdItem.SUPERFLUOUS_TIER_UPGRADE.asItem());
         // other items
         defaultCustomSimpleItem(CmatdItem.MASHED_POTATOES.asItem());
         defaultCustomSimpleItem(CmatdItem.POISONOUS_MASHED_POTATOES.asItem());

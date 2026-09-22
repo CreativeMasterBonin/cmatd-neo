@@ -6,7 +6,12 @@ public enum MachineTier implements MachineTierInterface{
     IRON("iron",1,350,50000,3500,3500,2),
     DIAMOND("diamond",2,750,150000,7500,7500,3),
     NETHERITE("netherite",3,1000,250000,10000,10000,4),
-    MAXIMUM("maximum",4,2500,500000,25000,25000,5);
+    MAXIMUM("maximum",4,2500,500000,25000,25000,5),
+    SIXTH_EXCESS("sixth",5,3000,1000000,30000,30000,6),
+    SEVENTH_EXCESS("seventh",6,3500,1500000,40000,40000,7),
+    EIGHTH_EXCESS("eighth",7,4000,2000000,50000,50000,8),
+    NINTH_EXCESS("ninth",8,4500,2500000,55000,55000,9),
+    SUPERFLUOUS("superfluous",9,5000,5000000,100000,100000,10);
 
     private final String tierName;
     private final int tierLevel;

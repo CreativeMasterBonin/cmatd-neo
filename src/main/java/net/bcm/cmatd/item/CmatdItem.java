@@ -369,6 +369,64 @@ public class CmatdItem{
                                     MachineTier.MAXIMUM.getModulesSupport(),
                                     MachineTier.MAXIMUM.getPowerGenRate()))));
 
+    public static final DeferredItem<Item> SIXTH_TIER_UPGRADE =
+            ITEMS.register("sixth_tier_upgrade",
+                    () -> new TierUpgrade(new Item.Properties()
+                            .component(Components.MACHINE_TIER,new MachineTierComponent(
+                                    MachineTier.SIXTH_EXCESS.getTierLevel(),
+                                    MachineTier.SIXTH_EXCESS.getPowerCapacity(),
+                                    MachineTier.SIXTH_EXCESS.maxReceiveRate(),
+                                    MachineTier.SIXTH_EXCESS.maxExtractRate(),
+                                    MachineTier.SIXTH_EXCESS.getModulesSupport(),
+                                    MachineTier.SIXTH_EXCESS.getPowerGenRate()))));
+
+    public static final DeferredItem<Item> SEVENTH_TIER_UPGRADE =
+            ITEMS.register("seventh_tier_upgrade",
+                    () -> new TierUpgrade(new Item.Properties()
+                            .component(Components.MACHINE_TIER,new MachineTierComponent(
+                                    MachineTier.SEVENTH_EXCESS.getTierLevel(),
+                                    MachineTier.SEVENTH_EXCESS.getPowerCapacity(),
+                                    MachineTier.SEVENTH_EXCESS.maxReceiveRate(),
+                                    MachineTier.SEVENTH_EXCESS.maxExtractRate(),
+                                    MachineTier.SEVENTH_EXCESS.getModulesSupport(),
+                                    MachineTier.SEVENTH_EXCESS.getPowerGenRate()))));
+
+    public static final DeferredItem<Item> EIGHTH_TIER_UPGRADE =
+            ITEMS.register("eighth_tier_upgrade",
+                    () -> new TierUpgrade(new Item.Properties()
+                            .component(Components.MACHINE_TIER,new MachineTierComponent(
+                                    MachineTier.EIGHTH_EXCESS.getTierLevel(),
+                                    MachineTier.EIGHTH_EXCESS.getPowerCapacity(),
+                                    MachineTier.EIGHTH_EXCESS.maxReceiveRate(),
+                                    MachineTier.EIGHTH_EXCESS.maxExtractRate(),
+                                    MachineTier.EIGHTH_EXCESS.getModulesSupport(),
+                                    MachineTier.EIGHTH_EXCESS.getPowerGenRate()))));
+
+    public static final DeferredItem<Item> NINTH_TIER_UPGRADE =
+            ITEMS.register("ninth_tier_upgrade",
+                    () -> new TierUpgrade(new Item.Properties()
+                            .component(Components.MACHINE_TIER,new MachineTierComponent(
+                                    MachineTier.NINTH_EXCESS.getTierLevel(),
+                                    MachineTier.NINTH_EXCESS.getPowerCapacity(),
+                                    MachineTier.NINTH_EXCESS.maxReceiveRate(),
+                                    MachineTier.NINTH_EXCESS.maxExtractRate(),
+                                    MachineTier.NINTH_EXCESS.getModulesSupport(),
+                                    MachineTier.NINTH_EXCESS.getPowerGenRate()))));
+
+    public static final DeferredItem<Item> SUPERFLUOUS_TIER_UPGRADE =
+            ITEMS.register("superfluous_tier_upgrade",
+                    () -> new TierUpgrade(new Item.Properties()
+                            .component(Components.MACHINE_TIER,new MachineTierComponent(
+                                    MachineTier.SUPERFLUOUS.getTierLevel(),
+                                    MachineTier.SUPERFLUOUS.getPowerCapacity(),
+                                    MachineTier.SUPERFLUOUS.maxReceiveRate(),
+                                    MachineTier.SUPERFLUOUS.maxExtractRate(),
+                                    MachineTier.SUPERFLUOUS.getModulesSupport(),
+                                    MachineTier.SUPERFLUOUS.getPowerGenRate()))));
+
+
+
+
     // electronic components (used to build base components)
     public static final DeferredItem<Item> CAPACITOR =
             ITEMS.register("capacitor",
@@ -649,7 +707,6 @@ public class CmatdItem{
                                             .withStyle(ChatFormatting.GRAY));
                         }
                     });
-
 
     public static final DeferredItem<Item> KELP_JAM =
             ITEMS.register("kelp_jam",
