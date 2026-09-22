@@ -44,9 +44,6 @@ public class ItemModel extends ItemModelProvider{
         // other items
         defaultCustomSimpleItem(CmatdItem.MASHED_POTATOES.asItem());
         defaultCustomSimpleItem(CmatdItem.POISONOUS_MASHED_POTATOES.asItem());
-        defaultCustomSimpleItem(CmatdItem.JAM_JAR.asItem());
-        defaultCustomSimpleItem(CmatdItem.SWEET_BERRY_JAM.asItem());
-        defaultCustomSimpleItem(CmatdItem.GLOW_BERRY_JAM.asItem());
 
         defaultCustomSimpleItem(CmatdItem.RESISTOR.asItem());
         defaultCustomSimpleItem(CmatdItem.TRANSISTOR.asItem());
@@ -108,6 +105,24 @@ public class ItemModel extends ItemModelProvider{
         // horse armors
         defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem());
         defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem());
+
+
+        // jam making items
+        defaultCustomSimpleItem(CmatdItem.JAM_JAR.asItem());
+        defaultCustomSimpleItem(CmatdItem.SWEET_BERRY_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.GLOW_BERRY_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.CACTUS_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.CHORUS_FRUIT_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.COCOA_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.GHAST_TEAR_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.GLISTERING_MELON_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.GLOW_INK_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.INK_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.KELP_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.MAGMA_CREAM_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.RAW_EGG_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.SLIME_JAM.asItem());
+        defaultCustomSimpleItem(CmatdItem.SPIDER_EYE_JAM.asItem());
     }
 
     // no credit nor license may override this variable's license, it is still: MIT

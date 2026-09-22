@@ -107,9 +107,23 @@ public class Cmatd {
                         output.accept(CmatdItem.SUPERB_TIER_UPGRADE.asItem());
                         output.accept(CmatdItem.MAXIMUM_TIER_UPGRADE.asItem());
 
+                        // jams
                         output.accept(CmatdItem.JAM_JAR.asItem());
                         output.accept(CmatdItem.SWEET_BERRY_JAM.asItem());
                         output.accept(CmatdItem.GLOW_BERRY_JAM.asItem());
+                        output.accept(CmatdItem.CACTUS_JAM.asItem());
+                        output.accept(CmatdItem.CHORUS_FRUIT_JAM.asItem());
+                        output.accept(CmatdItem.COCOA_JAM.asItem());
+                        output.accept(CmatdItem.GHAST_TEAR_JAM.asItem());
+                        output.accept(CmatdItem.GLISTERING_MELON_JAM.asItem());
+                        output.accept(CmatdItem.GLOW_INK_JAM.asItem());
+                        output.accept(CmatdItem.INK_JAM.asItem());
+                        output.accept(CmatdItem.KELP_JAM.asItem());
+                        output.accept(CmatdItem.MAGMA_CREAM_JAM.asItem());
+                        output.accept(CmatdItem.RAW_EGG_JAM.asItem());
+                        output.accept(CmatdItem.SLIME_JAM.asItem());
+                        output.accept(CmatdItem.SPIDER_EYE_JAM.asItem());
+                        // food fuels
                         output.accept(CmatdItem.MASHED_POTATOES.asItem());
                         output.accept(CmatdItem.POISONOUS_MASHED_POTATOES.asItem());
 

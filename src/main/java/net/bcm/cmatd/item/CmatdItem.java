@@ -281,39 +281,7 @@ public class CmatdItem{
                         }
                     });
 
-    public static final DeferredItem<Item> JAM_JAR =
-            ITEMS.register("jam_jar",
-                    () -> new Item(new Item.Properties()));
 
-    public static final DeferredItem<Item> SWEET_BERRY_JAM =
-            ITEMS.register("sweet_berry_jam",
-                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationModifier(1.0f)
-                            .usingConvertsTo(CmatdItem.JAM_JAR)
-                            .build())){
-                        @Override
-                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-                            tooltipComponents.add(
-                                    Component.translatable("desc.item.jam")
-                                            .withStyle(ChatFormatting.GRAY));
-                        }
-                    });
-
-    public static final DeferredItem<Item> GLOW_BERRY_JAM =
-            ITEMS.register("glow_berry_jam",
-                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
-                            .nutrition(2)
-                            .saturationModifier(1.0f)
-                            .usingConvertsTo(CmatdItem.JAM_JAR)
-                            .build())){
-                        @Override
-                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-                            tooltipComponents.add(
-                                    Component.translatable("desc.item.jam")
-                                            .withStyle(ChatFormatting.GRAY));
-                        }
-                    });
 
     // items
     // modules
@@ -541,5 +509,237 @@ public class CmatdItem{
                             .withStyle(ChatFormatting.GRAY));
                 }
             });
+
+    // jams
+    public static final DeferredItem<Item> JAM_JAR =
+            ITEMS.register("jam_jar",
+                    () -> new Item(new Item.Properties()));
+
+    public static final DeferredItem<Item> SWEET_BERRY_JAM =
+            ITEMS.register("sweet_berry_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(1.0f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> GLOW_BERRY_JAM =
+            ITEMS.register("glow_berry_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(1.0f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> CACTUS_JAM =
+            ITEMS.register("cactus_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(1.0f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> CHORUS_FRUIT_JAM =
+            ITEMS.register("chorus_fruit_jam",
+                    () -> new ChorusFruitItem(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.7f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> COCOA_JAM =
+            ITEMS.register("cocoa_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> GHAST_TEAR_JAM =
+            ITEMS.register("ghast_tear_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> GLISTERING_MELON_JAM =
+            ITEMS.register("glistering_melon_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.8f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> GLOW_INK_JAM =
+            ITEMS.register("glow_ink_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> INK_JAM =
+            ITEMS.register("ink_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> KELP_JAM =
+            ITEMS.register("kelp_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.5f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> MAGMA_CREAM_JAM =
+            ITEMS.register("magma_cream_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                        }
+                    });
+
+    public static final DeferredItem<Item> RAW_EGG_JAM =
+            ITEMS.register("raw_egg_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .effect(() -> new MobEffectInstance(MobEffects.HUNGER,600,0),0.3f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.raw_egg_jam")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                        }
+                    });
+
+    public static final DeferredItem<Item> SLIME_JAM =
+            ITEMS.register("slime_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .effect(() -> new MobEffectInstance(MobEffects.OOZING,10,0),0.01f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.slime_jam")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                        }
+                    });
+
+    public static final DeferredItem<Item> SPIDER_EYE_JAM =
+            ITEMS.register("spider_eye_jam",
+                    () -> new Item(new Item.Properties().food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1f)
+                            .usingConvertsTo(CmatdItem.JAM_JAR)
+                                    .effect(() -> new MobEffectInstance(
+                                            MobEffects.POISON
+                                    ),1.0f)
+                            .build())){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.jam")
+                                            .withStyle(ChatFormatting.GRAY));
+                            tooltipComponents.add(
+                                    Component.translatable("desc.item.spider_eye_jam")
+                                            .withStyle(ChatFormatting.GRAY)
+                            );
+                        }
+                    });
     // debug items
 }

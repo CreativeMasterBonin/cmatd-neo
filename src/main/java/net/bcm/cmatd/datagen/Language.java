@@ -133,6 +133,9 @@ public class Language extends LanguageProvider{
         this.add("desc.item.radioactive_horse_suit","Tough against blasts and protects from radiation");
         this.add("desc.item.radioactive_wolf_suit","Provides full protection from radiation");
         this.add("desc.item.custom_armor.unusable","Currently un-equippable by normal means");
+        this.add("desc.item.raw_egg_jam","Is this technically mayonnaise?");
+        this.add("desc.item.slime_jam","Sticky, gooey and bouncy");
+        this.add("desc.item.spider_eye_jam","Absolutely atrocious");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
@@ -243,10 +246,24 @@ public class Language extends LanguageProvider{
         // other items
         this.add(CmatdItem.MASHED_POTATOES.get(),"Mashed Potatoes");
         this.add((CmatdItem.POISONOUS_MASHED_POTATOES.get()),"Poisonous Mashed Potatoes");
+        this.add(CmatdItem.CMATD_WRENCH.get(), "CMATD Wrench");
+
+        // jam making items
         this.add((CmatdItem.JAM_JAR.get()),"Jam Jar");
         this.add((CmatdItem.SWEET_BERRY_JAM.get()),"Sweet Berry Jam");
         this.add((CmatdItem.GLOW_BERRY_JAM.get()),"Glow Berry Jam");
-        this.add(CmatdItem.CMATD_WRENCH.get(), "CMATD Wrench");
+        this.add((CmatdItem.CACTUS_JAM.get()),"Cactus Jam");
+        this.add((CmatdItem.CHORUS_FRUIT_JAM.get()),"Chorus Fruit Jam");
+        this.add((CmatdItem.COCOA_JAM.get()),"Cocoa Jam");
+        this.add((CmatdItem.GHAST_TEAR_JAM.get()),"Ghast Tear Jam");
+        this.add((CmatdItem.GLISTERING_MELON_JAM.get()),"Glistering Melon Jam");
+        this.add((CmatdItem.GLOW_INK_JAM.get()),"Glow Ink Jam");
+        this.add((CmatdItem.INK_JAM.get()),"Ink Jam");
+        this.add((CmatdItem.KELP_JAM.get()),"Kelp Jam");
+        this.add((CmatdItem.MAGMA_CREAM_JAM.get()),"Magma Cream Jam");
+        this.add((CmatdItem.RAW_EGG_JAM.get()),"Raw Egg Jam");
+        this.add((CmatdItem.SLIME_JAM.get()),"Slime Jam");
+        this.add((CmatdItem.SPIDER_EYE_JAM.get()),"Spider Eye Jam");
 
         // armors
         this.add(CmatdItem.RADIOACTIVE_SUIT_HEADGEAR.get(), "Radioactive Suit Headgear");

@@ -8,6 +8,7 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiRegistryAdapter;
 import dev.emi.emi.api.stack.EmiStack;
+import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.api.GasType;
 import net.bcm.cmatd.api.Registries;
 import net.bcm.cmatd.integration.emirecipe.EBlockToGasRecipe;
@@ -94,6 +95,80 @@ public class EMIntegration implements EmiPlugin {
                 Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
                 Ingredient.of(Items.SWEET_BERRIES),
                 CmatdItem.SWEET_BERRY_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("cactus_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.CACTUS),
+                CmatdItem.CACTUS_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("chorus_fruit_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.CHORUS_FRUIT),
+                CmatdItem.CHORUS_FRUIT_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("cocoa_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.COCOA_BEANS),
+                CmatdItem.COCOA_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("ghast_tear_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.GHAST_TEAR),
+                CmatdItem.GHAST_TEAR_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("glistering_melon_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.GLISTERING_MELON_SLICE),
+                CmatdItem.GLISTERING_MELON_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("glow_ink_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.GLOW_INK_SAC),
+                CmatdItem.GLOW_INK_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("ink_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.INK_SAC),
+                CmatdItem.INK_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("kelp_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.KELP),
+                CmatdItem.KELP_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("magma_cream_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.MAGMA_CREAM),
+                CmatdItem.MAGMA_CREAM_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("egg_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.EGG),
+                CmatdItem.RAW_EGG_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("slime_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.SLIME_BALL),
+                CmatdItem.SLIME_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("slime_jam_alt",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.SLIME_BLOCK),
+                CmatdItem.SLIME_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("spider_eye_jam",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.SPIDER_EYE),
+                CmatdItem.SPIDER_EYE_JAM.asItem()));
+
+        registry.addRecipe(new EJamMakingRecipe("spider_eye_jam_alt",
+                Ingredient.of(CmatdItem.JAM_JAR),Ingredient.of(Items.SUGAR),
+                Ingredient.of(Items.FERMENTED_SPIDER_EYE),
+                CmatdItem.SPIDER_EYE_JAM.asItem()));
+
+
+
+
 
         registry.addCategory(MASHER_CATEGORY);
         registry.addWorkstation(MASHER_CATEGORY,MASHER_STACK);
