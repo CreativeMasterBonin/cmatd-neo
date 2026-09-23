@@ -879,8 +879,8 @@ public class Recipe extends RecipeProvider{
 
     public static void tierUpgrade(ItemLike inputUpgradeOrOther, ItemLike catalyst, ItemLike outputUpgrade, RecipeOutput rc){
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC,outputUpgrade)
-                .define('m',inputUpgradeOrOther)
-                .define('k',catalyst)
+                .define('m',catalyst)
+                .define('k',inputUpgradeOrOther)
                 .pattern(" m ")
                 .pattern("mkm")
                 .pattern(" m ")

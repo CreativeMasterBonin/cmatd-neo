@@ -106,6 +106,11 @@ public class Cmatd {
                         output.accept(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE.asItem());
                         output.accept(CmatdItem.SUPERB_TIER_UPGRADE.asItem());
                         output.accept(CmatdItem.MAXIMUM_TIER_UPGRADE.asItem());
+                        output.accept(CmatdItem.SIXTH_TIER_UPGRADE.asItem());
+                        output.accept(CmatdItem.SEVENTH_TIER_UPGRADE.asItem());
+                        output.accept(CmatdItem.EIGHTH_TIER_UPGRADE.asItem());
+                        output.accept(CmatdItem.NINTH_TIER_UPGRADE.asItem());
+                        output.accept(CmatdItem.SUPERFLUOUS_TIER_UPGRADE.asItem());
 
                         // jams
                         output.accept(CmatdItem.JAM_JAR.asItem());

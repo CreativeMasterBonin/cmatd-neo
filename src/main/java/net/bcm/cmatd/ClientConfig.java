@@ -17,5 +17,9 @@ public class ClientConfig {
             .comment("Whether to silence the masher")
             .define("silence_masher",false);
 
+    /*public static final ModConfigSpec.BooleanValue SHOW_PLAYER_EARS = BUILDER
+            .comment("Show the player ears usually reserved for one account")
+            .define("show_player_ears",false);*/
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

@@ -93,6 +93,8 @@ public class Language extends LanguageProvider{
         this.add("tooltip.tier_upgrade.superb", "Superb");
         this.add("tooltip.tier_upgrade.maximum", "Maximum");
         this.add("tooltip.tier_upgrade.already_same", "Already same tier!");
+        this.add("tooltip.tier_upgrade.excess","This tier upgrade greatly enhances machines that accept excess tier upgrades");
+        this.add("tooltip.tier_upgrade.superfluous","Expensive, but significantly improves weaker starting tier machines");
 
         this.add("desc.item.jam", "Used as a coolant in the Food Reactor");
         this.add("desc.item.mashed_potato_like", "Used as fuel in the Food Reactor");
@@ -242,6 +244,11 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE.get(),"Tier Upgrade: Highly Advanced");
         this.add(CmatdItem.SUPERB_TIER_UPGRADE.get(),"Tier Upgrade: Superb");
         this.add(CmatdItem.MAXIMUM_TIER_UPGRADE.get(),"Tier Upgrade: Maximum");
+        this.add(CmatdItem.SIXTH_TIER_UPGRADE.get(),"Tier Upgrade: Sixth Excess");
+        this.add(CmatdItem.SEVENTH_TIER_UPGRADE.get(),"Tier Upgrade: Seventh Excess");
+        this.add(CmatdItem.EIGHTH_TIER_UPGRADE.get(),"Tier Upgrade: Eighth Excess");
+        this.add(CmatdItem.NINTH_TIER_UPGRADE.get(),"Tier Upgrade: Ninth Excess");
+        this.add(CmatdItem.SUPERFLUOUS_TIER_UPGRADE.get(),"Tier Upgrade: Superfluous");
 
         // other items
         this.add(CmatdItem.MASHED_POTATOES.get(),"Mashed Potatoes");
@@ -405,6 +412,8 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.radioactive_reactor_blows_up_when_too_hot.tooltip.tooltip","Whether the Radioactive Reactor blows up when too hot");
         this.add("cmatd.configuration.lightning_gen_max_receive_send.tooltip.tooltip","The max FE that can be inserted and extracted at a time");
         this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip.tooltip","Whether the Radioactive Reactor makes ambient sounds");
+        //this.add("cmatd.configuration.show_player_ears","Show Player Ears");
+        //this.add("cmatd.configuration.show_player_ears.tooltip","Show the player ears that is usually reserved for a certain account");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");

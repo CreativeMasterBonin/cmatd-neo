@@ -327,7 +327,7 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> ADVANCED_TIER_UPGRADE =
             ITEMS.register("advanced_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.UNCOMMON)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.IRON.getTierLevel(),
                                     MachineTier.IRON.getPowerCapacity(),
@@ -338,7 +338,7 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> HIGHLY_ADVANCED_TIER_UPGRADE =
             ITEMS.register("highly_advanced_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.UNCOMMON)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.DIAMOND.getTierLevel(),
                                     MachineTier.DIAMOND.getPowerCapacity(),
@@ -349,7 +349,7 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> SUPERB_TIER_UPGRADE =
             ITEMS.register("superb_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.UNCOMMON)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.NETHERITE.getTierLevel(),
                                     MachineTier.NETHERITE.getPowerCapacity(),
@@ -360,7 +360,7 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> MAXIMUM_TIER_UPGRADE =
             ITEMS.register("maximum_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.UNCOMMON)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.MAXIMUM.getTierLevel(),
                                     MachineTier.MAXIMUM.getPowerCapacity(),
@@ -371,58 +371,65 @@ public class CmatdItem{
 
     public static final DeferredItem<Item> SIXTH_TIER_UPGRADE =
             ITEMS.register("sixth_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.RARE)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.SIXTH_EXCESS.getTierLevel(),
                                     MachineTier.SIXTH_EXCESS.getPowerCapacity(),
                                     MachineTier.SIXTH_EXCESS.maxReceiveRate(),
                                     MachineTier.SIXTH_EXCESS.maxExtractRate(),
                                     MachineTier.SIXTH_EXCESS.getModulesSupport(),
-                                    MachineTier.SIXTH_EXCESS.getPowerGenRate()))));
+                                    MachineTier.SIXTH_EXCESS.getPowerGenRate())),true));
 
     public static final DeferredItem<Item> SEVENTH_TIER_UPGRADE =
             ITEMS.register("seventh_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.RARE)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.SEVENTH_EXCESS.getTierLevel(),
                                     MachineTier.SEVENTH_EXCESS.getPowerCapacity(),
                                     MachineTier.SEVENTH_EXCESS.maxReceiveRate(),
                                     MachineTier.SEVENTH_EXCESS.maxExtractRate(),
                                     MachineTier.SEVENTH_EXCESS.getModulesSupport(),
-                                    MachineTier.SEVENTH_EXCESS.getPowerGenRate()))));
+                                    MachineTier.SEVENTH_EXCESS.getPowerGenRate())),true));
 
     public static final DeferredItem<Item> EIGHTH_TIER_UPGRADE =
             ITEMS.register("eighth_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.RARE)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.EIGHTH_EXCESS.getTierLevel(),
                                     MachineTier.EIGHTH_EXCESS.getPowerCapacity(),
                                     MachineTier.EIGHTH_EXCESS.maxReceiveRate(),
                                     MachineTier.EIGHTH_EXCESS.maxExtractRate(),
                                     MachineTier.EIGHTH_EXCESS.getModulesSupport(),
-                                    MachineTier.EIGHTH_EXCESS.getPowerGenRate()))));
+                                    MachineTier.EIGHTH_EXCESS.getPowerGenRate())),true));
 
     public static final DeferredItem<Item> NINTH_TIER_UPGRADE =
             ITEMS.register("ninth_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.RARE)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.NINTH_EXCESS.getTierLevel(),
                                     MachineTier.NINTH_EXCESS.getPowerCapacity(),
                                     MachineTier.NINTH_EXCESS.maxReceiveRate(),
                                     MachineTier.NINTH_EXCESS.maxExtractRate(),
                                     MachineTier.NINTH_EXCESS.getModulesSupport(),
-                                    MachineTier.NINTH_EXCESS.getPowerGenRate()))));
+                                    MachineTier.NINTH_EXCESS.getPowerGenRate())),true));
 
     public static final DeferredItem<Item> SUPERFLUOUS_TIER_UPGRADE =
             ITEMS.register("superfluous_tier_upgrade",
-                    () -> new TierUpgrade(new Item.Properties()
+                    () -> new TierUpgrade(new Item.Properties().rarity(Rarity.EPIC)
                             .component(Components.MACHINE_TIER,new MachineTierComponent(
                                     MachineTier.SUPERFLUOUS.getTierLevel(),
                                     MachineTier.SUPERFLUOUS.getPowerCapacity(),
                                     MachineTier.SUPERFLUOUS.maxReceiveRate(),
                                     MachineTier.SUPERFLUOUS.maxExtractRate(),
                                     MachineTier.SUPERFLUOUS.getModulesSupport(),
-                                    MachineTier.SUPERFLUOUS.getPowerGenRate()))));
+                                    MachineTier.SUPERFLUOUS.getPowerGenRate())),true){
+                        @Override
+                        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+                            super.appendHoverText(stack,context,tooltipComponents,tooltipFlag);
+                            tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.superfluous")
+                                    .withStyle(ChatFormatting.GOLD));
+                        }
+                    });
 
 
 

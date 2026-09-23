@@ -25,8 +25,31 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import java.util.List;
 
 public class TierUpgrade extends Item{
+    public final boolean isExcessUpgrade; // whether the upgrade is not a standard upgrade from one to the next
+    public final int tierUpgradeLevel; // what level of tier upgrades this item is in (higher tiers unlock new functionality in machines)
+
     public TierUpgrade(Properties properties) {
         super(properties.fireResistant().stacksTo(1));
+        isExcessUpgrade = false;
+        tierUpgradeLevel = 0;
+    }
+
+    public TierUpgrade(Properties properties, boolean isExcessUpgrade) {
+        super(properties.fireResistant().stacksTo(1));
+        this.isExcessUpgrade = isExcessUpgrade;
+        tierUpgradeLevel = 0;
+    }
+
+    public TierUpgrade(Properties properties,int tierUpgradeLevel) {
+        super(properties.fireResistant().stacksTo(1));
+        this.isExcessUpgrade = false;
+        this.tierUpgradeLevel = tierUpgradeLevel;
+    }
+
+    public TierUpgrade(Properties properties, boolean isExcessUpgrade,int tierUpgradeLevel) {
+        super(properties.fireResistant().stacksTo(1));
+        this.isExcessUpgrade = isExcessUpgrade;
+        this.tierUpgradeLevel = tierUpgradeLevel;
     }
 
     @Override
@@ -54,9 +77,14 @@ public class TierUpgrade extends Item{
                     tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.maximum"));
                 }
                 default -> {
-                    tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.desc"));
-                    tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.unknown",
-                            stack.get(Components.MACHINE_TIER).getMachineTier()));
+                    if(isExcessUpgrade){
+                        tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.excess"));
+                    }
+                    else{
+                        tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.desc"));
+                        tooltipComponents.add(Component.translatable("tooltip.tier_upgrade.unknown",
+                                stack.get(Components.MACHINE_TIER).getMachineTier()));
+                    }
                 }
             }
         }
