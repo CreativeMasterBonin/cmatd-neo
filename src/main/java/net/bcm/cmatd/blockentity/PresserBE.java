@@ -145,7 +145,7 @@ public class PresserBE extends BlockEntity{
             nightUpgrade = tag.getBoolean("night_upgrade");
         }
         if(tag.contains("machine_tier")){
-            machineTier = Mth.clamp(tag.getInt("machine_tier"),1,4);
+            machineTier = Mth.clamp(tag.getInt("machine_tier"),1,9);
         }
     }
 

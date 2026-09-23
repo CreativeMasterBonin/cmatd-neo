@@ -41,9 +41,9 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
                 10,14,10,14);
 
         // process bar
-        int length = Mth.ceil(this.menu.processBits * 1.0F);
+        int length = (int)Utility.normalizeIntToFloatValue(Mth.ceil(this.menu.processBits * 1.0f),0,1,0,50);
         // alpha calculation
-        float alpha = Utility.normalizeIntToFloatValue(this.menu.processBits,0,50,0.0f,1.0f);
+        float alpha = Utility.normalizeIntToFloatValue(this.menu.processBits,0,Mth.clamp(this.menu.maxProcessBits <= 0 ? 50 : this.menu.maxProcessBits,1,50),0.0f,1.0f);
         // enable blending in the rendering system
         RenderSystem.enableBlend();
         // set the color for the next rendered thing
@@ -55,12 +55,12 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
         RenderSystem.disableBlend();
 
-        guiGraphics.blit(this.lockedSlotSprite,this.leftPos + 151,this.topPos + 25,0,0,
+        /*guiGraphics.blit(this.lockedSlotSprite,this.leftPos + 151,this.topPos + 25,0,0,
                 18,18,18,18);
         guiGraphics.blit(this.lockedSlotSprite,this.leftPos + 151,this.topPos + 25 + 18,0,0,
                 18,18,18,18);
         guiGraphics.blit(this.lockedSlotSprite,this.leftPos + 151,this.topPos + 25 + 18 + 18,0,0,
-                18,18,18,18);
+                18,18,18,18);*/
 
         float f = 1.0f - Mth.sin(Util.getMillis() / 360.0f) + 1.0f;
         // solar check
@@ -118,6 +118,11 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
                     guiGraphics.renderComponentTooltip(this.font,components,mouseX,mouseY);
                 }
             }
+        }
+        else if(mouseX >= leftPos + PROGRESS_BAR_X && mouseX < leftPos + PROGRESS_BAR_X + 50
+                && mouseY >= topPos + PROGRESS_BAR_Y && mouseY < topPos + PROGRESS_BAR_Y + 4){
+            List<Component> components = List.of(Component.translatable("menu.cmatd.machine.progress.value_with_max",this.menu.processBits,this.menu.maxProcessBits));
+            guiGraphics.renderComponentTooltip(this.font,components,mouseX,mouseY);
         }
         else{
             this.renderTooltip(guiGraphics, mouseX, mouseY);

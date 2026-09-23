@@ -1,13 +1,12 @@
 package net.bcm.cmatd;
 
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -331,5 +330,14 @@ public class Utility{
         float remainder = top % bottom;
 
         return offset + Math.abs((remainder) - numberRange); // this part finds the absolute value of the float, which requires a special built-in function, (it is not perfect in this context)
+    }
+
+    public static int countModulesInStack(ItemStack stack, int moduleType){
+        if(stack.has(Components.MODULE_TYPE)){
+            if(stack.get(Components.MODULE_TYPE).intValue() == moduleType){ // speed
+                return stack.getCount();
+            }
+        }
+        return 0;
     }
 }

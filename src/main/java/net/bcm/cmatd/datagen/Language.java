@@ -378,6 +378,8 @@ public class Language extends LanguageProvider{
         this.add("title.gas_amt_with_max","%s GU / %s GU");
         this.add("button.dump_gas","Dump");
         this.add("button.gas_tank.dump.desc","Dumps all gas (not radioactive) into the air");
+        this.add("menu.cmatd.machine.progress.value","Progress: %s");
+        this.add("menu.cmatd.machine.progress.value_with_max","Progress: %s / %s");
 
         // CMATD config
         // client config

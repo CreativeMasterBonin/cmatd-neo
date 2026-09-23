@@ -19,9 +19,10 @@ public class JamMakerMenu extends AbstractContainerMenu{
     public int processBits;
     public int solar;
     public int nightMode;
+    public int maxProcessBits;
 
     private int SLOT = 0;
-    private int SLOT_COUNT = 4;
+    private int SLOT_COUNT = 7;
 
     public JamMakerMenu(int id, Player player, BlockPos bp) {
         super(CmatdMenu.JAM_MAKER_MENU.get(),id);
@@ -62,6 +63,18 @@ public class JamMakerMenu extends AbstractContainerMenu{
                     nightMode = i;
                 }
             });
+            // max processing bits
+            this.addDataSlot(new DataSlot() {
+                @Override
+                public int get() {
+                    return jamMaker.maxProcessBits;
+                }
+
+                @Override
+                public void set(int i) {
+                    maxProcessBits = i;
+                }
+            });
         }
 
         // sugar slot
@@ -72,6 +85,12 @@ public class JamMakerMenu extends AbstractContainerMenu{
         this.addSlot(new SlotItemHandler(jamMaker.getItemHandler(),2,44,34));
         // output slot
         this.addSlot(new SlotItemHandler(jamMaker.getItemHandler(),3,120,34));
+
+        // module slots
+        this.addSlot(new SlotItemHandler(jamMaker.getItemHandler(),4,152,26));
+        this.addSlot(new SlotItemHandler(jamMaker.getItemHandler(),5,152,44));
+        this.addSlot(new SlotItemHandler(jamMaker.getItemHandler(),6,152,62));
+
         playerSlots(player);
     }
 
