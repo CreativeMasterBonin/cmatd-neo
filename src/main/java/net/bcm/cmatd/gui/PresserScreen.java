@@ -38,13 +38,13 @@ public class PresserScreen extends AbstractContainerScreen<PresserMenu> {
             guiGraphics.blit(this.progressBarFullBad,
                     this.leftPos + PROGRESS_BAR_X - 1, this.topPos + PROGRESS_BAR_Y - 1,
                     0, 0,
-                    length,34,length,34);
+                    length,34,18,34);
         }
         else{
             guiGraphics.blit(this.progressBarFull,
                     this.leftPos + PROGRESS_BAR_X - 1, this.topPos + PROGRESS_BAR_Y - 1,
                     0, 0,
-                    length, 34,length,34);
+                    length, 34,18,34);
         }
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
         RenderSystem.disableBlend();

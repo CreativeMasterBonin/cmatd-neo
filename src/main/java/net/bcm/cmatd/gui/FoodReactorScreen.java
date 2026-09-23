@@ -74,11 +74,13 @@ public class FoodReactorScreen extends AbstractContainerScreen<FoodReactorMenu> 
         /*float flicker = Mth.clamp((float)Mth.lerp(partialTick,0.02f,1.0f) - Mth.sin(Util.getMillis() / 320.0f - Mth.lerp(partialTick,(float)Math.random() * -20.0f,(float)Math.random() * 20.0f)) + (float)Mth.lerp(partialTick,0.09f,1.1f),
                 0.7f,1.0f);*/
 
+        int yPosTicks = (yPos + 32) - progressTicks;
+
         // enable blending in the rendering system
         RenderSystem.enableBlend();
         // set the color for the next rendered thing
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,alpha);
-        guiGraphics.blit(REACTOR_HEAT,this.leftPos + 72,(yPos + 32) - progressTicks,
+        guiGraphics.blit(REACTOR_HEAT,this.leftPos + 72,yPosTicks,
                 0,0,
                 32,32,progressTicks,
                 32,32);

@@ -41,7 +41,7 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
                 10,14,10,14);
 
         // process bar
-        int length = (int)Utility.normalizeIntToFloatValue(Mth.ceil(this.menu.processBits * 1.0f),0,1,0,50);
+        int length = Mth.ceil(this.menu.processBits * 1.0f);
         // alpha calculation
         float alpha = Utility.normalizeIntToFloatValue(this.menu.processBits,0,Mth.clamp(this.menu.maxProcessBits <= 0 ? 50 : this.menu.maxProcessBits,1,50),0.0f,1.0f);
         // enable blending in the rendering system
@@ -51,7 +51,7 @@ public class JamMakerScreen extends AbstractContainerScreen<JamMakerMenu> {
         guiGraphics.blit(this.progressBarFull,
                 this.leftPos + PROGRESS_BAR_X - 1, this.topPos + PROGRESS_BAR_Y - 1,
                 0, 0,
-                length, 4,length,4);
+                length, 4,50,4);
         RenderSystem.setShaderColor(1.0f,1.0f,1.0f,1.0f);
         RenderSystem.disableBlend();
 
