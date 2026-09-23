@@ -330,9 +330,9 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
         this.energyStorage.setEnergy(energyStorage.getEnergyStored() - ((16 - effGlobal) + this.machine_tier));
     }
 
-    int effGlobal = 0;
-    int itemsPlusGlobal = 0;
-    boolean operating = false;
+    public int effGlobal = 0;
+    public int itemsPlusGlobal = 0;
+    public boolean operating = false;
 
     private int calculateAdditionalItemsModules(){
         itemsPlusGlobal = 0;

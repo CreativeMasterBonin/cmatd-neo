@@ -93,6 +93,7 @@ public class FoodReactorMultiblock extends BlockEntity {
     public boolean multiblockFormed = false;
     public int progress;
     private final int ticksToWaitOperation = 10;
+    public int machine_tier = 0;
 
     public final FluidContainerData fluidContainer;
 
@@ -418,13 +419,37 @@ public class FoodReactorMultiblock extends BlockEntity {
     }
 
     public void checkMultiblockForm(){
+        if(level != null){
+            if(!level.hasChunkAt(getBlockPos())){
+                return;
+            }
+        }
         int validBlockCount = 0;
         int blocksToBeReplaced = 0;
         BlockPos relativePos = getBlockPos();
+
+        int clampedNegativeValue = Mth.clamp((3 * (Mth.clamp(machine_tier,1,9))),3,5);
+
+        int requiredCount = 0;
         if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
-            for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
-                for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
-                    for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
+            for(int x = relativePos.getX() - clampedNegativeValue; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + (2 * (Mth.clamp(machine_tier, 1, 9))); y++){
+                    for(int z = relativePos.getZ() - clampedNegativeValue; z < relativePos.getZ() + 1; z++){
+                        if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                            requiredCount--;
+                        }
+                        else{
+                            requiredCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
+            for(int x = relativePos.getX() - clampedNegativeValue; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + (2 * (Mth.clamp(machine_tier,1,9))); y++){
+                    for(int z = relativePos.getZ() - clampedNegativeValue; z < relativePos.getZ() + 1; z++){
                         boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
                         if(isIron){
                             validBlockCount++;
@@ -446,18 +471,20 @@ public class FoodReactorMultiblock extends BlockEntity {
                 }
             }
             // all blocks minus the controller
-            if(validBlockCount == 47 && blocksToBeReplaced == 0) {
+            if(validBlockCount >= requiredCount && blocksToBeReplaced == 0) {
                 if(!multiblockFormed){
                     multiblockFormed = true;
                     // this sound is for accessibility, so do not silence it at all
                     getLevel().playSound(null,getBlockPos(),SoundEvents.IRON_GOLEM_DEATH,SoundSource.BLOCKS,1.0f,0.95f);
-                    for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
-                        for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
-                            for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
-                                if(level instanceof ServerLevel){
-                                    ((ServerLevel) level).sendParticles(ParticleTypes.GUST,
-                                            x + 0.5,y + 0.5,z + 0.5,
-                                            1,0,0,0,0);
+                    for(int x = relativePos.getX() - clampedNegativeValue; x < relativePos.getX() + 1; x++) {
+                        for (int y = relativePos.getY() - 1; y < relativePos.getY() + (2 * (Mth.clamp(machine_tier, 1, 9))); y++) {
+                            for (int z = relativePos.getZ() - clampedNegativeValue; z < relativePos.getZ() + 1; z++) {
+                                if(level instanceof ServerLevel serverLevel){
+                                    if(serverLevel.getRandom().nextIntBetweenInclusive(0,100) <= 3){
+                                        ((ServerLevel) level).sendParticles(ParticleTypes.CLOUD,
+                                                x + 0.5,y + 0.5,z + 0.5,
+                                                1,0,0,0,0);
+                                    }
                                 }
                             }
                         }
@@ -476,14 +503,38 @@ public class FoodReactorMultiblock extends BlockEntity {
     public int tempBlocksToBeReplaced = 0;
 
     public boolean onlyCheckMultiblockFormNoUpdate(){
+        if(level != null){
+            if(!level.hasChunkAt(getBlockPos())){
+                return false;
+            }
+        }
         int validBlockCount = 0;
         int blocksToBeReplaced = 0;
 
+        int requiredCount = 0;
+
+        int clampedNegativeValue = Mth.clamp((3 * (Mth.clamp(machine_tier,1,9))),3,5);
+
         BlockPos relativePos = getBlockPos();
         if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
-            for(int x = relativePos.getX() - 3; x < relativePos.getX() + 1; x++){
-                for(int y = relativePos.getY() - 1; y < relativePos.getY() + 2; y++){
-                    for(int z = relativePos.getZ() - 3; z < relativePos.getZ() + 1; z++){
+            for(int x = relativePos.getX() - clampedNegativeValue; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + (2 * (Mth.clamp(machine_tier, 1, 9))); y++){
+                    for(int z = relativePos.getZ() - clampedNegativeValue; z < relativePos.getZ() + 1; z++){
+                        if(level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
+                            requiredCount--;
+                        }
+                        else{
+                            requiredCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(this.getBlockState().getBlock() instanceof FoodReactorBlock){
+            for(int x = relativePos.getX() - clampedNegativeValue; x < relativePos.getX() + 1; x++){
+                for(int y = relativePos.getY() - 1; y < relativePos.getY() + (2 * (Mth.clamp(machine_tier, 1, 9))); y++){
+                    for(int z = relativePos.getZ() - clampedNegativeValue; z < relativePos.getZ() + 1; z++){
                         boolean isIron = level.getBlockState(new BlockPos(x,y,z)).is(Tag.VALID_FOOD_REACTOR_CASINGS);
                         if(isIron){
                             validBlockCount++;
@@ -503,7 +554,7 @@ public class FoodReactorMultiblock extends BlockEntity {
         tempValidBlockCount = validBlockCount;
         tempBlocksToBeReplaced = blocksToBeReplaced;
         // all blocks minus the controller
-        if(validBlockCount == 47 && blocksToBeReplaced == 0) {
+        if(validBlockCount >= requiredCount && blocksToBeReplaced == 0) {
             return true;
         }
         else{
@@ -543,6 +594,7 @@ public class FoodReactorMultiblock extends BlockEntity {
 
         tag.putInt("fluid_amount",fluidAmount);
         tag.putString("fluid",fluid.getFluid().toString());
+        tag.putInt("machine_tier",machine_tier);
     }
 
     @Override
@@ -560,10 +612,21 @@ public class FoodReactorMultiblock extends BlockEntity {
             }
         }
 
-        energyStorage.setEnergy(tag.getInt("energy"));
-        ticks = tag.getInt("ticks");
-        multiblockFormed = tag.getBoolean("multiblock_formed");
-        progress = tag.getInt("progress");
+        if(tag.contains("energy")){
+            energyStorage.setEnergy(tag.getInt("energy"));
+        }
+        if(tag.contains("ticks")){
+            ticks = tag.getInt("ticks");
+        }
+        if(tag.contains("multiblock_formed")){
+            multiblockFormed = tag.getBoolean("multiblock_formed");
+        }
+        if(tag.contains("progress")){
+            progress = tag.getInt("progress");
+        }
+        if(tag.contains("machine_tier")){
+            machine_tier = tag.getInt("machine_tier");
+        }
 
         if(tag.getString("fluid").isBlank() || tag.getString("fluid").isEmpty() || tag.getString("fluid").equals("minecraft:empty")){
             return;

@@ -7,13 +7,15 @@ import net.bcm.cmatd.CmatdClientActionHandler;
 import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.blockentity.BaseEnergyMakerBE;
 import net.bcm.cmatd.gui.BaseEnergyMakerMenu;
+import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -81,15 +83,40 @@ public class BaseEnergyMaker extends Block implements EntityBlock{
             return;
         }
         BaseEnergyMakerBE be = (BaseEnergyMakerBE)level.getBlockEntity(pos);
-        if(be instanceof BaseEnergyMakerBE){
+        if(be instanceof BaseEnergyMakerBE baseEnergyMakerBE){
             Containers.dropContents(level,pos,be.getItemStackList());
+            if(baseEnergyMakerBE.silenced){
+                Containers.dropItemStack(level,pos.getX(),pos.getY(),pos.getZ(),new ItemStack(CmatdItem.SILENCING_MODULE.asItem()));
+            }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if(level.isClientSide()){
+            if(stack.is(CmatdItem.SILENCING_MODULE)){
+                player.playSound(SoundEvents.WOOL_BREAK,0.75f,1.0f);
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+        else{
+            if(stack.is(CmatdItem.SILENCING_MODULE)){
+                if(level instanceof ServerLevel serverLevel){
+                    if(serverLevel.getBlockEntity(pos) instanceof BaseEnergyMakerBE energyMakerBE){
+                        energyMakerBE.silenced = true;
+                        energyMakerBE.setChanged();
+                        return ItemInteractionResult.SUCCESS;
+                    }
+                }
+            }
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof BaseEnergyMakerBE) {
                 MenuProvider containerProvider = new MenuProvider() {
@@ -128,7 +155,7 @@ public class BaseEnergyMaker extends Block implements EntityBlock{
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if(level.isClientSide){
+        if(level.isClientSide()){
             return null;
         }
         else{

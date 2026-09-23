@@ -2,10 +2,7 @@ package net.bcm.cmatd.item;
 
 import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.Components;
-import net.bcm.cmatd.blockentity.BaseCobbleMakerBE;
-import net.bcm.cmatd.blockentity.JamMakerBE;
-import net.bcm.cmatd.blockentity.PresserBE;
-import net.bcm.cmatd.blockentity.TieredMachine;
+import net.bcm.cmatd.blockentity.*;
 import net.bcm.cmatd.network.BaseCobbleMakerTierUpdatePayload;
 import net.bcm.cmatd.network.MachineTierUpgradePayload;
 import net.bcm.cmatd.network.UpdateNightModePayload;
@@ -183,7 +180,28 @@ public class TierUpgrade extends Item{
                         }
                         return InteractionResult.SUCCESS;
                     }
-                }// mass upgrade tiered machines
+                }
+                else if(be instanceof BaseEnergyMakerBE energyMakerBE){
+                    if(energyMakerBE.machine_tier < tier){
+                        if(context.getLevel().isClientSide()){
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new MachineTierUpgradePayload(clickedPos,tier));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                else if(be instanceof FoodReactorMultiblock foodReactor){
+                    if(foodReactor.machine_tier < tier){
+                        if(context.getLevel().isClientSide()){
+                            context.getPlayer().playSound(SoundEvents.SMITHING_TABLE_USE,0.75f,1.0f);
+                            PacketDistributor.sendToServer(new MachineTierUpgradePayload(clickedPos,tier));
+                            return InteractionResult.SUCCESS;
+                        }
+                        return InteractionResult.SUCCESS;
+                    }
+                }
+                // mass upgrade tiered machines
                 else if(be instanceof TieredMachine tieredMachine){
                     if(tieredMachine.machineTier < tier){
                         if(context.getLevel().isClientSide()){

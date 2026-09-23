@@ -160,7 +160,10 @@ public class Language extends LanguageProvider{
         this.add("integration.data.reactor_coolant_with_max","Reactor Coolant: %s / %s");
         this.add("integration.data.reactor_sealed","Reactor Is Sealed");
         this.add("integration.data.reactor_unsealed","Reactor Is Not Sealed");
+        this.add("integration.data.burn_time_left","Burn Time Left: %s");
         this.add("integration.data.progress","Progress: %s");
+        this.add("integration.data.operating","Operational");
+        this.add("integration.data.inoperable","Inoperable");
 
         // key mappings
         this.add("key_mapping.cmatd.show_item_description","Show extra item descriptions");

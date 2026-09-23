@@ -151,6 +151,7 @@ public enum ReactorComponentProvider implements IBlockComponentProvider, IServer
             compoundTag.putString("gas_id",radioactiveReactor.wasteGasTank.getGasStack().getGas().toString());
             compoundTag.putInt("gas_amount",radioactiveReactor.wasteGasTank.getGasStack().getAmount());
             compoundTag.putInt("max_gas_amount",radioactiveReactor.wasteGasTank.getCapacity());
+            compoundTag.putInt("progress",radioactiveReactor.processBits);
         }
     }
 

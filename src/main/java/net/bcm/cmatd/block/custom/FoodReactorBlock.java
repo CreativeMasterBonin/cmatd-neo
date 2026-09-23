@@ -5,6 +5,7 @@ import net.bcm.cmatd.Cmatd;
 import net.bcm.cmatd.CmatdClient;
 import net.bcm.cmatd.CmatdClientActionHandler;
 import net.bcm.cmatd.Utility;
+import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.gui.FoodReactorMenu;
 import net.bcm.cmatd.network.ReactorWrenchUpdate;
 import net.minecraft.ChatFormatting;
@@ -77,7 +78,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof FoodReactorMultiblock) {
                 MenuProvider containerProvider = new MenuProvider() {
@@ -103,12 +104,11 @@ public class FoodReactorBlock extends BaseEntityBlock{
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if(level.isClientSide){
+        if(level.isClientSide()){
             if(stack.isEmpty()){
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
-            //
-            if(stack.is(Tags.Items.TOOLS_WRENCH)){
+            else if(stack.is(Tags.Items.TOOLS_WRENCH)){
                 try{
                     PacketDistributor.sendToServer(new ReactorWrenchUpdate(pos));
                     return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
@@ -117,6 +117,20 @@ public class FoodReactorBlock extends BaseEntityBlock{
                     Cmatd.getLogger().error("Food Reactor error at: {}! Error: {}", pos.toShortString(), e.getMessage());
                     return ItemInteractionResult.FAIL;
                 }
+            }
+            else if(stack.is(Tag.TIER_UPGRADES)){
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+        else{
+            if(stack.isEmpty()){
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
+            else if(stack.is(Tags.Items.TOOLS_WRENCH)){
+                return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+            }
+            else if(stack.is(Tag.TIER_UPGRADES)){
+                return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;

@@ -76,7 +76,9 @@ public class BaseEnergyMakerBE extends BlockEntity implements MenuProvider {
 
     private int burnTime;
 
-    private int machine_tier = 0;
+    public int machine_tier = 0;
+
+    public boolean silenced = false;
 
     public int getBurnTime(){
         return burnTime;
@@ -219,6 +221,7 @@ public class BaseEnergyMakerBE extends BlockEntity implements MenuProvider {
         tag.putInt("machine_tier",machine_tier);
         tag.putInt("energy",energyStorage.getEnergyStored());
         tag.putInt("burn_time",burnTime);
+        tag.putBoolean("silenced",silenced);
     }
 
     @Override
@@ -227,13 +230,18 @@ public class BaseEnergyMakerBE extends BlockEntity implements MenuProvider {
         this.itemList = NonNullList.withSize(1, ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag,this.itemList,registries);
         if(tag.contains("machine_tier")){
-            tag.getInt("machine_tier");
+            machine_tier = tag.getInt("machine_tier");
         }
 
         if(tag.contains("energy")){
             energyStorage.setEnergy(tag.getInt("energy"));
         }
-        burnTime = tag.getInt("burn_time");
+        if(tag.contains("burn_time")){
+            burnTime = tag.getInt("burn_time");
+        }
+        if(tag.getBoolean("silenced")){
+            silenced = tag.getBoolean("silenced");
+        }
     }
 
     public BlockEntity getBlockEntity(){

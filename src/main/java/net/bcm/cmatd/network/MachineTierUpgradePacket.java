@@ -1,8 +1,6 @@
 package net.bcm.cmatd.network;
 
-import net.bcm.cmatd.blockentity.JamMakerBE;
-import net.bcm.cmatd.blockentity.PresserBE;
-import net.bcm.cmatd.blockentity.TieredMachine;
+import net.bcm.cmatd.blockentity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -34,14 +32,29 @@ public class MachineTierUpgradePacket{
                 jamMakerBE.updateBlock();
                 return;
             }
-            else if(level.getBlockEntity(payload.position()) instanceof PresserBE presserBE){
-                if(!presserBE.nightUpgrade){
+            else if(level.getBlockEntity(payload.position()) instanceof PresserBE presserBE) {
+                if (!presserBE.nightUpgrade) {
                     presserBE.nightUpgrade = true;
                 }
                 presserBE.machineTier = payload.tierToUpgradeTo();
                 presserBE.updateBlock();
                 return;
-            } // for any machines specifically capable of mass upgrading tiers
+            }
+            else if(level.getBlockEntity(payload.position()) instanceof BaseEnergyMakerBE energyMakerBE){
+                if(energyMakerBE.machine_tier < payload.tierToUpgradeTo()){
+                    energyMakerBE.upgradeToTier(payload.tierToUpgradeTo());
+                    energyMakerBE.setChanged();
+                    return;
+                }
+            }
+            else if(level.getBlockEntity(payload.position()) instanceof FoodReactorMultiblock foodReactor){
+                if(foodReactor.machine_tier < payload.tierToUpgradeTo()){
+                    foodReactor.machine_tier = payload.tierToUpgradeTo();
+                    foodReactor.setChanged();
+                    return;
+                }
+            }
+            // for any machines specifically capable of mass upgrading tiers
             else if(level.getBlockEntity(payload.position()) instanceof TieredMachine tieredMachine){
                 if(!(tieredMachine.machineTier >= payload.tierToUpgradeTo())){
                     tieredMachine.machineTier = payload.tierToUpgradeTo();

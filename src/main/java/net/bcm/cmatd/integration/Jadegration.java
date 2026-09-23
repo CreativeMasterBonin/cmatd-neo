@@ -22,8 +22,10 @@ public class Jadegration implements IWailaPlugin {
         registration.registerBlockDataProvider(RotationalValueComponentProvider.INSTANCE,RotationalInductionGenerator.class);
         registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, JamMakerBE.class);
         registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, PresserBE.class);
-        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE,FoodReactorMultiblock.class);
-        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE,RadioactiveReactor.class);
+        registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, BaseCobbleMakerBE.class);
+        registration.registerBlockDataProvider(MachineComponentProvider.INSTANCE, BaseEnergyMakerBE.class);
+        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE, FoodReactorMultiblock.class);
+        registration.registerBlockDataProvider(ReactorComponentProvider.INSTANCE, RadioactiveReactor.class);
     }
 
     @Override
@@ -33,6 +35,8 @@ public class Jadegration implements IWailaPlugin {
         registration.registerBlockComponent(RotationalValueComponentProvider.INSTANCE, RotationalInductionGeneratorBlock.class);
         registration.registerBlockComponent(MachineComponentProvider.INSTANCE, JamMaker.class);
         registration.registerBlockComponent(MachineComponentProvider.INSTANCE, Presser.class);
+        registration.registerBlockComponent(MachineComponentProvider.INSTANCE, BaseCobbleMaker.class);
+        registration.registerBlockComponent(MachineComponentProvider.INSTANCE, BaseEnergyMaker.class);
         registration.registerBlockComponent(ReactorComponentProvider.INSTANCE, FoodReactorBlock.class);
         registration.registerBlockComponent(ReactorComponentProvider.INSTANCE, RadioactiveReactorBlock.class);
     }
