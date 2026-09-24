@@ -3,7 +3,6 @@ package net.bcm.cmatd.block.custom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.bcm.cmatd.Components;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
@@ -12,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -78,6 +78,16 @@ public class RadioactiveBlock extends Block {
                             }
                             if(!abstractHorse.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
                                 abstractHorse.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
+                            }
+                        }
+                    }
+                    else if(livingEntity instanceof TamableAnimal tamableAnimal){ // for all tamable animals that need protection from radiation
+                        if(!tamableAnimal.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
+                            if(!tamableAnimal.hasEffect(MobEffects.WEAKNESS)){
+                                tamableAnimal.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1,true,false));
+                            }
+                            if(!tamableAnimal.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
+                                tamableAnimal.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
                             }
                         }
                     }

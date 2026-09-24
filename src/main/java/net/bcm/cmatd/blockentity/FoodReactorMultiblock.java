@@ -26,10 +26,8 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.EnergyStorage;
@@ -144,7 +142,7 @@ public class FoodReactorMultiblock extends BlockEntity {
             ItemStack module1 = itemStackHandler.getStackInSlot(3);
             ItemStack module2 = itemStackHandler.getStackInSlot(4);
             ItemStack module3 = itemStackHandler.getStackInSlot(5);
-            if(ticks % 80 == 0){
+            if(ticks % ServerConfig.FOOD_REACTOR_CHECK_MULTIBLOCK_FORMATION_TICKS.getAsInt() == 0){
                 checkMultiblockForm();
             }
             ItemStack coolant = itemStackHandler.getStackInSlot(0);
@@ -460,10 +458,12 @@ public class FoodReactorMultiblock extends BlockEntity {
                         else{
                             if(!level.getBlockState(new BlockPos(x,y,z)).is(CmatdBlock.FOOD_REACTOR_MULTIBLOCK)){
                                 blocksToBeReplaced++;
-                                if(level instanceof ServerLevel){
-                                    ((ServerLevel) level).sendParticles(ParticleTypes.DRIPPING_LAVA,
-                                            x + 0.5,y + 0.5,z + 0.5,
-                                            1,0,0,0,0);
+                                if(level instanceof ServerLevel serverLevel){
+                                    if((x + y + z) % 2 == 0){
+                                        ((ServerLevel) level).sendParticles(ParticleTypes.DRIPPING_LAVA,
+                                                x + 0.5,y + 0.5,z + 0.5,
+                                                1,0,0,0,0);
+                                    }
                                 }
                             }
                         }

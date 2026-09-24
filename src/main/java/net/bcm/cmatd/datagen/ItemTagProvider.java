@@ -153,6 +153,7 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem())
                 .add(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem())
                 .add(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem())
+                .add(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem())
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_mask"))
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_gown"))
                 .addOptional(ResourceLocation.parse("mekanism:hazmat_pants"))

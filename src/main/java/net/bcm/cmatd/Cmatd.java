@@ -154,6 +154,7 @@ public class Cmatd {
                         output.accept(CmatdItem.RADIOACTIVE_SUIT_BOOTS.asItem());
                         output.accept(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem());
                         output.accept(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem());
+                        output.accept(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem()); // general use shielding from radiation
 
                         output.accept(CmatdItem.IRON_DUST.asItem());
                         output.accept(CmatdItem.GOLD_DUST.asItem());

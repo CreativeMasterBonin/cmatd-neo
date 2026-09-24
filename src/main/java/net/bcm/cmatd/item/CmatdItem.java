@@ -574,6 +574,8 @@ public class CmatdItem{
                             .withStyle(ChatFormatting.GRAY));
                 }
             });
+    public static final DeferredItem<Item> RADIOACTIVE_PROTECTION_BARRIER = ITEMS.register("radioactive_protection_barrier",
+            () -> new RadioactiveProtectionBarrier(new Item.Properties()));
 
     // jams
     public static final DeferredItem<Item> JAM_JAR =

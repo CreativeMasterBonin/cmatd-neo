@@ -107,9 +107,11 @@ public class ItemModel extends ItemModelProvider{
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_BODYWEAR);
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_PANTS);
         trimmedArmorItem(CmatdItem.RADIOACTIVE_SUIT_BOOTS);
-        // horse armors
+        // animal armors
         defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_HORSE_SUIT.asItem());
         defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_WOLF_SUIT.asItem());
+        // other radioactive protections
+        defaultCustomSimpleItem(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem());
 
 
         // jam making items

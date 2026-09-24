@@ -20,20 +20,22 @@ public class ReactorWrenchUpdatePacket {
 
         if (level.isLoaded(message.pos())) {
             if (level.getBlockEntity(message.pos()) instanceof FoodReactorMultiblock be) {
-                be.checkMultiblockForm();
-                be.setChanged();
-                if(!be.onlyCheckMultiblockFormNoUpdate()){
-                    player.displayClientMessage(Component
-                                    .translatable("message.multiblock.unformed_with_number_type",
-                                            be.tempBlocksToBeReplaced,
-                                            Tag.VALID_FOOD_REACTOR_CASINGS.location().toString()),
-                            true);
-                }
-                else{
-                    player.displayClientMessage(Component
-                                    .translatable("message.multiblock.formed_successfully",
-                                            message.pos().toShortString()),
-                            true);
+                if(!be.multiblockFormed){
+                    be.checkMultiblockForm();
+                    be.setChanged();
+                    if(!be.onlyCheckMultiblockFormNoUpdate()){
+                        player.displayClientMessage(Component
+                                        .translatable("message.multiblock.unformed_with_number_type",
+                                                be.tempBlocksToBeReplaced,
+                                                Tag.VALID_FOOD_REACTOR_CASINGS.location().toString()),
+                                true);
+                    }
+                    else{
+                        player.displayClientMessage(Component
+                                        .translatable("message.multiblock.formed_successfully",
+                                                message.pos().toShortString()),
+                                true);
+                    }
                 }
             }
             else if(level.getBlockEntity(message.pos()) instanceof RadioactiveReactor reactor){

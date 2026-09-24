@@ -77,7 +77,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof FoodReactorMultiblock) {
@@ -103,7 +103,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if(level.isClientSide()){
             if(stack.isEmpty()){
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -114,7 +114,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
                     return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
                 }
                 catch (Exception e){
-                    Cmatd.getLogger().error("Food Reactor error at: {}! Error: {}", pos.toShortString(), e.getMessage());
+                    Cmatd.getLogger().error("FoodReactorBlock error at: {}! Error: {}", pos.toShortString(), e.getMessage());
                     return ItemInteractionResult.FAIL;
                 }
             }
@@ -137,7 +137,7 @@ public class FoodReactorBlock extends BaseEntityBlock{
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (newState.is(state.getBlock())){
             return;
         }

@@ -7,7 +7,6 @@ import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.api.*;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.datagen.Tag;
-import net.bcm.cmatd.fluid.CmatdFluid;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +23,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -245,6 +245,7 @@ public class RadioactiveReactor extends TieredMachine{
     public GasTank getWasteGasTank(){return this.wasteGasTank;}
     public FluidTank getWasteConvertedToFluidTank(){return this.wasteConversionToFluidTank;}
     // this tank is not actually used, but is updated anyway
+    @Deprecated
     public final FluidTank wasteConversionToFluidTank = new FluidTank(1000000){
         @Override
         protected void onContentsChanged() {
@@ -503,6 +504,7 @@ public class RadioactiveReactor extends TieredMachine{
                             )
                     );
 
+                    // protect yourself and your animal friends!
                     for(LivingEntity livingEntity : entities){
                         if(livingEntity instanceof Wolf wolf){
                             if(!wolf.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
@@ -522,6 +524,22 @@ public class RadioactiveReactor extends TieredMachine{
                         }
                         else if(livingEntity instanceof AbstractHorse abstractHorse){
                             if(!abstractHorse.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
+                                if(!livingEntity.hasEffect(MobEffects.POISON)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                                }
+                                if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                }
+                                if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                                }
+                                if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                                    livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                                }
+                            }
+                        }
+                        else if(livingEntity instanceof TamableAnimal tamableAnimal){ // for all generic tamable animals that may need to be protected
+                            if(!tamableAnimal.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem())){
                                 if(!livingEntity.hasEffect(MobEffects.POISON)){
                                     livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
                                 }
@@ -931,6 +949,7 @@ public class RadioactiveReactor extends TieredMachine{
     }
 
     // access in 3d what the required pattern is for reference
+    // does not account for sealant structure
     @SuppressWarnings("unused")
     public BlockPattern multiBlockPattern(){
         BlockPattern reactorPattern =
@@ -1124,17 +1143,25 @@ public class RadioactiveReactor extends TieredMachine{
 
             // divide by the amount of efficiency modules to speed up production of power, at a cost
             if(processBits >= (int)(processBitsToProduceAt / Mth.clamp(efficiencyModules,1,20))){
+                // the fluid tank is deprecated
+                if(!wasteConversionToFluidTank.isEmpty()){
+                    wasteConversionToFluidTank.setFluid(FluidStack.EMPTY);
+                }
                 if(!getEnergyStorage().isSaturatedEnergy() && getWasteGasTank().getGasAmount() < getWasteGasTank().getCapacity()){
                     // we do not want energy to be multiplied by zero with no modules installed, so add 1
                     getEnergyStorage().setEnergy(getEnergyStorage().getEnergyStored() + producedOutputNumber * (1 + (doubleOutputModules + tripleOutputModules)));
                     if(!wasteGasTank.getGasStack().isEmpty()){
-                        wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (producedOutputNumber / (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
-                        wasteConversionToFluidTank.setFluid(new FluidStack(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),wasteGasTank.getGasAmount())); // DO NOT ACCESS, this is not used
+                        if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_WASTE.getAsBoolean()){
+                            wasteGasTank.setGas(new GasStack(wasteGasTank.getGasStack().getGas(),Mth.clamp(wasteGasTank.getGasAmount() + (producedOutputNumber / (1 + efficiencyModules)),0,wasteGasTank.getCapacity())),true);
+                        }
+                        //wasteConversionToFluidTank.setFluid(new FluidStack(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),wasteGasTank.getGasAmount())); // DO NOT ACCESS, this is not used
                         wasteGasTank.update();
                     }
                     else{
-                        wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,producedOutputNumber / (1 + efficiencyModules)),true);
-                        wasteConversionToFluidTank.setFluid(new FluidStack(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),wasteGasTank.getGasAmount())); // DO NOT ACCESS, this is not used
+                        if(ServerConfig.RADIOACTIVE_REACTOR_MAKES_WASTE.getAsBoolean()){
+                            wasteGasTank.setGas(new GasStack(Gases.RADIOACTIVE_WASTE,producedOutputNumber / (1 + efficiencyModules)),true);
+                        }
+                        //wasteConversionToFluidTank.setFluid(new FluidStack(CmatdFluid.RADIOACTIVE_WASTE_FLUID_SOURCE.get(),wasteGasTank.getGasAmount())); // DO NOT ACCESS, this is not used
                         wasteGasTank.update();
                     }
                     processBits = 0;

@@ -138,6 +138,7 @@ public class Language extends LanguageProvider{
         this.add("desc.item.raw_egg_jam","Is this technically mayonnaise?");
         this.add("desc.item.slime_jam","Sticky, gooey and bouncy");
         this.add("desc.item.spider_eye_jam","Absolutely atrocious");
+        this.add("desc.item.radioactive_protection_barrier","Protects tamable animals from radiation that normally cannot wear armor");
 
         // others
         this.add("message.multiblock.unformed_with_number_type","Missing blocks: %s of type %s");
@@ -282,6 +283,8 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.RADIOACTIVE_SUIT_BOOTS.get(), "Radioactive Suit Boots");
         this.add(CmatdItem.RADIOACTIVE_HORSE_SUIT.get(), "Radioactive Horse Suit");
         this.add(CmatdItem.RADIOACTIVE_WOLF_SUIT.get(), "Radioactive Wolf Suit");
+        // other radioactive protections
+        this.add(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.get(), "Radioactive Protection Barrier");
 
         // electronic devices
         this.add(CmatdItem.RESISTOR.get(),"Resistor");
@@ -419,6 +422,10 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip.tooltip","Whether the Radioactive Reactor makes ambient sounds");
         //this.add("cmatd.configuration.show_player_ears","Show Player Ears");
         //this.add("cmatd.configuration.show_player_ears.tooltip","Show the player ears that is usually reserved for a certain account");
+        this.add("cmatd.configuration.food_reactor_multiblock_formation_check_ticks","Check Food Reactor Multiblock Formation Ticks");
+        this.add("cmatd.configuration.food_reactor_multiblock_formation_check_ticks.tooltip","The interval (in ticks) to check the formation of the Food Reactor");
+        this.add("cmatd.configuration.radioactive_reactor_makes_waste","Radioactive Reactor Makes Waste");
+        this.add("cmatd.configuration.radioactive_reactor_makes_waste.tooltip","Whether the Radioactive Reactor makes waste at all");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");

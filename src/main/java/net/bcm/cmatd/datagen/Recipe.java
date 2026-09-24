@@ -762,6 +762,15 @@ public class Recipe extends RecipeProvider{
                 .pattern("cpc")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
                 .save(rc);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.RADIOACTIVE_PROTECTION_BARRIER)
+                .define('p',CmatdItem.SEALED_STRONG_PLATE)
+                .define('c',Tags.Items.CONCRETES)
+                .define('w',ItemTags.CHEST_ARMOR)
+                .pattern("cpc")
+                .pattern(" w ")
+                .pattern("cpc")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
+                .save(rc);
         createIntegratedRecipes(rc);
         createTierUpgradeRecipes(rc);
     }

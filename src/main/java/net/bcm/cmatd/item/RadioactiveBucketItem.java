@@ -10,12 +10,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
 public class RadioactiveBucketItem extends BucketItem {
     public RadioactiveBucketItem(Fluid fluid, Properties properties) {
-        super(fluid,properties);
+        super(fluid,properties.rarity(Rarity.UNCOMMON));
     }
 
     @Override
@@ -24,6 +25,7 @@ public class RadioactiveBucketItem extends BucketItem {
             if(level instanceof ServerLevel serverLevel){
                 if(serverLevel.tickRateManager().tickrate() < 30.0f && serverLevel.tickRateManager().runsNormally()){
                     if(entity instanceof LivingEntity livingEntity){
+                        // technically horses can wear chests so this is here for that strange possibility, even though regular horses don't wear chests
                         if(livingEntity instanceof AbstractHorse abstractHorse){
                             if(!abstractHorse.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
                                 if(stack.has(Components.RADIOACTIVE)){

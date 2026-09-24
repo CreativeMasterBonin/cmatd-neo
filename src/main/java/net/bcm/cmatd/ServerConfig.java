@@ -1,6 +1,5 @@
 package net.bcm.cmatd;
 
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ServerConfig {
@@ -55,6 +54,14 @@ public class ServerConfig {
             .comment("Whether the Radioactive Reactor makes ambient sounds")
             .translation("cmatd.configuration.radioactive_reactor_makes_ambient_sounds.tooltip")
             .define("radioactive_reactor_makes_ambient_sounds",true);
+
+    public static final ModConfigSpec.BooleanValue RADIOACTIVE_REACTOR_MAKES_WASTE = BUILDER
+            .comment("Whether the Radioactive Reactor makes output waste when finished processing")
+            .define("radioactive_reactor_makes_waste",true);
+
+    public static final ModConfigSpec.IntValue FOOD_REACTOR_CHECK_MULTIBLOCK_FORMATION_TICKS = BUILDER
+            .comment("How often in ticks the Food Reactor checks its multiblock formation")
+            .defineInRange("food_reactor_multiblock_formation_check_ticks",80,20,400);
 
     static final ModConfigSpec SPEC = BUILDER.build();
 }
