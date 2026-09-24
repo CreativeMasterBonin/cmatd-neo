@@ -22,9 +22,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.ItemStack;
@@ -480,8 +482,12 @@ public class RadioactiveReactor extends TieredMachine{
                         // accumulate radioactivity for each piece of fuel, since radioactive material radioactivity sticks around for a while
                         if(copiedFuelStack.has(Components.RADIOACTIVE)){
                             if(getRadioactivity() < 1000.0f){
-                                radioactivityOfFuelAccumulative += copiedFuelStack.get(Components.RADIOACTIVE).radioactivity();
-                                updateBlock();
+                                if(level instanceof ServerLevel){
+                                    if(ServerConfig.RADIOACTIVITY_ENABLED.getAsBoolean()){
+                                        radioactivityOfFuelAccumulative += copiedFuelStack.get(Components.RADIOACTIVE).radioactivity();
+                                        updateBlock();
+                                    }
+                                }
                             }
                         }
                         copiedFuelStack.shrink(1);
@@ -493,70 +499,23 @@ public class RadioactiveReactor extends TieredMachine{
             // check if radioactivity is higher than normal (if sealed this does nothing)
             if(getRadioactivity() > 0.0f && !sealedCore){
                 if(level instanceof ServerLevel serverLevel){
-                    List<LivingEntity> entities = serverLevel.getNearbyEntities(
-                            LivingEntity.class, TargetingConditions.forNonCombat(),null,new AABB(
-                                    getBlockPos().getX() - 7,
-                                    getBlockPos().getY() - 7,
-                                    getBlockPos().getZ() - 7,
-                                    getBlockPos().getX() + 7,
-                                    getBlockPos().getY() + 7,
-                                    getBlockPos().getZ() + 7
-                            )
-                    );
+                    // honor the server config for radiation status
+                    if(ServerConfig.RADIOACTIVITY_ENABLED.getAsBoolean()){
+                        List<LivingEntity> entities = serverLevel.getNearbyEntities(
+                                LivingEntity.class, TargetingConditions.forNonCombat(),null,new AABB(
+                                        getBlockPos().getX() - 7,
+                                        getBlockPos().getY() - 7,
+                                        getBlockPos().getZ() - 7,
+                                        getBlockPos().getX() + 7,
+                                        getBlockPos().getY() + 7,
+                                        getBlockPos().getZ() + 7
+                                )
+                        );
 
-                    // protect yourself and your animal friends!
-                    for(LivingEntity livingEntity : entities){
-                        if(livingEntity instanceof Wolf wolf){
-                            if(!wolf.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
-                                if(!livingEntity.hasEffect(MobEffects.POISON)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.HUNGER)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
-                                }
-                                if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
-                                    livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
-                                }
-                            }
-                        }
-                        else if(livingEntity instanceof AbstractHorse abstractHorse){
-                            if(!abstractHorse.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
-                                if(!livingEntity.hasEffect(MobEffects.POISON)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.HUNGER)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
-                                }
-                                if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
-                                    livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
-                                }
-                            }
-                        }
-                        else if(livingEntity instanceof TamableAnimal tamableAnimal){ // for all generic tamable animals that may need to be protected
-                            if(!tamableAnimal.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem())){
-                                if(!livingEntity.hasEffect(MobEffects.POISON)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.HUNGER)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
-                                }
-                                if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
-                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
-                                }
-                                if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
-                                    livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
-                                }
-                            }
-                        }
-                        else{
-                            livingEntity.getArmorAndBodyArmorSlots().iterator().forEachRemaining(stack -> {
-                                if(!stack.is(Tag.HAZMAT_SUIT_PIECES)){
+                        // protect yourself and your animal friends!
+                        for(LivingEntity livingEntity : entities){
+                            if(livingEntity instanceof Wolf wolf){
+                                if(!wolf.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_WOLF_SUIT)){
                                     if(!livingEntity.hasEffect(MobEffects.POISON)){
                                         livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
                                     }
@@ -570,14 +529,87 @@ public class RadioactiveReactor extends TieredMachine{
                                         livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
                                     }
                                 }
-                            });
+                            }
+                            else if(livingEntity instanceof AbstractHorse abstractHorse){
+                                if(!abstractHorse.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_HORSE_SUIT)){
+                                    if(!livingEntity.hasEffect(MobEffects.POISON)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                                    }
+                                    if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                                        livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                                    }
+                                }
+                            }
+                            else if(livingEntity instanceof Fox fox){ // foxes can hold items in their 'hand' so having a certain item counts as protection from radiation
+                                if(!fox.getItemBySlot(EquipmentSlot.MAINHAND).is(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER)){
+                                    if(!livingEntity.hasEffect(MobEffects.POISON)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                                    }
+                                    if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                                        livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                                    }
+                                }
+                            }
+                            else if(livingEntity instanceof TamableAnimal tamableAnimal){ // for all generic tamable animals that may need to be protected
+                                if(!tamableAnimal.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER.asItem())){
+                                    if(!livingEntity.hasEffect(MobEffects.POISON)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                    }
+                                    if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                        livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                                    }
+                                    if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                                        livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                                    }
+                                }
+                            }
+                            else{
+                                livingEntity.getArmorAndBodyArmorSlots().iterator().forEachRemaining(stack -> {
+                                    if(!stack.is(Tag.HAZMAT_SUIT_PIECES)){
+                                        if(!livingEntity.hasEffect(MobEffects.POISON)){
+                                            livingEntity.addEffect(new MobEffectInstance(MobEffects.POISON,100,1,true,false));
+                                        }
+                                        if(!livingEntity.hasEffect(MobEffects.HUNGER)){
+                                            livingEntity.addEffect(new MobEffectInstance(MobEffects.HUNGER,100,2,true,false));
+                                        }
+                                        if(!livingEntity.hasEffect(MobEffects.WEAKNESS)){
+                                            livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,2,true,false));
+                                        }
+                                        if(livingEntity.distanceToSqr(getBlockPos().getX(),getBlockPos().getY(),getBlockPos().getZ()) <= 12){
+                                            livingEntity.hurt(serverLevel.damageSources().inFire(),1.0f);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+
+                        if(serverLevel.getRandom().nextIntBetweenInclusive(0,320) <= 50){
+                            radioactivityOfFuelAccumulative -= 0.01f;
+                        }
+                        setChanged();
+                    }
+                    else{
+                        // no radiation is allowed to be built up if the config has disabled radiation
+                        if(radioactivityOfFuelAccumulative > 0.0f){
+                            radioactivityOfFuelAccumulative = 0.0f;
+                            setChanged();
                         }
                     }
-
-                    if(serverLevel.getRandom().nextIntBetweenInclusive(0,320) <= 50){
-                        radioactivityOfFuelAccumulative -= 0.01f;
-                    }
-                    setChanged();
                 }
             }
             // multiblock is not formed, check if it should be

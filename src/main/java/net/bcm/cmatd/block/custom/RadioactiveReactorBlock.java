@@ -1,5 +1,6 @@
 package net.bcm.cmatd.block.custom;
 
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.block.CmatdBlock;
 import net.bcm.cmatd.blockentity.RadioactiveReactor;
 import net.bcm.cmatd.gui.RadioactiveReactorMenu;
@@ -7,6 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -107,8 +109,10 @@ public class RadioactiveReactorBlock extends TieredMachineBlock{
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if(level.isClientSide()){
             BlockEntity be = level.getBlockEntity(pos);
-            if(be instanceof RadioactiveReactor)
+            if(be instanceof RadioactiveReactor) {
+                player.playSound(SoundEvents.IRON_GOLEM_STEP,0.5f,Utility.nextFloatBetweenInclusive(0.95f,1.0f));
                 return InteractionResult.SUCCESS_NO_ITEM_USED;
+            }
         }
         else{
             BlockEntity be = level.getBlockEntity(pos);

@@ -1,5 +1,6 @@
 package net.bcm.cmatd.blockentity;
 
+import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.api.*;
 import net.bcm.cmatd.block.custom.GasVent;
 import net.minecraft.core.BlockPos;
@@ -125,7 +126,7 @@ public class GasTankBE extends AbstractGasContainingBE{
 
         // slowly destroy radioactive gas
         if(level instanceof ServerLevel serverLevel){
-            if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % 77 == 0){
+            if(gasTank.gas.getGas().isRadioactive() && serverLevel.getGameTime() % ServerConfig.GAS_TANK_DESTROY_RADIOACTIVE_WASTE_TICKS.getAsInt() == 0){
                 gasTank.gas.setAmount(gasTank.getGasAmount() - Mth.randomBetweenInclusive(serverLevel.getRandom(),34,327));
                 setChanged();
                 if(serverLevel.getRandom().nextBoolean()){

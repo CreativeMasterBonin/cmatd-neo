@@ -1,6 +1,7 @@
 package net.bcm.cmatd.item;
 
 import net.bcm.cmatd.Components;
+import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.datagen.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -23,6 +24,10 @@ public class RadioactiveBlockItem extends BlockItem {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if(!level.isClientSide()){
             if(level instanceof ServerLevel serverLevel){
+                // disable radiation effects if the config is set to
+                if(!ServerConfig.RADIOACTIVITY_ENABLED.getAsBoolean()){
+                    return;
+                }
                 if(serverLevel.tickRateManager().tickrate() < 30.0f && serverLevel.tickRateManager().runsNormally()){
                     if(entity instanceof LivingEntity livingEntity){
                         if(livingEntity instanceof AbstractHorse abstractHorse){

@@ -63,5 +63,13 @@ public class ServerConfig {
             .comment("How often in ticks the Food Reactor checks its multiblock formation")
             .defineInRange("food_reactor_multiblock_formation_check_ticks",80,20,400);
 
+    public static final ModConfigSpec.IntValue GAS_TANK_DESTROY_RADIOACTIVE_WASTE_TICKS = BUILDER
+            .comment("How often in ticks a Gas Tank will break down any radioactive waste stored")
+            .defineInRange("gas_tank_destroy_radioactive_gas_ticks",77,1,1200);
+
+    public static final ModConfigSpec.BooleanValue RADIOACTIVITY_ENABLED = BUILDER
+            .comment("Whether radiation is enabled (blocks with radiation features enabled will effect mobs around them)")
+            .define("radiation_enabled",true);
+
     static final ModConfigSpec SPEC = BUILDER.build();
 }

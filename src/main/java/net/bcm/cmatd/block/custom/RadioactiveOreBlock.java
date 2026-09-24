@@ -3,6 +3,7 @@ package net.bcm.cmatd.block.custom;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.bcm.cmatd.ServerConfig;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.item.CmatdItem;
 import net.minecraft.core.BlockPos;
@@ -11,9 +12,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.level.block.Block;
@@ -52,6 +55,14 @@ public class RadioactiveOreBlock extends Block {
         if(!level.hasChunkAt(pos)){
             return;
         }
+        // disable radiation effects if the config is set to
+        if(!level.isClientSide()){
+            if(level instanceof ServerLevel){
+                if(!ServerConfig.RADIOACTIVITY_ENABLED.getAsBoolean()){
+                    return;
+                }
+            }
+        }
         // do not check for entities if ticks are lagging or rate is too high
         if(!level.isClientSide() && level.tickRateManager().tickrate() < 30.0f && level.tickRateManager().runsNormally()){
             List<LivingEntity> livingEntities = level.getNearbyEntities(LivingEntity.class, TargetingConditions.forNonCombat(),null,new AABB(
@@ -82,6 +93,16 @@ public class RadioactiveOreBlock extends Block {
                             }
                             if(!abstractHorse.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
                                 abstractHorse.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
+                            }
+                        }
+                    }
+                    else if(livingEntity instanceof Fox fox){ // foxes can technically equip the barrier, so allow them protection too
+                        if(!fox.getItemBySlot(EquipmentSlot.MAINHAND).is(CmatdItem.RADIOACTIVE_PROTECTION_BARRIER)){
+                            if(!fox.hasEffect(MobEffects.WEAKNESS)){
+                                fox.addEffect(new MobEffectInstance(MobEffects.WEAKNESS,100,1,true,false));
+                            }
+                            if(!fox.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)){
+                                fox.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,100,1,true,false));
                             }
                         }
                     }

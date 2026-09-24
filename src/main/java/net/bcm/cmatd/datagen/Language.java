@@ -84,6 +84,9 @@ public class Language extends LanguageProvider{
         this.add("tooltip.module.blank_module", "Needs to be turned into a usable module");
         this.add("tooltip.module.heat_dispersion", "Disperses heat evenly in heat producing machines, reducing gradual buildup to nothing");
         this.add("tooltip.module.silencing","Silences machines, turning off alarms and changing ambiance");
+        this.add("tooltip.module.golden_useless","Useless in this form, but can be combined with other materials to make advanced modules");
+        this.add("tooltip.module.aio_basic","Combines speedup, efficiency, doubler and tripled modules into one neat package");
+        this.add("tooltip.module.aio_advanced","Combines the AIO Basic module, heat dispersion and silencing modules into one cool package");
         this.add("tooltip.tier_upgrade.desc", "Upgrades machines up to tier: ");
         this.add("tooltip.tier_upgrade.downgrade.desc", "Downgrades machines to tier: ");
         this.add("tooltip.tier_upgrade.unknown", "%s");
@@ -426,6 +429,10 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.food_reactor_multiblock_formation_check_ticks.tooltip","The interval (in ticks) to check the formation of the Food Reactor");
         this.add("cmatd.configuration.radioactive_reactor_makes_waste","Radioactive Reactor Makes Waste");
         this.add("cmatd.configuration.radioactive_reactor_makes_waste.tooltip","Whether the Radioactive Reactor makes waste at all");
+        this.add("cmatd.configuration.gas_tank_destroy_radioactive_gas_ticks","Gas Tank Radioactive Waste Disposal Ticks");
+        this.add("cmatd.configuration.gas_tank_destroy_radioactive_gas_ticks.tooltip","The interval (in ticks) to destroy radioactive waste in any Gas Tanks");
+        this.add("cmatd.configuration.radiation_enabled","Radiation Enabled");
+        this.add("cmatd.configuration.radiation_enabled.tooltip","Whether any radioactive block/item is allowed to cause radiation effects");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");
