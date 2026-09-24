@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +28,7 @@ public class DatamapGen extends DataMapProvider {
                 .replace(false)
                 .add(Items.SWEET_BERRIES.builtInRegistryHolder(),new Jammables(CmatdItem.SWEET_BERRY_JAM.asItem()),false)
                 .add(Items.GLOW_BERRIES.builtInRegistryHolder(),new Jammables(CmatdItem.GLOW_BERRY_JAM.asItem()),false)
-                .add(Items.CACTUS.builtInRegistryHolder(),new Jammables(CmatdItem.CACTUS_JAM.asItem()),false)
+                .add(Tags.Items.CROPS_CACTUS,new Jammables(CmatdItem.CACTUS_JAM.asItem()),false)
                 .add(Items.CHORUS_FRUIT.builtInRegistryHolder(),new Jammables(CmatdItem.CHORUS_FRUIT_JAM.asItem()),false)
                 .add(Items.COCOA_BEANS.builtInRegistryHolder(),new Jammables(CmatdItem.COCOA_JAM.asItem()),false)
                 .add(Items.GHAST_TEAR.builtInRegistryHolder(),new Jammables(CmatdItem.GHAST_TEAR_JAM.asItem()),false)
@@ -36,9 +37,9 @@ public class DatamapGen extends DataMapProvider {
                 .add(Items.INK_SAC.builtInRegistryHolder(),new Jammables(CmatdItem.INK_JAM.asItem()),false)
                 .add(Items.KELP.builtInRegistryHolder(),new Jammables(CmatdItem.KELP_JAM.asItem()),false)
                 .add(Items.MAGMA_CREAM.builtInRegistryHolder(),new Jammables(CmatdItem.MAGMA_CREAM_JAM.asItem()),false)
-                .add(Items.EGG.builtInRegistryHolder(),new Jammables(CmatdItem.RAW_EGG_JAM.asItem()),false)
-                .add(Items.SLIME_BALL.builtInRegistryHolder(),new Jammables(CmatdItem.SLIME_JAM.asItem()),false)
-                .add(Items.SLIME_BLOCK.builtInRegistryHolder(),new Jammables(CmatdItem.SLIME_JAM.asItem()),false)
+                .add(Tags.Items.EGGS,new Jammables(CmatdItem.RAW_EGG_JAM.asItem()),false)
+                .add(Tags.Items.SLIME_BALLS,new Jammables(CmatdItem.SLIME_JAM.asItem()),false)
+                .add(Tags.Items.STORAGE_BLOCKS_SLIME,new Jammables(CmatdItem.SLIME_JAM.asItem()),false)
                 .add(Items.SPIDER_EYE.builtInRegistryHolder(),new Jammables(CmatdItem.SPIDER_EYE_JAM.asItem()),false)
                 .add(Items.FERMENTED_SPIDER_EYE.builtInRegistryHolder(),new Jammables(CmatdItem.SPIDER_EYE_JAM.asItem()),false)
         ;

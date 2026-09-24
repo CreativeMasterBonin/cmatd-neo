@@ -38,6 +38,9 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.TRIPLED_MODULE.asItem())
                 .add(CmatdItem.HEAT_DISPERSION_MODULE.asItem())
                 .add(CmatdItem.SILENCING_MODULE.asItem())
+                .add(CmatdItem.GOLDEN_MODULE.asItem())
+                .add(CmatdItem.AIO_BASIC_MODULE.asItem())
+                .add(CmatdItem.AIO_ADVANCED_MODULE.asItem())
         ;
         this.tag(Tag.TIER_UPGRADES)
                 .add(CmatdItem.BASIC_TIER_DOWNGRADE.asItem())
@@ -45,6 +48,11 @@ public class ItemTagProvider extends ItemTagsProvider{
                 .add(CmatdItem.HIGHLY_ADVANCED_TIER_UPGRADE.asItem())
                 .add(CmatdItem.SUPERB_TIER_UPGRADE.asItem())
                 .add(CmatdItem.MAXIMUM_TIER_UPGRADE.asItem())
+                .add(CmatdItem.SIXTH_TIER_UPGRADE.asItem())
+                .add(CmatdItem.SEVENTH_TIER_UPGRADE.asItem())
+                .add(CmatdItem.EIGHTH_TIER_UPGRADE.asItem())
+                .add(CmatdItem.NINTH_TIER_UPGRADE.asItem())
+                .add(CmatdItem.SUPERFLUOUS_TIER_UPGRADE.asItem())
         ;
 
         this.tag(Tag.MASHED_POTATOES)
@@ -54,6 +62,18 @@ public class ItemTagProvider extends ItemTagsProvider{
         this.tag(Tag.JAMS)
                 .add(CmatdItem.SWEET_BERRY_JAM.asItem())
                 .add(CmatdItem.GLOW_BERRY_JAM.asItem())
+                .add(CmatdItem.CACTUS_JAM.asItem())
+                .add(CmatdItem.CHORUS_FRUIT_JAM.asItem())
+                .add(CmatdItem.COCOA_JAM.asItem())
+                .add(CmatdItem.GHAST_TEAR_JAM.asItem())
+                .add(CmatdItem.GLISTERING_MELON_JAM.asItem())
+                .add(CmatdItem.GLOW_INK_JAM.asItem())
+                .add(CmatdItem.INK_JAM.asItem())
+                .add(CmatdItem.KELP_JAM.asItem())
+                .add(CmatdItem.MAGMA_CREAM_JAM.asItem())
+                .add(CmatdItem.RAW_EGG_JAM.asItem())
+                .add(CmatdItem.SLIME_JAM.asItem())
+                .add(CmatdItem.SPIDER_EYE_JAM.asItem())
         ;
 
         this.tag(Tag.POISONOUS_MASHED_POTATOES)

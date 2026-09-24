@@ -35,6 +35,10 @@ public class ItemModel extends ItemModelProvider{
         defaultCustomSimpleItem(CmatdItem.TRIPLED_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.HEAT_DISPERSION_MODULE.get());
         defaultCustomSimpleItem(CmatdItem.SILENCING_MODULE.get());
+        // advanced modules
+        defaultCustomSimpleItem(CmatdItem.GOLDEN_MODULE.get());
+        defaultCustomSimpleItem(CmatdItem.AIO_BASIC_MODULE.get());
+        defaultCustomSimpleItem(CmatdItem.AIO_ADVANCED_MODULE.get());
         // tier upgrades
         defaultCustomSimpleItem(CmatdItem.BASIC_TIER_DOWNGRADE.asItem());
         defaultCustomSimpleItem(CmatdItem.ADVANCED_TIER_UPGRADE.asItem());

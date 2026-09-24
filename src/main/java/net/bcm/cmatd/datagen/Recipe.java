@@ -771,6 +771,39 @@ public class Recipe extends RecipeProvider{
                 .pattern("cpc")
                 .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.SEALED_STRONG_PLATE))
                 .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.GOLDEN_MODULE)
+                .define('b',CmatdItem.BLANK_MODULE)
+                .define('g',Items.GOLD_INGOT)
+                .define('n',Items.GOLD_NUGGET)
+                .define('r',Items.REDSTONE)
+                .pattern("ngn")
+                .pattern("gbg")
+                .pattern("rgr")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.BLANK_MODULE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.AIO_BASIC_MODULE)
+                .define('g',CmatdItem.GOLDEN_MODULE)
+                .define('s',CmatdItem.SPEED_MODULE)
+                .define('e',CmatdItem.EFFICIENCY_MODULE)
+                .define('d',CmatdItem.DOUBLER_MODULE)
+                .define('t',CmatdItem.TRIPLED_MODULE)
+                .pattern(" s ")
+                .pattern("tge")
+                .pattern(" d ")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.GOLDEN_MODULE))
+                .save(rc);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC,CmatdItem.AIO_ADVANCED_MODULE)
+                .define('a',CmatdItem.AIO_BASIC_MODULE)
+                .define('h',CmatdItem.HEAT_DISPERSION_MODULE)
+                .define('s',CmatdItem.SILENCING_MODULE)
+                .pattern("has")
+                .unlockedBy(Utility.HAS_ITEM,has(CmatdItem.AIO_BASIC_MODULE))
+                .save(rc);
+
+        // special recipes
         createIntegratedRecipes(rc);
         createTierUpgradeRecipes(rc);
     }

@@ -313,13 +313,20 @@ public class CmatdItem{
             ITEMS.register("silencing_module",
                     () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,5)));
 
+    public static final DeferredItem<Item> GOLDEN_MODULE =
+            ITEMS.register("golden_module",
+                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,1),
+                            true,true));
+
     public static final DeferredItem<Item> AIO_BASIC_MODULE =
             ITEMS.register("aio_basic_module",
-                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,6)));
+                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,6),
+                            false,true));
 
     public static final DeferredItem<Item> AIO_ADVANCED_MODULE =
             ITEMS.register("aio_advanced_module",
-                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,7)));
+                    () -> new ModuleItem(new Item.Properties().component(Components.MODULE_TYPE,7),
+                            false,true));
 
     // tier upgrades
     public static final DeferredItem<Item> BASIC_TIER_DOWNGRADE =

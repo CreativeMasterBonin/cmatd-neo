@@ -26,7 +26,7 @@ public class EMCProvider extends CustomConversionProvider {
                 .before(CmatdItem.PCB,1292)
                 .before(CmatdItem.PLATE,626)
                 .before(CmatdItem.SWEET_BERRY_JAM,44)
-                .before(CmatdItem.GLOW_BERRY_JAM,44)
+                .before(CmatdItem.GLOW_BERRY_JAM,44) // other jams cannot be added as EMC values can change per tagged item
                 .before(CmatdItem.MASHED_POTATOES,64)
                 .before(CmatdItem.POISONOUS_MASHED_POTATOES,64)
                 .comment("All CMATD items that are bases for other items and blocks")

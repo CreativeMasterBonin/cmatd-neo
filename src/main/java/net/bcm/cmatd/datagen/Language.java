@@ -244,6 +244,9 @@ public class Language extends LanguageProvider{
         this.add(CmatdItem.TRIPLED_MODULE.get(),"Module: Tripled");
         this.add(CmatdItem.HEAT_DISPERSION_MODULE.get(),"Module: Heat Dispersion");
         this.add(CmatdItem.SILENCING_MODULE.get(),"Module: Silencing");
+        this.add(CmatdItem.GOLDEN_MODULE.get(),"Blank Golden Module");
+        this.add(CmatdItem.AIO_BASIC_MODULE.get(),"Golden Module: AIO Basic");
+        this.add(CmatdItem.AIO_ADVANCED_MODULE.get(),"Golden Module: AIO Advanced");
 
         // tier items
         this.add(CmatdItem.BASIC_TIER_DOWNGRADE.get(),"Tier Downgrade: Basic");
