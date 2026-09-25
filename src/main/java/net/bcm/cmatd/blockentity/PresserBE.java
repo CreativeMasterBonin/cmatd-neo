@@ -206,30 +206,31 @@ public class PresserBE extends BlockEntity{
 
                         // check speed module
                         int speedModules = 0;
-                        if(moduleSlot1.is(CmatdItem.SPEED_MODULE)){
+                        if(moduleSlot1.is(CmatdItem.SPEED_MODULE) || moduleSlot1.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot1.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             speedModules++;
                         }
-                        if(moduleSlot2.is(CmatdItem.SPEED_MODULE)){
+                        if(moduleSlot2.is(CmatdItem.SPEED_MODULE) || moduleSlot2.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot2.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             speedModules++;
                         }
-                        if(moduleSlot3.is(CmatdItem.SPEED_MODULE)){
+                        if(moduleSlot3.is(CmatdItem.SPEED_MODULE) || moduleSlot3.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot3.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             speedModules++;
                         }
 
                         int silenceSoundsAsTooFast = 3;
                         int efficiency_modules = 0;
                         // check efficiency modules
-                        if(moduleSlot1.is(CmatdItem.EFFICIENCY_MODULE)){
+                        if(moduleSlot1.is(CmatdItem.EFFICIENCY_MODULE) || moduleSlot1.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot1.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             efficiency_modules += (moduleSlot1.getCount());
                         }
-                        if(moduleSlot2.is(CmatdItem.EFFICIENCY_MODULE)){
+                        if(moduleSlot2.is(CmatdItem.EFFICIENCY_MODULE) || moduleSlot2.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot2.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             efficiency_modules += (moduleSlot1.getCount());
                         }
-                        if(moduleSlot3.is(CmatdItem.EFFICIENCY_MODULE)){
+                        if(moduleSlot3.is(CmatdItem.EFFICIENCY_MODULE) || moduleSlot3.is(CmatdItem.AIO_BASIC_MODULE) || moduleSlot3.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             efficiency_modules += (moduleSlot1.getCount());
                         }
 
-                        if(moduleSlot1.is(CmatdItem.SILENCING_MODULE) || moduleSlot2.is(CmatdItem.SILENCING_MODULE) || moduleSlot3.is(CmatdItem.SILENCING_MODULE)){
+                        if(moduleSlot1.is(CmatdItem.SILENCING_MODULE) || moduleSlot2.is(CmatdItem.SILENCING_MODULE) || moduleSlot3.is(CmatdItem.SILENCING_MODULE)
+                        || moduleSlot1.is(CmatdItem.AIO_ADVANCED_MODULE) || moduleSlot2.is(CmatdItem.AIO_ADVANCED_MODULE) || moduleSlot3.is(CmatdItem.AIO_ADVANCED_MODULE)){
                             shouldBeSilenced = true;
                         }
 

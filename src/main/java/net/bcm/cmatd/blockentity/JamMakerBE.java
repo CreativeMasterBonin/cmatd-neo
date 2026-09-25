@@ -241,9 +241,23 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
                     + Utility.countModulesInStack(moduleSlotTwo,5)
                     + Utility.countModulesInStack(moduleSlotThree,5);
 
+            speedModules += Utility.countModulesInStack(moduleSlotOne,6);
+            efficiencyModules += Utility.countModulesInStack(moduleSlotOne,6);
+            doublerModules += Utility.countModulesInStack(moduleSlotOne,6);
+            tripledModules += Utility.countModulesInStack(moduleSlotOne,6);
+
+            speedModules += Utility.countModulesInStack(moduleSlotOne,7);
+            efficiencyModules += Utility.countModulesInStack(moduleSlotOne,7);
+            doublerModules += Utility.countModulesInStack(moduleSlotOne,7);
+            tripledModules += Utility.countModulesInStack(moduleSlotOne,7);
+            heatDispersionModules += Utility.countModulesInStack(moduleSlotOne,7);
+            silencingModules += Utility.countModulesInStack(moduleSlotOne,7);
+
             int processBitsMax = Mth.clamp(50 / Mth.clamp(efficiencyModules,1,49),1,50);
             maxProcessBits = processBitsMax;
             setChanged();
+
+            boolean successfulChange = false;
 
             if(itemHolder != null){
                 Jammables jammablesData = itemHolder.getData(Cmatd.JAMMABLES);
@@ -254,30 +268,47 @@ public class JamMakerBE extends BlockEntity implements MenuProvider, WorldlyCont
                             if(getItemHandler().getStackInSlot(3).is(jammablesData.outputItem())){
                                 if(doublerModules > 0 || tripledModules > 0){
                                     if(level.getRandom().nextIntBetweenInclusive(0,100) <= doublerModules + tripledModules){
-                                        // clamping this as there is a chance this may overflow
-                                        getItemHandler().getStackInSlot(3).grow(Mth.clamp(1 + ((doublerModules * 2) + (tripledModules * 3)),1,getItemHandler().getStackInSlot(3).getMaxStackSize()));
+                                        int num = Mth.clamp(1 + ((doublerModules * 2) + (tripledModules * 3)),1,getItemHandler().getStackInSlot(3).getMaxStackSize());
+                                        if(getItemHandler().getStackInSlot(3).getCount() + num <= getItemHandler().getStackInSlot(3).getMaxStackSize()){
+                                            // clamping this as there is a chance this may overflow
+                                            getItemHandler().getStackInSlot(3).grow(Mth.clamp(1 + ((doublerModules * 2) + (tripledModules * 3)),1,getItemHandler().getStackInSlot(3).getMaxStackSize()));
+                                            successfulChange = true;
+                                            setChanged();
+                                        }
                                     }
                                     else{
-                                        getItemHandler().getStackInSlot(3).grow(1); // randomness failed, just give one
+                                        if(getItemHandler().getStackInSlot(3).getCount() + 1 <= getItemHandler().getStackInSlot(3).getMaxStackSize()){
+                                            getItemHandler().getStackInSlot(3).grow(1); // randomness failed, just give one
+                                            successfulChange = true;
+                                            setChanged();
+                                        }
                                     }
                                 }
                                 else{
-                                    getItemHandler().getStackInSlot(3).grow(1); // always give one if no doubling or tripling modules installed
+                                    if(getItemHandler().getStackInSlot(3).getCount() + 1 <= getItemHandler().getStackInSlot(3).getMaxStackSize()){
+                                        getItemHandler().getStackInSlot(3).grow(1); // always give one if no doubling or tripling modules installed
+                                        successfulChange = true;
+                                        setChanged();
+                                    }
                                 }
-                                getItemHandler().getStackInSlot(0).shrink(1);
-                                getItemHandler().getStackInSlot(1).shrink(1);
-                                getItemHandler().getStackInSlot(2).shrink(1);
-                                if(silencingModules <= 0){
-                                    level.playSound(null,getBlockPos(),
-                                            CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+
+                                if(successfulChange){
+                                    getItemHandler().getStackInSlot(0).shrink(1);
+                                    getItemHandler().getStackInSlot(1).shrink(1);
+                                    getItemHandler().getStackInSlot(2).shrink(1);
+                                    if(silencingModules <= 0){
+                                        level.playSound(null,getBlockPos(),
+                                                CmatdSound.MASHER.get(), SoundSource.BLOCKS, 1.0f,1.0f);
+                                    }
+                                    if(level instanceof ServerLevel serverLevel){
+                                        serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM,getItemHandler().getStackInSlot(3)),
+                                                (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                (double)getBlockPos().getY() + 0.45D,
+                                                (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
+                                                1,0,0,0,0.1D);
+                                    }
                                 }
-                                if(level instanceof ServerLevel serverLevel){
-                                    serverLevel.sendParticles(new ItemParticleOption(ParticleTypes.ITEM,getItemHandler().getStackInSlot(3)),
-                                            (double)getBlockPos().getX() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                            (double)getBlockPos().getY() + 0.45D,
-                                            (double)getBlockPos().getZ() + 0.5 + level.getRandom().nextDouble() / 2.0 * (level.getRandom().nextBoolean() ? -0.5 : 0.5),
-                                            1,0,0,0,0.1D);
-                                }
+
                                 process_bits = 0;
                                 setChanged();
                             }

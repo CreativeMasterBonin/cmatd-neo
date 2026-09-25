@@ -3,6 +3,7 @@ package net.bcm.cmatd.blockentity;
 import net.bcm.cmatd.BaseEnergyStorage;
 import net.bcm.cmatd.CmatdSound;
 import net.bcm.cmatd.Components;
+import net.bcm.cmatd.Utility;
 import net.bcm.cmatd.datagen.Tag;
 import net.bcm.cmatd.gui.BaseCobbleMakerMenu;
 import net.minecraft.core.*;
@@ -244,7 +245,7 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                 if(moduleSlot1.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot1.getCount());
                 }
-                else if(moduleSlot1.get(Components.MODULE_TYPE).intValue() == 5){
+                else if(moduleSlot1.get(Components.MODULE_TYPE).intValue() == 5 || moduleSlot1.get(Components.MODULE_TYPE).intValue() == 7){
                     shouldBeSilenced = true;
                 }
             }
@@ -254,7 +255,7 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                 if(moduleSlot2.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot2.getCount());
                 }
-                else if(moduleSlot2.get(Components.MODULE_TYPE).intValue() == 5){
+                else if(moduleSlot2.get(Components.MODULE_TYPE).intValue() == 5 || moduleSlot2.get(Components.MODULE_TYPE).intValue() == 7){
                     shouldBeSilenced = true;
                 }
             }
@@ -264,11 +265,14 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                 if(moduleSlot3.get(Components.MODULE_TYPE) == 1){
                     efficiency_modules += (1 + moduleSlot3.getCount());
                 }
-                else if(moduleSlot3.get(Components.MODULE_TYPE).intValue() == 5){
+                else if(moduleSlot3.get(Components.MODULE_TYPE).intValue() == 5 || moduleSlot3.get(Components.MODULE_TYPE).intValue() == 7){
                     shouldBeSilenced = true;
                 }
             }
         }
+
+        efficiency_modules += Utility.countModulesInStack(moduleSlot1,6);
+        efficiency_modules += Utility.countModulesInStack(moduleSlot1,7);
 
         if(efficiency_modules < 0){
             efficiency_modules = 0;
@@ -348,6 +352,9 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
                         case 3 -> {
                             additionalItems += 3;
                         }
+                        case 6,7 -> {
+                            additionalItems += 5;
+                        }
                         case null -> {}
                         default -> {}
                     }
@@ -374,7 +381,7 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
         if(!moduleSlot1.isEmpty()){
             if(moduleSlot1.has(Components.MODULE_TYPE)){
                 switch(moduleSlot1.get(Components.MODULE_TYPE)){
-                    case 0 -> {
+                    case 0,6,7 -> {
                         module_speed_additional += (1 + moduleSlot1.getCount());
                     }
                     case null -> {}
@@ -385,8 +392,8 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
         if(!moduleSlot2.isEmpty()){
             if(moduleSlot2.has(Components.MODULE_TYPE)){
                 switch(moduleSlot2.get(Components.MODULE_TYPE)){
-                    case 0 -> {
-                        module_speed_additional += (1 + moduleSlot1.getCount());
+                    case 0,6,7 -> {
+                        module_speed_additional += (1 + moduleSlot2.getCount());
                     }
                     case null -> {}
                     default -> {}
@@ -396,8 +403,8 @@ public class BaseCobbleMakerBE extends CobbleMakerBaseBE {
         if(!moduleSlot3.isEmpty()){
             if(moduleSlot3.has(Components.MODULE_TYPE)){
                 switch(moduleSlot3.get(Components.MODULE_TYPE)){
-                    case 0 -> {
-                        module_speed_additional += (1 + moduleSlot1.getCount());
+                    case 0,6,7 -> {
+                        module_speed_additional += (1 + moduleSlot3.getCount());
                     }
                     case null -> {}
                     default -> {}

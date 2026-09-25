@@ -158,14 +158,23 @@ public class FoodReactorMultiblock extends BlockEntity {
                     if(module1.get(Components.MODULE_TYPE).intValue() == 5){
                         amountOfSilencingModules++;
                     }
+                    else if(module1.get(Components.MODULE_TYPE).intValue() >= 7){
+                        amountOfSilencingModules++;
+                    }
                 }
                 if(module2.has(Components.MODULE_TYPE)){
                     if(module2.get(Components.MODULE_TYPE).intValue() == 5){
                         amountOfSilencingModules++;
                     }
+                    else if(module2.get(Components.MODULE_TYPE).intValue() >= 7){
+                        amountOfSilencingModules++;
+                    }
                 }
                 if(module3.has(Components.MODULE_TYPE)){
                     if(module3.get(Components.MODULE_TYPE).intValue() == 5){
+                        amountOfSilencingModules++;
+                    }
+                    else if(module3.get(Components.MODULE_TYPE).intValue() >= 7){
                         amountOfSilencingModules++;
                     }
                 }
@@ -186,6 +195,9 @@ public class FoodReactorMultiblock extends BlockEntity {
                 if(module1.get(Components.MODULE_TYPE) == 0){
                     speed_modules += (1 + module1.getCount());
                 }
+                else if(module1.get(Components.MODULE_TYPE) >= 6){
+                    speed_modules += (1 + module1.getCount());
+                }
             }
         }
         if(!module2.isEmpty()){
@@ -193,11 +205,17 @@ public class FoodReactorMultiblock extends BlockEntity {
                 if(module2.get(Components.MODULE_TYPE) == 0){
                     speed_modules += (1 + module2.getCount());
                 }
+                else if(module2.get(Components.MODULE_TYPE) >= 6){
+                    speed_modules += (1 + module2.getCount());
+                }
             }
         }
         if(!module3.isEmpty()){
             if(module3.has(Components.MODULE_TYPE)){
                 if(module3.get(Components.MODULE_TYPE) == 0){
+                    speed_modules += (1 + module3.getCount());
+                }
+                else if(module3.get(Components.MODULE_TYPE) >= 6){
                     speed_modules += (1 + module3.getCount());
                 }
             }
@@ -262,6 +280,17 @@ public class FoodReactorMultiblock extends BlockEntity {
                     else if(module1.get(Components.MODULE_TYPE) == 5){
                         shouldBeSilenced = true;
                     }
+                    else if(module1.get(Components.MODULE_TYPE) == 6){
+                        efficiency_modules += (1 + module1.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
+                    }
+                    else if(module1.get(Components.MODULE_TYPE) >= 7){
+                        efficiency_modules += (1 + module1.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
+                        shouldBeSilenced = true;
+                    }
                 }
             }
             if(!module2.isEmpty()){
@@ -278,6 +307,17 @@ public class FoodReactorMultiblock extends BlockEntity {
                     else if(module2.get(Components.MODULE_TYPE) == 5){
                         shouldBeSilenced = true;
                     }
+                    else if(module2.get(Components.MODULE_TYPE) == 6){
+                        efficiency_modules += (1 + module2.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
+                    }
+                    else if(module2.get(Components.MODULE_TYPE) >= 7){
+                        efficiency_modules += (1 + module2.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
+                        shouldBeSilenced = true;
+                    }
                 }
             }
             if(!module3.isEmpty()){
@@ -292,6 +332,17 @@ public class FoodReactorMultiblock extends BlockEntity {
                         tripleOutput = true;
                     }
                     else if(module3.get(Components.MODULE_TYPE) == 5){
+                        shouldBeSilenced = true;
+                    }
+                    else if(module3.get(Components.MODULE_TYPE) == 6){
+                        efficiency_modules += (1 + module3.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
+                    }
+                    else if(module3.get(Components.MODULE_TYPE) >= 7){
+                        efficiency_modules += (1 + module3.getCount());
+                        doubleOutput = true;
+                        tripleOutput = true;
                         shouldBeSilenced = true;
                     }
                 }
@@ -354,26 +405,36 @@ public class FoodReactorMultiblock extends BlockEntity {
                 }
                 // if water or empty
                 if(outputFluid.isEmpty()){
-                    if(doubleOutput){
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
-                    }
-                    else if(tripleOutput){
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
+                    if(!(doubleOutput && tripleOutput)){
+                        if(doubleOutput){
+                            getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
+                        }
+                        else if(tripleOutput){
+                            getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
+                        }
+                        else{
+                            getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount),IFluidHandler.FluidAction.EXECUTE);
+                        }
                     }
                     else{
-                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount),IFluidHandler.FluidAction.EXECUTE);
+                        getFluidTank().fill(new FluidStack(Fluids.WATER,waterAmount * 5),IFluidHandler.FluidAction.EXECUTE);
                     }
                 }
                 else{
                     if(outputFluid.is(Tags.Fluids.WATER)){
-                        if(doubleOutput){
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
-                        }
-                        else if(tripleOutput){
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
+                        if(!(doubleOutput && tripleOutput)){
+                            if(doubleOutput){
+                                getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 2),IFluidHandler.FluidAction.EXECUTE);
+                            }
+                            else if(tripleOutput){
+                                getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 3),IFluidHandler.FluidAction.EXECUTE);
+                            }
+                            else{
+                                getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount),IFluidHandler.FluidAction.EXECUTE);
+                            }
                         }
                         else{
-                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount),IFluidHandler.FluidAction.EXECUTE);
+                            getFluidTank().fill(new FluidStack(getFluidTank().getFluid().getFluid(),waterAmount * 5),IFluidHandler.FluidAction.EXECUTE);
                         }
                     }
                 }
@@ -400,7 +461,12 @@ public class FoodReactorMultiblock extends BlockEntity {
                             level.playSound(null,getBlockPos(),
                                 SoundEvents.BOAT_PADDLE_WATER, SoundSource.BLOCKS,0.75f,1.0f);
 
-                        energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
+                        if(doubleOutput && tripleOutput){
+                            energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3 + 5),false);
+                        }
+                        else{
+                            energyStorage.receiveEnergy(outputEnergy * (multiplier2 + multiplier3),false);
+                        }
                     }
                 }
                 progress = 0;
