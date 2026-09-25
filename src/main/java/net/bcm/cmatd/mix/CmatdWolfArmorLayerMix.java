@@ -31,6 +31,7 @@ public abstract class CmatdWolfArmorLayerMix {
     private void cmatdRenderWolfArmorLayer(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Wolf livingEntity, float limbSwing, float limbSwingAmount, float partialTick, float ageInTicks, float netHeadYaw, float headPitch, CallbackInfo ci){
         if(!livingEntity.getBodyArmorItem().isEmpty()){
             if(livingEntity.getBodyArmorItem().is(CmatdItem.RADIOACTIVE_WOLF_SUIT) && livingEntity.getBodyArmorItem().getItem() instanceof RadioactiveAnimalSuitGear gear){
+                model.young = false; // force armor layer to be adult model rendering
                 model.prepareMobModel(livingEntity,limbSwing,limbSwingAmount,partialTick);
                 model.setupAnim(livingEntity,limbSwing,limbSwingAmount,ageInTicks,netHeadYaw,headPitch);
                 VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.entityTranslucentCull(
