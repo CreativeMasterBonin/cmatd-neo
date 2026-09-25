@@ -59,6 +59,12 @@ public class ServerConfig {
             .comment("Whether the Radioactive Reactor makes output waste when finished processing")
             .define("radioactive_reactor_makes_waste",true);
 
+    public static final ModConfigSpec.IntValue RADIOACTIVE_REACTOR_READY_CHECK_TICKS = BUILDER
+            .comment("How often the Radioactive Reactor checks for fuel and other requirements to start functioning")
+            .defineInRange("radioactive_reactor_check_for_readiness_ticks",
+                    500,
+                    20,1500);
+
     public static final ModConfigSpec.IntValue FOOD_REACTOR_CHECK_MULTIBLOCK_FORMATION_TICKS = BUILDER
             .comment("How often in ticks the Food Reactor checks its multiblock formation")
             .defineInRange("food_reactor_multiblock_formation_check_ticks",80,20,400);

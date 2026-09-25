@@ -436,6 +436,8 @@ public class Language extends LanguageProvider{
         this.add("cmatd.configuration.gas_tank_destroy_radioactive_gas_ticks.tooltip","The interval (in ticks) to destroy radioactive waste in any Gas Tanks");
         this.add("cmatd.configuration.radiation_enabled","Radiation Enabled");
         this.add("cmatd.configuration.radiation_enabled.tooltip","Whether any radioactive block/item is allowed to cause radiation effects");
+        this.add("cmatd.configuration.radioactive_reactor_check_for_readiness_ticks","Radioactive Reactor Readiness Check Ticks");
+        this.add("cmatd.configuration.radioactive_reactor_check_for_readiness_ticks.tooltip","The interval (in ticks) to check if the reactor is ready to start and if started already, continue operating (heat explosions are not affected by this config value)");
         // titles and sections
         this.add("cmatd.configuration.title","CMATD Config");
         this.add("cmatd.configuration.section.cmatd.server.toml","Server Config");

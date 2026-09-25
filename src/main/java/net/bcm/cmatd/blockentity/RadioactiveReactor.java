@@ -433,6 +433,9 @@ public class RadioactiveReactor extends TieredMachine{
         if(tag.contains("tick")){
             tick = tag.getFloat("tick");
         }
+        if(tag.contains("machine_tier")){
+            machineTier = tag.getInt("machine_tier");
+        }
     }
 
     @Override
@@ -457,6 +460,7 @@ public class RadioactiveReactor extends TieredMachine{
         tag.putFloat("radioactivity",radioactivityOfFuelAccumulative);
         tag.putBoolean("sealed_core",sealedCore);
         tag.putFloat("tick",tick);
+        tag.putInt("machine_tier",machineTier);
     }
 
     @Override
@@ -661,21 +665,27 @@ public class RadioactiveReactor extends TieredMachine{
 
                 checkIfShouldBeSealed();
 
+                int goldenHeatDispersionModules = 0;
+
                 // iterate over the modules and see if they really are modules and what type they are
                 for(ItemStack module : moduleStacks){
                     if(!module.isEmpty()){
                         if(module.has(Components.MODULE_TYPE)){
                             // now apply their effects
-                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SPEED){
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SPEED || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                                 speedModules += module.getCount();
                             }
-                            else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_EFFICIENCY){
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_EFFICIENCY || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                                 efficiencyModules += module.getCount();
                             }
-                            else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_HEAT_DISPERSING){
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_HEAT_DISPERSING){
                                 heatDispersionModules += module.getCount();
                             }
-                            else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SILENCING){
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
+                                heatDispersionModules += module.getCount();
+                                goldenHeatDispersionModules += module.getCount();
+                            }
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SILENCING || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                                 shouldBeSilenced = true;
                             }
                         }
@@ -686,7 +696,7 @@ public class RadioactiveReactor extends TieredMachine{
                     // the max heat is determined by the minimum activity heat multiplied by the heat module count
                     maxHeatWhenCooling = Mth.clamp((int)Utility.normalizeIntToFloatValue(heatDispersionModules,
                             1,4,500.0f,9990.0f),
-                            1,15000);
+                            1,9990);
                     setChanged();
                 }
 
@@ -708,25 +718,20 @@ public class RadioactiveReactor extends TieredMachine{
                             }
                         }
                         // only reduce coolant when needed based on threshold (and if coolant exists at all)
-                        if(coolantAmount > 0 && heatAmount >= Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000)){
+                        // && heatAmount >= Mth.clamp(maxHeatWhenCooling,500,heatAmountToGoBoomAt - 1000)
+                        if(coolantAmount > 0){
                             // just make sure heat is never less than zero
                             heatAmount = Mth.clamp(heatAmount - (efficiencyModules + 1),0,heatAmountToGoBoomAt);
                             // coolant is used less often when efficiency is very high
-                            if(efficiencyModules > 8){
-                                if(level instanceof ServerLevel serverLevel){
-                                    // randomly decide based on efficiency module count when to reduce coolant, making them what is called '(n)%' better
-                                    // the max is 200% efficiency (or what is effectively that percentage)
-                                    if(serverLevel.getRandom().nextIntBetweenInclusive(0,Mth.clamp(10 * efficiencyModules,10,200)) <= 10){
-                                        coolantAmount -= 1;
-                                    }
-                                }
-                            }
-                            else{
-                                coolantAmount -= 1;
-                            }
+                            coolantAmount = coolantAmount - (efficiencyModules  + 1);
                         }
                         else{
-                            heatAmount = heatAmount + (int)(radioactivityOfFuelAccumulative / 153.3f);
+                            if(!ServerConfig.RADIOACTIVITY_ENABLED.getAsBoolean()){
+                                heatAmount += 1;
+                            }
+                            else{
+                                heatAmount = heatAmount + (int)(radioactivityOfFuelAccumulative / 153.3f);
+                            }
                         }
                         coolantAmount = Mth.clamp(coolantAmount,0,maxCoolantAmount);
                         setChanged();
@@ -777,9 +782,14 @@ public class RadioactiveReactor extends TieredMachine{
                 // if heat dispersion is active, then when the heat is at the ideal temperature, keep it at that temperature
                 if(heatAmount > maxHeatWhenCooling){
                     if(heatDispersionModules > 0){
-                        // smooth out the heat process when the modules are removed, thus no instant heat fixes from swapping out modules completely or partially
-                        heatAmount = Mth.clamp(Mth.lerpInt(tick / 720.0f,heatAmount,(maxHeatWhenCooling + heatDispersionModules) - 50),
-                                1,heatAmountToGoBoomAt - 1000);
+                        if(goldenHeatDispersionModules > 4){
+                            heatAmount = maxHeatWhenCooling;
+                        }
+                        else{
+                            heatAmount = Mth.clamp(Mth.lerpInt(tick / 720.0f,heatAmount,(maxHeatWhenCooling + heatDispersionModules) - 50),
+                                    1,heatAmountToGoBoomAt - 1000);
+                            heatAmount -= goldenHeatDispersionModules;
+                        }
                         setChanged();
                     }
                 }
@@ -1048,7 +1058,6 @@ public class RadioactiveReactor extends TieredMachine{
     // should the reactor even be active?
     public void checkIfShouldBeActive(){
         boolean fuelDetected = false;
-        boolean heatIsSuppressed = false;
 
         List<ItemStack> moduleStacks = List.of(
                 itemStackHandler.getStackInSlot(25),
@@ -1058,18 +1067,22 @@ public class RadioactiveReactor extends TieredMachine{
                 itemStackHandler.getStackInSlot(29)
         );
 
+        boolean heatIsSuppressed = false;
         int heatModuleCount = 0;
 
         // check over modules
         for(ItemStack module : moduleStacks){
             if(module.has(Components.MODULE_TYPE)){
-                if(module.get(Components.MODULE_TYPE).intValue() == 5){
+                if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_HEAT_DISPERSING){
+                    heatModuleCount++;
+                    setChanged();
+                }
+                if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                     heatModuleCount++;
                     setChanged();
                 }
             }
         }
-
         if(heatModuleCount > 0){
             heatIsSuppressed = true;
             setChanged();
@@ -1110,9 +1123,11 @@ public class RadioactiveReactor extends TieredMachine{
             }
             return;
         }
+        /* this area checks if we have fuel then continues as active if we do;
+        without fuel, the reactor goes into limbo, thus rendering it useless until the next check (default of 500 ticks) */
         if(fuelDetected){
             if(level instanceof ServerLevel serverLevel){
-                if(serverLevel.getGameTime() % 500 == 0){
+                if(serverLevel.getGameTime() % ServerConfig.RADIOACTIVE_REACTOR_READY_CHECK_TICKS.getAsInt() == 0){
                     isActive = true;
                     setChanged();
                 }
@@ -1139,21 +1154,27 @@ public class RadioactiveReactor extends TieredMachine{
                     itemStackHandler.getStackInSlot(28),
                     itemStackHandler.getStackInSlot(29)
             );
+            int goldenEfficiency = 0;
             // iterate over the modules and see if they really are modules and what type they are
+            // golden modules are like the basic modules but can count as many types at once, thus they allow for different types of modules to share the same slot
             for(ItemStack module : moduleStacks){
                 if(!module.isEmpty()){
                     if(module.has(Components.MODULE_TYPE)){
                         // now apply their effects
-                        if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SPEED){
+                        if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_SPEED || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                             speedModules++;
                         }
-                        else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_EFFICIENCY){
+                        if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_EFFICIENCY || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                             efficiencyModules++;
+                            // AIO efficiency
+                            if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
+                                goldenEfficiency++;
+                            }
                         }
-                        else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_DOUBLING){
+                        if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_DOUBLING || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                             doubleOutputModules++;
                         }
-                        else if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_TRIPLING){
+                        if(module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_TRIPLING || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_BASIC || module.get(Components.MODULE_TYPE).intValue() == Utility.MODULE_TYPE_AIO_ADVANCED){
                             tripleOutputModules++;
                         }
                     }
@@ -1207,7 +1228,7 @@ public class RadioactiveReactor extends TieredMachine{
                     // speed modules will make processing faster
                     if(serverLevel.getGameTime() % Mth.clamp(speedModules,1,100) == 0){
                         // efficiency modules make processing more effective
-                        processBits += (1 + efficiencyModules);
+                        processBits = processBits + (1 + (efficiencyModules * goldenEfficiency));
                     }
                 }
                 isProcessing = true;
